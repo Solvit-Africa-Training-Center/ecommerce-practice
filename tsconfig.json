@@ -110,6 +110,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/database/seeders/20250808142734-productCategories.js", "src/database/seeders/20250808143131-productSubCategory.js", "src/database/seeders/20250808143118-products.js", "src/database/seeders/20250808080448-Roles.js"],
   "exclude": ["node_modules", "dist", "eslint.config.mts"]
 }

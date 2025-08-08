@@ -7,7 +7,7 @@ const getPrefix = () => {
   if (!env) {
     return (env = 'DEV');
   }
-  return env;
+  return "DEV";
 };
 
 const databaseConfig = () => {
@@ -23,5 +23,4 @@ const databaseConfig = () => {
     dialect: 'postgres',
   };
 };
-
 module.exports = databaseConfig;

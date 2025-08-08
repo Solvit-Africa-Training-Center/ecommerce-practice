@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/fabrice/ecommerce-practice/logs/.df4acd4e177e1ede1ec86310af7a495c42e598da-audit.json",
+    "files": [
+        {
+            "date": 1754840316191,
+            "name": "/home/fabrice/ecommerce-practice/logs/combined-2025-08-10.log",
+            "hash": "889df9648839b1b5976ecc0b8aee198296eb70327721c6ec26022bf16caadfd6"
+        },
+        {
+            "date": 1754859671765,
+            "name": "/home/fabrice/ecommerce-practice/logs/combined-2025-08-11.log",
+            "hash": "700cae6dc6e0e118789acb60c5ffe78f9bcc7a95881f1934c8f2be594f5ce2ee"
+        }
+    ],
+    "hashType": "sha256"
+}
