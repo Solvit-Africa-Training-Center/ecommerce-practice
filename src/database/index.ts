@@ -24,4 +24,7 @@ const dbConnection = () => {
 const sequelizeInstance = dbConnection();
 const models = AllModal(sequelizeInstance);
 
+if (models.User.associate) models.User.associate(models);
+if (models.Role.associate) models.Role.associate(models);
+
 export const Database = { ...models, database: sequelizeInstance };
