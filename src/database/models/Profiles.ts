@@ -22,17 +22,22 @@ interface ProfileAttribute {
   deletedAt?: null;
   createdAt?: Date;
 }
-export interface ProfileCreationAttribute extends Omit<ProfileAttribute, "id" | "deletedAt" | "createdAt" | "updatedAt"> {
+export interface ProfileCreationAttribute
+  extends Omit<
+    ProfileAttribute,
+    "id" | "deletedAt" | "createdAt" | "updatedAt"
+  > {
   id?: string;
   deletedAt?: null;
   createdAt?: Date;
   updatedAt?: Date;
 }
-export class Profile extends Model<ProfileAttribute, ProfileCreationAttribute>
+export class Profile
+  extends Model<ProfileAttribute, ProfileCreationAttribute>
   implements ProfileAttribute
 {
   public id!: string;
-  public userId!: string;  
+  public userId!: string;
   public name!: string;
   public email!: string;
   public password!: string;
@@ -54,7 +59,7 @@ export class Profile extends Model<ProfileAttribute, ProfileCreationAttribute>
   public toJSON(): object | ProfileAttribute {
     return {
       id: this.id,
-      userId: this.userId,  // Add userId to JSON output
+      userId: this.userId, // Add userId to JSON output
       name: this.name,
       email: this.email,
       phone: this.phone,
@@ -77,11 +82,15 @@ export class Profile extends Model<ProfileAttribute, ProfileCreationAttribute>
     Profile.belongsTo(models.User, {
       foreignKey: "userId",
       as: "user",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     });
-      
+
     Profile.belongsTo(models.Role, {
       foreignKey: "roleId",
       as: "role",
+      onDelete: "SET NULL",
+      onUpdate: "CASCADE",
     });
   }
 }
@@ -97,11 +106,11 @@ export const ProfileModel = (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: 'users',
-          key: 'id'
+          model: "users",
+          key: "id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       name: {
         type: DataTypes.STRING,
@@ -152,11 +161,11 @@ export const ProfileModel = (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: 'roles',
-          key: 'id'
+          model: "roles",
+          key: "id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       isVerified: {
         type: DataTypes.BOOLEAN,
@@ -191,7 +200,7 @@ export const ProfileModel = (sequelize: Sequelize) => {
       tableName: "profiles",
       timestamps: true,
       paranoid: true,
-    }
+    },
   );
   return Profile;
 };

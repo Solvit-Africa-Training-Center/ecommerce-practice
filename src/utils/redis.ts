@@ -39,7 +39,7 @@
 // export const storeSubscription = async (email: string, data: SubscriptionData): Promise<void> => {
 //     try {
 //         await redis.setEx(
-//             `subscription:${email}`, 
+//             `subscription:${email}`,
 //             SUBSCRIPTION_TTL,
 //             JSON.stringify(data)
 //         );

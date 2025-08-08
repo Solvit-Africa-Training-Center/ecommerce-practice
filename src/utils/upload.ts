@@ -50,7 +50,7 @@ export const uploadFile = (file: Express.Multer.File): Promise<string> => {
           return;
         }
         resolve(result.secure_url);
-      }
+      },
     );
   });
 };
