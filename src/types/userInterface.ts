@@ -2,7 +2,12 @@ export interface UserInterface {
   name: string;
   email: string;
   password: string;
-  gender: "male" | "female" | "other";
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: null;
+}
+
+export interface ProfileInterface {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: null;

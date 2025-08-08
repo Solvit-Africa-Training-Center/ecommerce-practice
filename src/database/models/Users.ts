@@ -4,17 +4,19 @@ interface UserAttribute {
   id: string;
   name: string;
   email: string;
-  gender: "male" | "female" | "other";
   password: string;
+  roleId: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: null;
 }
+
 export interface UserCreationAttribute
-  extends Omit<UserAttribute, "id" | "role" | "password"> {
+  extends Omit<UserAttribute, "id" | "deletedAt" | "createdAt" | "updatedAt"> {
   id?: string;
-  role?: string;
-  password?: string;
+  deletedAt?: null;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export class User
@@ -25,7 +27,7 @@ export class User
   public name!: string;
   public email!: string;
   public password!: string;
-  public gender!: "male" | "female" | "other";
+  public roleId!: string;
   public updatedAt!: Date;
   public deletedAt: null = null;
   public createdAt: Date = new Date();
@@ -35,11 +37,17 @@ export class User
       id: this.id,
       name: this.name,
       email: this.email,
-      password: this.password,
-      gender: this.gender,
+      roleId: this.roleId,
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
     };
+  }
+
+  static associate(models: any) {
+    User.belongsTo(models.Role, {
+      foreignKey: "roleId",
+      as: "role",
+    });
   }
 }
 
@@ -64,15 +72,15 @@ export const UserModal = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      gender: {
-        type: DataTypes.ENUM("male", "female", "other"),
+      roleId: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
     },
     {
       sequelize,
       timestamps: true,
-      modelName: "User",
+      modelName: "Users",
       tableName: "users",
     },
   );
