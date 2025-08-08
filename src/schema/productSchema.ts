@@ -7,6 +7,6 @@ export const AddProductSchema = joi.object({
   stock: joi.number().min(0).required(),
   productCatId: joi.string().uuid().required(),
   rating: joi.number().min(0).max(5).required(),
-  variation: joi.string().valid("small", "medium", "large").required(),
+  variation: joi.object().optional().allow(null),
   image: joi.array().items(joi.string().uri()).required(),
 });

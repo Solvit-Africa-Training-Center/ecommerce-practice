@@ -4,8 +4,8 @@ export interface productInterface {
   description: string;
   price: number;
   stock: number;
-  productCatId: string;
   rating: number;
+  variation: object | null;
 }
 
 export interface interfaceAddProduct
