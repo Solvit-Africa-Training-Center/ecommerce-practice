@@ -9,12 +9,16 @@ import {
 
 interface IRequestProfileData extends Request {
   body: ProfileInterface;
+  file?: Express.Multer.File;
 }
 
-export const createProfile = async (req: IRequestProfileData, res: Response) => {
+export const createProfile = async (
+  req: IRequestProfileData,
+  res: Response,
+) => {
   try {
     const profileData = req.body;
-    const profile = await createProfileService(profileData);
+    const profile = await createProfileService(profileData, req.file);
     ResponseService({
       data: profile,
       message: "Profile created successfully",
@@ -66,12 +70,18 @@ export const getProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const updateProfile = async (req: Request, res: Response) => {
+export const updateProfile = async (
+  req: IRequestProfileData,
+  res: Response,
+) => {
   try {
     const userId = req.params.userId;
     const updateData = req.body;
-
-    const updatedProfile = await updateProfileService(userId, updateData);
+    const updatedProfile = await updateProfileService(
+      userId,
+      updateData,
+      req.file,
+    );
     if (!updatedProfile) {
       return ResponseService({
         data: null,
