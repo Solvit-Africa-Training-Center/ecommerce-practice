@@ -2,6 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import { Database } from "./database";
 import { routers } from "./routes";
+import { redis } from "./utils/redis";
 
 config();
 
@@ -18,6 +19,8 @@ app.use((req, res) => {
     message: "The requested resource was not found",
   });
 });
+
+redis.connect().catch(console.error);
 
 const port = parseInt(process.env.PORT as string) || 5000;
 
