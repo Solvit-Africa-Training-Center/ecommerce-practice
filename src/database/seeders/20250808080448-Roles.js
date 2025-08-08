@@ -1,25 +1,49 @@
 "use strict";
 
+const { v4: uuidv4 } = require("uuid");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-     */
+    // Check if any roles already exist
+    const roles = await queryInterface.sequelize.query(
+      `SELECT COUNT(*) as count FROM roles;`,
+      { type: Sequelize.QueryTypes.SELECT },
+    );
+
+    if (roles[0].count > 0) {
+      console.log("Roles already seeded. Skipping...");
+      return;
+    }
+
+    // Proceed with seeding roles
+    await queryInterface.bulkInsert("roles", [
+      {
+        id: uuidv4(),
+        name: "admin",
+        description: "Platform administrator with full access",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: uuidv4(),
+        name: "customer",
+        description: "Regular shopper with access to browse and purchase",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: uuidv4(),
+        name: "seller",
+        description:
+          "Vendor with permission to manage their products and orders",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete("roles", null, {});
   },
 };
