@@ -1,3 +1,4 @@
+// schema/userSchema.ts
 import joi from 'joi';
 import { UuidIdSchema } from './commonSchemas';
 
