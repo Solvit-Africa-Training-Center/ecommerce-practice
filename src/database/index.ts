@@ -1,6 +1,6 @@
-import databaseConfig from "../config/config";
-import { Sequelize } from "sequelize";
-import { AllModal } from "./models";
+import databaseConfig from '../config/config';
+import { Sequelize } from 'sequelize';
+import { AllModal } from './models';
 interface ConfigInterface {
   username: string;
   password: string;
@@ -13,10 +13,7 @@ const dbConnection = () => {
   const db_config = databaseConfig() as ConfigInterface;
   const sequelize = new Sequelize({
     ...db_config,
-    dialect: "postgres",
-  });
-  sequelize.authenticate().then(() => {
-    console.log("databasee Connected");
+    dialect: 'postgres',
   });
   return sequelize;
 };
@@ -24,7 +21,11 @@ const dbConnection = () => {
 const sequelizeInstance = dbConnection();
 const models = AllModal(sequelizeInstance);
 
-if (models.User.associate) models.User.associate(models);
-if (models.Role.associate) models.Role.associate(models);
+Object.values(models).forEach((model) => {
+  if (model.associate) {
+    model.associate(models);
+  }
+});
+export type DatabaseType = typeof models & { database: Sequelize };
 
 export const Database = { ...models, database: sequelizeInstance };

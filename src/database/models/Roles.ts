@@ -1,4 +1,5 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { Sequelize, Model, DataTypes } from 'sequelize';
+import { User } from './Users';
 
 export interface RoleAttributes {
   id: string;
@@ -9,14 +10,11 @@ export interface RoleAttributes {
 }
 
 export interface RoleCreationAttributes
-  extends Omit<RoleAttributes, "id" | "createdAt" | "updatedAt"> {
+  extends Omit<RoleAttributes, 'id' | 'createdAt' | 'updatedAt'> {
   id?: string;
 }
 
-export class Role
-  extends Model<RoleAttributes, RoleCreationAttributes>
-  implements RoleAttributes
-{
+export class Role extends Model<RoleAttributes, RoleCreationAttributes> implements RoleAttributes {
   public id!: string;
   public name!: string;
   public description?: string;
@@ -33,10 +31,10 @@ export class Role
     };
   }
 
-  static associate(models: any) {
+  static associate(models: { User: typeof User }): void {
     Role.hasMany(models.User, {
-      foreignKey: "roleId",
-      as: "users",
+      foreignKey: 'roleId',
+      as: 'users',
     });
   }
 }
@@ -62,8 +60,8 @@ export const RoleModel = (sequelize: Sequelize) => {
     {
       sequelize,
       timestamps: true,
-      modelName: "Roles",
-      tableName: "roles",
+      modelName: 'Roles',
+      tableName: 'roles',
     },
   );
 

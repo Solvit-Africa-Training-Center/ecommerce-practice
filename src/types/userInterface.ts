@@ -13,8 +13,7 @@ export interface ProfileInterface {
   deletedAt?: null;
 }
 
-export interface AddUserInterface
-  extends Omit<UserInterface, "createdAt" | "updatedAt"> {}
+export type AddUserInterface = Omit<UserInterface, 'createdAt' | 'updatedAt'>;
 export interface GetAllUsers {
   users: UserInterface[];
 }
