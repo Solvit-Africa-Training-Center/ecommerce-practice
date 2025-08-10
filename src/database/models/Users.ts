@@ -1,3 +1,4 @@
+// models/Users.ts
 import { Sequelize, Model, DataTypes } from 'sequelize';
 import { Role } from './Roles';
 
@@ -7,14 +8,20 @@ interface UserAttribute {
   email: string;
   password: string;
   roleId: string;
+  isEmailVerified: boolean;
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: null;
 }
 
 export interface UserCreationAttribute
-  extends Omit<UserAttribute, 'id' | 'deletedAt' | 'createdAt' | 'updatedAt'> {
+  extends Omit<UserAttribute, 'id' | 'deletedAt' | 'createdAt' | 'updatedAt' | 'isEmailVerified'> {
   id?: string;
+  isEmailVerified?: boolean;
   deletedAt?: null;
   createdAt?: Date;
   updatedAt?: Date;
@@ -26,6 +33,11 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
   public email!: string;
   public password!: string;
   public roleId!: string;
+  public isEmailVerified!: boolean;
+  public emailVerificationToken?: string;
+  public emailVerificationExpires?: Date;
+  public passwordResetToken?: string;
+  public passwordResetExpires?: Date;
   public updatedAt!: Date;
   public deletedAt: null = null;
   public createdAt: Date = new Date();
@@ -36,6 +48,7 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
       name: this.name,
       email: this.email,
       roleId: this.roleId,
+      isEmailVerified: this.isEmailVerified,
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
     };
@@ -73,6 +86,27 @@ export const UserModal = (sequelize: Sequelize) => {
       roleId: {
         type: DataTypes.UUID,
         allowNull: false,
+      },
+      isEmailVerified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      emailVerificationToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      emailVerificationExpires: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      passwordResetToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      passwordResetExpires: {
+        type: DataTypes.DATE,
+        allowNull: true,
       },
     },
     {
