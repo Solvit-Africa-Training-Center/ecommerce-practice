@@ -1,40 +1,37 @@
-import js from "@eslint/js";
-import globals from "globals";
-import { defineConfig } from "eslint/config";
-import tseslintParser from "@typescript-eslint/parser";
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig([
+export default tseslint.config(
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    files: ["**/*.{js,mjs,cjs}"],
-    plugins: { js },
-    extends: ["js/recommended"],
+    files: ['**/*.{js,mjs,cjs}'],
     languageOptions: { globals: globals.browser },
     rules: {
-      "no-unused-vars": "warn",
-      "no-console": "warn",
-      eqeqeq: "error",
-      curly: "error",
-      semi: ["error", "always"],
-      quotes: ["error", "single"],
+      'no-unused-vars': 'warn',
+      'no-console': 'warn',
+      eqeqeq: 'error',
+      curly: 'error',
+      semi: ['error', 'always'],
+      quotes: ['error', 'single'],
     },
   },
   {
-    files: ["**/*.{ts,mts,cts}"],
+    files: ['**/*.{ts,mts,cts}'],
     languageOptions: {
-      parser: tseslintParser,
       parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
+        ecmaVersion: 'latest',
+        sourceType: 'module',
       },
     },
-    extends: ["plugin:@typescript-eslint/recommended"],
     rules: {
-      "no-unused-vars": "warn",
-      "no-console": "warn",
-      eqeqeq: "error",
-      curly: "error",
-      semi: ["error", "always"],
-      quotes: ["error", "single"],
+      'no-unused-vars': 'warn',
+      'no-console': 'warn',
+      eqeqeq: 'error',
+      curly: 'error',
+      semi: ['error', 'always'],
+      quotes: ['error', 'single'],
     },
   },
-]);
+);

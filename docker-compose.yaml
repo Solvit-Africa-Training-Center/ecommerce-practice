@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database - only external database needed
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecommerce-practice-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DEV_DATABASE}
+      POSTGRES_USER: ${DEV_USERNAME}
+      POSTGRES_PASSWORD: ${DEV_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DEV_USERNAME} -d ${DEV_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Main Ecommerce Application 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-practice-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: 5000
+      # Database
+      DEV_DATABASE: ${DEV_DATABASE}
+      DEV_USERNAME: ${DEV_USERNAME}
+      DEV_PASSWORD: ${DEV_PASSWORD}
+      DEV_HOST: postgres
+      DEV_PORT: 5432
+      # External Redis (your cloud Redis)
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_DB: ${REDIS_DB}
+      # JWT Secret
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  ecommerce-network:
+    driver: bridge
