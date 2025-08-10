@@ -26,5 +26,9 @@ const models = AllModal(sequelizeInstance);
 
 if (models.User.associate) models.User.associate(models);
 if (models.Role.associate) models.Role.associate(models);
+if (models.Order.associate) models.Order.associate(models);
+if (models.Product.associate) models.Product.associate(models);
+if (models.ProductCategory.associate) models.ProductCategory.associate(models);
+if (models.OrderItem.associate) models.OrderItem.associate(models);
 
 export const Database = { ...models, database: sequelizeInstance };

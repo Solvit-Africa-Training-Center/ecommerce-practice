@@ -113,8 +113,8 @@ export const OrderModel = (sequelize: Sequelize) => {
         },
         {
         sequelize,
-        tableName: "Orders",
-        modelName: "Orders",
+        tableName: "orders",
+        modelName: "Order",
         timestamps: true,
         paranoid: true, // Enables soft deletes
         }

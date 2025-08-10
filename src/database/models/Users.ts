@@ -23,6 +23,9 @@ export class User
   extends Model<UserAttribute, UserCreationAttribute>
   implements UserAttribute
 {
+  static getUserById(id: string): unknown {
+    throw new Error("Method not implemented.");
+  }
   public id!: string;
   public name!: string;
   public email!: string;

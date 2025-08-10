@@ -4,7 +4,7 @@ import { AddUserInterface, UserInterface } from "../types/userInterface";
 export class UserService {
   static async createUser(userData: AddUserInterface): Promise<UserInterface> {
     try {
-      const user = await Database.User.create(userData);
+      const user = await Database.User.create();
       return user.toJSON() as UserInterface;
     } catch (error) {
       throw error;
