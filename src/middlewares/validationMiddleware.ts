@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
-import { ObjectSchema } from "joi";
-import { ResponseService } from "../utils/response";
+import { NextFunction, Request, Response } from 'express';
+import { ObjectSchema } from 'joi';
+import { ResponseService } from '../utils/response';
 
 interface ValidateOption<T> {
-  type: "body" | "headers" | "params";
+  type: 'body' | 'headers' | 'params';
   schema: ObjectSchema<T>;
 }
 
@@ -24,12 +24,12 @@ export const ValidationMiddleware =
       }
       next();
     } catch (error) {
-      console.log("Validation error:", error);
+      console.log('Validation error:', error);
       return ResponseService({
         data: error,
         status: 500,
         success: false,
-        message: "Validation failed",
+        message: 'Validation failed',
         res,
       });
     }

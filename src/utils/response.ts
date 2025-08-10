@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Response } from 'express';
 
 interface IResponse<T> {
   status: number;
@@ -16,7 +16,7 @@ export const ResponseService = <T>({
   res,
 }: IResponse<T>): Response<IResponse<T>> => {
   if (status === 500 && !message) {
-    message = "Internal server error";
+    message = 'Internal server error';
   }
   return res.status(status).json({
     data,

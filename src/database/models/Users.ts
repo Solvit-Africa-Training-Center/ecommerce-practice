@@ -1,4 +1,5 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { Sequelize, Model, DataTypes } from 'sequelize';
+import { Role } from './Roles';
 
 interface UserAttribute {
   id: string;
@@ -12,17 +13,14 @@ interface UserAttribute {
 }
 
 export interface UserCreationAttribute
-  extends Omit<UserAttribute, "id" | "deletedAt" | "createdAt" | "updatedAt"> {
+  extends Omit<UserAttribute, 'id' | 'deletedAt' | 'createdAt' | 'updatedAt'> {
   id?: string;
   deletedAt?: null;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export class User
-  extends Model<UserAttribute, UserCreationAttribute>
-  implements UserAttribute
-{
+export class User extends Model<UserAttribute, UserCreationAttribute> implements UserAttribute {
   public id!: string;
   public name!: string;
   public email!: string;
@@ -43,10 +41,10 @@ export class User
     };
   }
 
-  static associate(models: any) {
+  static associate(models: { Role: typeof Role }): void {
     User.belongsTo(models.Role, {
-      foreignKey: "roleId",
-      as: "role",
+      foreignKey: 'roleId',
+      as: 'role',
     });
   }
 }
@@ -80,8 +78,8 @@ export const UserModal = (sequelize: Sequelize) => {
     {
       sequelize,
       timestamps: true,
-      modelName: "Users",
-      tableName: "users",
+      modelName: 'Users',
+      tableName: 'users',
     },
   );
   return User;
