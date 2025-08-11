@@ -1,5 +1,8 @@
 import { Database } from "../database";
-import { ProfileInterface } from "../types/userInterface";
+import {
+  ProfileInterface,
+  ProfileUpdateInterface,
+} from "../types/profileInterface";
 import { ProfileCreationAttribute } from "../database/models/Profiles";
 import { uploadFile } from "../utils/upload";
 
@@ -14,17 +17,33 @@ export async function createProfile(
       profileData.profilePicture = imageUrl;
     }
 
-    if (!profileData.userId || !profileData.roleId) {
-      throw new Error("userId and roleId are required");
+    if (!profileData.userId) {
+      throw new Error("userId is required");
     }
 
-    const profile = await Database?.Profile.create(profileData);
-    return profile.toJSON() as ProfileCreationAttribute;
+    const existingProfile = await Database?.Profile.findOne({
+      where: { userId: profileData.userId },
+    });
+
+    if (existingProfile) {
+      throw new Error("Profile already exists for this user");
+    }
+
+    // Provide default values for required fields
+    const profileToCreate = {
+      ...profileData,
+      isActive: profileData.isActive ?? true,
+      isVerified: profileData.isVerified ?? false,
+    };
+
+    const profile = await Database?.Profile.create(profileToCreate);
+    return profile.toJSON() as ProfileInterface;
   } catch (error) {
     throw error;
   }
 }
 
+// Get profile by user ID
 export async function getProfileByUserId(
   userId: string,
 ): Promise<ProfileInterface | null> {
@@ -35,10 +54,7 @@ export async function getProfileByUserId(
         {
           model: Database.User,
           as: "user",
-        },
-        {
-          model: Database.Role,
-          as: "role",
+          attributes: ["id", "name", "email", "roleId"],
         },
       ],
     });
@@ -48,10 +64,28 @@ export async function getProfileByUserId(
   }
 }
 
+// Get all profiles
+export async function getAllProfiles(): Promise<ProfileInterface[]> {
+  try {
+    const profiles = await Database.Profile.findAll({
+      include: [
+        {
+          model: Database.User,
+          as: "user",
+          attributes: ["id", "name", "email", "roleId"],
+        },
+      ],
+    });
+    return profiles.map((profile) => profile.toJSON() as ProfileInterface);
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Update a profile by user ID
 export async function updateProfile(
   userId: string,
-  updateData: Partial<ProfileInterface>,
+  updateData: ProfileUpdateInterface,
   file?: Express.Multer.File,
 ): Promise<ProfileInterface | null> {
   try {
@@ -59,10 +93,49 @@ export async function updateProfile(
       const imageUrl = await uploadFile(file);
       updateData.profilePicture = imageUrl;
     }
+
     const [updated] = await Database.Profile.update(updateData, {
       where: { userId },
       returning: true,
     });
+
+    if (updated) {
+      const profile = await getProfileByUserId(userId);
+      return profile;
+    }
+    return null;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Delete a profile by user ID
+export async function deleteProfile(userId: string): Promise<boolean> {
+  try {
+    const deleted = await Database.Profile.destroy({
+      where: { userId },
+    });
+    return deleted > 0;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Update profile picture only
+export async function updateProfilePicture(
+  userId: string,
+  file: Express.Multer.File,
+): Promise<ProfileInterface | null> {
+  try {
+    const imageUrl = await uploadFile(file);
+
+    const [updated] = await Database.Profile.update(
+      { profilePicture: imageUrl },
+      {
+        where: { userId },
+        returning: true,
+      },
+    );
 
     if (updated) {
       const profile = await getProfileByUserId(userId);

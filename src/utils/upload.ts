@@ -1,8 +1,6 @@
 import multer from "multer";
 import { Request, Response } from "express";
 import { v2 as cloudinary } from "cloudinary";
-import { readFile } from "fs";
-import { join } from "path";
 import { config } from "dotenv";
 config();
 
@@ -17,27 +15,26 @@ cloudinary.config({
   secure: true,
 });
 
+// Upload file to Cloudinary
 export const uploadFile = (file: Express.Multer.File): Promise<string> => {
   return new Promise((resolve, reject) => {
     if (!file) {
-      console.error("No file provided for upload");
       reject(new Error("No file provided for upload"));
       return;
     }
 
-    const filePath = file.path;
-
-    if (!filePath) {
-      reject(new Error("File path not available"));
-      return;
-    }
+    // Convert buffer to base64 for Cloudinary
+    const base64Data = file.buffer.toString("base64");
+    const dataURI = `data:${file.mimetype};base64,${base64Data}`;
 
     cloudinary.uploader.upload(
-      filePath,
+      dataURI,
       {
+        folder: "ecommerce-profiles",
         use_filename: true,
-        unique_filename: false,
-        overwrite: true,
+        unique_filename: true,
+        overwrite: false,
+        resource_type: "auto",
       },
       (error, result) => {
         if (error) {
@@ -55,44 +52,47 @@ export const uploadFile = (file: Express.Multer.File): Promise<string> => {
   });
 };
 
-const getExtensation = (ext: string) => {
-  let ex = "";
-  switch (ext) {
-    case "image/jpeg":
-      ex = "jpg";
-      break;
-    case "image/png":
-      ex = "png";
-      break;
-    default:
-      ex = "jpg";
+// File filter for multer
+const multerFilterFile = (req: any, file: any, cb: any) => {
+  // Check file type
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed"), false);
   }
-  return ex;
-};
-const MulterFilterFile = (req: any, file: any, cb: any) => {
-  const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-  cb(null, uniqueSuffix + "-" + file.originalname);
 };
 
-export const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
+// Memory storage for multer (no local files)
+export const storage = multer.memoryStorage();
+
+// Multer configuration
+export const upload = multer({
+  storage: storage,
+  fileFilter: multerFilterFile,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
   },
-  filename: MulterFilterFile,
 });
-interface RequestParams extends Request {
-  params: {
-    filename: string;
-  };
-}
-export const ReadFileName = (req: RequestParams, res: Response) => {
-  const { filename } = req.params;
-  const path = join(__dirname, "../../uploads/" + filename);
-  readFile(path, (error, result) => {
-    if (error) {
-      console.log(error);
-      res.send(error);
-    }
-    res.send(result);
+
+// Alternative upload function for Cloudinary using buffer
+export const uploadToCloudinary = async (
+  fileBuffer: Buffer,
+  folder: string = "ecommerce-profiles",
+) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        use_filename: true,
+        unique_filename: true,
+        overwrite: false,
+        resource_type: "auto",
+      },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      },
+    );
+    uploadStream.end(fileBuffer);
   });
 };

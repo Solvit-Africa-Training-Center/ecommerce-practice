@@ -3,9 +3,6 @@ import { Sequelize, Model, DataTypes } from "sequelize";
 interface ProfileAttribute {
   id: string;
   userId: string;
-  name: string;
-  email: string;
-  password: string;
   phone?: string;
   profilePicture?: string;
   bio?: string;
@@ -14,14 +11,14 @@ interface ProfileAttribute {
   country?: string;
   city?: string;
   address?: string;
-  roleId: string;
-  isVerified: boolean;
+  isVerified?: boolean;
   lastLogin?: Date;
   isActive: boolean;
   updatedAt: Date;
   deletedAt?: null;
   createdAt?: Date;
 }
+
 export interface ProfileCreationAttribute
   extends Omit<
     ProfileAttribute,
@@ -32,15 +29,13 @@ export interface ProfileCreationAttribute
   createdAt?: Date;
   updatedAt?: Date;
 }
+
 export class Profile
   extends Model<ProfileAttribute, ProfileCreationAttribute>
   implements ProfileAttribute
 {
   public id!: string;
   public userId!: string;
-  public name!: string;
-  public email!: string;
-  public password!: string;
   public phone?: string;
   public profilePicture?: string;
   public bio?: string;
@@ -49,19 +44,17 @@ export class Profile
   public country?: string;
   public city?: string;
   public address?: string;
-  public roleId!: string;
-  public isVerified!: boolean;
+  public isVerified?: boolean;
   public lastLogin?: Date;
   public isActive!: boolean;
   public updatedAt!: Date;
   public deletedAt: null = null;
   public createdAt: Date = new Date();
+
   public toJSON(): object | ProfileAttribute {
     return {
       id: this.id,
-      userId: this.userId, // Add userId to JSON output
-      name: this.name,
-      email: this.email,
+      userId: this.userId,
       phone: this.phone,
       profilePicture: this.profilePicture,
       bio: this.bio,
@@ -70,7 +63,6 @@ export class Profile
       country: this.country,
       city: this.city,
       address: this.address,
-      roleId: this.roleId,
       isVerified: this.isVerified,
       lastLogin: this.lastLogin,
       isActive: this.isActive,
@@ -78,6 +70,7 @@ export class Profile
       createdAt: this.createdAt,
     };
   }
+
   static associate(models: any) {
     Profile.belongsTo(models.User, {
       foreignKey: "userId",
@@ -85,15 +78,9 @@ export class Profile
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
-
-    Profile.belongsTo(models.Role, {
-      foreignKey: "roleId",
-      as: "role",
-      onDelete: "SET NULL",
-      onUpdate: "CASCADE",
-    });
   }
 }
+
 export const ProfileModel = (sequelize: Sequelize) => {
   Profile.init(
     {
@@ -112,19 +99,6 @@ export const ProfileModel = (sequelize: Sequelize) => {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       phone: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -138,7 +112,7 @@ export const ProfileModel = (sequelize: Sequelize) => {
         allowNull: true,
       },
       gender: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM("male", "female", "other"),
         allowNull: true,
       },
       dateOfBirth: {
@@ -154,18 +128,8 @@ export const ProfileModel = (sequelize: Sequelize) => {
         allowNull: true,
       },
       address: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
-      },
-      roleId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-          model: "roles",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
       },
       isVerified: {
         type: DataTypes.BOOLEAN,

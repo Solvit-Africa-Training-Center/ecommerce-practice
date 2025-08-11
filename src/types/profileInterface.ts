@@ -1,22 +1,32 @@
 export interface ProfileInterface {
   id?: string;
   userId: string;
-  name: string;
-  email: string;
-  password: string;
   phone?: string;
   profilePicture?: string;
   bio?: string;
-  gender?: string;
+  gender?: "male" | "female" | "other";
   dateOfBirth?: Date;
   country?: string;
   city?: string;
   address?: string;
-  roleId: string;
-  isVerified: boolean;
+  isVerified?: boolean;
   lastLogin?: Date;
-  isActive: boolean;
+  isActive?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: null;
+}
+
+export interface ProfileUpdateInterface {
+  phone?: string;
+  profilePicture?: string;
+  bio?: string;
+  gender?: "male" | "female" | "other";
+  dateOfBirth?: Date;
+  country?: string;
+  city?: string;
+  address?: string;
+  isVerified?: boolean;
+  lastLogin?: Date;
+  isActive?: boolean;
 }
