@@ -4,7 +4,7 @@ export interface ProfileInterface {
   phone?: string;
   profilePicture?: string;
   bio?: string;
-  gender?: "male" | "female" | "other";
+  gender?: 'male' | 'female' | 'other';
   dateOfBirth?: Date;
   country?: string;
   city?: string;
@@ -21,7 +21,7 @@ export interface ProfileUpdateInterface {
   phone?: string;
   profilePicture?: string;
   bio?: string;
-  gender?: "male" | "female" | "other";
+  gender?: 'male' | 'female' | 'other';
   dateOfBirth?: Date;
   country?: string;
   city?: string;

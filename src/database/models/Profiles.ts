@@ -1,4 +1,4 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { Sequelize, Model, DataTypes } from 'sequelize';
 
 interface ProfileAttribute {
   id: string;
@@ -20,10 +20,7 @@ interface ProfileAttribute {
 }
 
 export interface ProfileCreationAttribute
-  extends Omit<
-    ProfileAttribute,
-    "id" | "deletedAt" | "createdAt" | "updatedAt"
-  > {
+  extends Omit<ProfileAttribute, 'id' | 'deletedAt' | 'createdAt' | 'updatedAt'> {
   id?: string;
   deletedAt?: null;
   createdAt?: Date;
@@ -73,10 +70,10 @@ export class Profile
 
   static associate(models: any) {
     Profile.belongsTo(models.User, {
-      foreignKey: "userId",
-      as: "user",
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
+      foreignKey: 'userId',
+      as: 'user',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     });
   }
 }
@@ -93,11 +90,11 @@ export const ProfileModel = (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: "users",
-          key: "id",
+          model: 'users',
+          key: 'id',
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       phone: {
         type: DataTypes.STRING,
@@ -112,7 +109,7 @@ export const ProfileModel = (sequelize: Sequelize) => {
         allowNull: true,
       },
       gender: {
-        type: DataTypes.ENUM("male", "female", "other"),
+        type: DataTypes.ENUM('male', 'female', 'other'),
         allowNull: true,
       },
       dateOfBirth: {
@@ -160,8 +157,8 @@ export const ProfileModel = (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: "Profiles",
-      tableName: "profiles",
+      modelName: 'Profiles',
+      tableName: 'profiles',
       timestamps: true,
       paranoid: true,
     },

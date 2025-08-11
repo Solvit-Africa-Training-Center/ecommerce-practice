@@ -1,7 +1,7 @@
-import multer from "multer";
-import { Request, Response } from "express";
-import { v2 as cloudinary } from "cloudinary";
-import { config } from "dotenv";
+import multer from 'multer';
+import { Request, Response } from 'express';
+import { v2 as cloudinary } from 'cloudinary';
+import { config } from 'dotenv';
 config();
 
 const cloudinary_api_key = process.env.CLOUDINARY_API_KEY;
@@ -19,31 +19,31 @@ cloudinary.config({
 export const uploadFile = (file: Express.Multer.File): Promise<string> => {
   return new Promise((resolve, reject) => {
     if (!file) {
-      reject(new Error("No file provided for upload"));
+      reject(new Error('No file provided for upload'));
       return;
     }
 
     // Convert buffer to base64 for Cloudinary
-    const base64Data = file.buffer.toString("base64");
+    const base64Data = file.buffer.toString('base64');
     const dataURI = `data:${file.mimetype};base64,${base64Data}`;
 
     cloudinary.uploader.upload(
       dataURI,
       {
-        folder: "ecommerce-profiles",
+        folder: 'ecommerce-profiles',
         use_filename: true,
         unique_filename: true,
         overwrite: false,
-        resource_type: "auto",
+        resource_type: 'auto',
       },
       (error, result) => {
         if (error) {
-          console.error("Cloudinary upload error:", error);
+          console.error('Cloudinary upload error:', error);
           reject(error);
           return;
         }
         if (!result?.secure_url) {
-          reject(new Error("No secure URL returned from Cloudinary"));
+          reject(new Error('No secure URL returned from Cloudinary'));
           return;
         }
         resolve(result.secure_url);
@@ -55,10 +55,10 @@ export const uploadFile = (file: Express.Multer.File): Promise<string> => {
 // File filter for multer
 const multerFilterFile = (req: any, file: any, cb: any) => {
   // Check file type
-  if (file.mimetype.startsWith("image/")) {
+  if (file.mimetype.startsWith('image/')) {
     cb(null, true);
   } else {
-    cb(new Error("Only image files are allowed"), false);
+    cb(new Error('Only image files are allowed'), false);
   }
 };
 
@@ -77,7 +77,7 @@ export const upload = multer({
 // Alternative upload function for Cloudinary using buffer
 export const uploadToCloudinary = async (
   fileBuffer: Buffer,
-  folder: string = "ecommerce-profiles",
+  folder: string = 'ecommerce-profiles',
 ) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
@@ -86,7 +86,7 @@ export const uploadToCloudinary = async (
         use_filename: true,
         unique_filename: true,
         overwrite: false,
-        resource_type: "auto",
+        resource_type: 'auto',
       },
       (error, result) => {
         if (error) reject(error);

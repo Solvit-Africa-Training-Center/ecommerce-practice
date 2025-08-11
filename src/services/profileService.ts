@@ -1,12 +1,8 @@
-import { Database } from "../database";
-import {
-  ProfileInterface,
-  ProfileUpdateInterface,
-} from "../types/profileInterface";
-import { ProfileCreationAttribute } from "../database/models/Profiles";
-import { uploadFile } from "../utils/upload";
+import { Database } from '../database';
+import { ProfileInterface, ProfileUpdateInterface } from '../types/profileInterface';
+import { ProfileCreationAttribute, Profile } from '../database/models/Profiles';
+import { uploadFile } from '../utils/upload';
 
-// Create a new profile
 export async function createProfile(
   profileData: ProfileInterface,
   file?: Express.Multer.File,
@@ -18,7 +14,7 @@ export async function createProfile(
     }
 
     if (!profileData.userId) {
-      throw new Error("userId is required");
+      throw new Error('userId is required');
     }
 
     const existingProfile = await Database?.Profile.findOne({
@@ -26,10 +22,9 @@ export async function createProfile(
     });
 
     if (existingProfile) {
-      throw new Error("Profile already exists for this user");
+      throw new Error('Profile already exists for this user');
     }
 
-    // Provide default values for required fields
     const profileToCreate = {
       ...profileData,
       isActive: profileData.isActive ?? true,
@@ -43,18 +38,15 @@ export async function createProfile(
   }
 }
 
-// Get profile by user ID
-export async function getProfileByUserId(
-  userId: string,
-): Promise<ProfileInterface | null> {
+export async function getProfileByUserId(userId: string): Promise<ProfileInterface | null> {
   try {
     const profile = await Database.Profile.findOne({
       where: { userId },
       include: [
         {
           model: Database.User,
-          as: "user",
-          attributes: ["id", "name", "email", "roleId"],
+          as: 'user',
+          attributes: ['id', 'name', 'email', 'roleId'],
         },
       ],
     });
@@ -64,15 +56,14 @@ export async function getProfileByUserId(
   }
 }
 
-// Get all profiles
 export async function getAllProfiles(): Promise<ProfileInterface[]> {
   try {
     const profiles = await Database.Profile.findAll({
       include: [
         {
           model: Database.User,
-          as: "user",
-          attributes: ["id", "name", "email", "roleId"],
+          as: 'user',
+          attributes: ['id', 'name', 'email', 'roleId'],
         },
       ],
     });
@@ -82,7 +73,6 @@ export async function getAllProfiles(): Promise<ProfileInterface[]> {
   }
 }
 
-// Update a profile by user ID
 export async function updateProfile(
   userId: string,
   updateData: ProfileUpdateInterface,
@@ -109,7 +99,6 @@ export async function updateProfile(
   }
 }
 
-// Delete a profile by user ID
 export async function deleteProfile(userId: string): Promise<boolean> {
   try {
     const deleted = await Database.Profile.destroy({
@@ -121,7 +110,6 @@ export async function deleteProfile(userId: string): Promise<boolean> {
   }
 }
 
-// Update profile picture only
 export async function updateProfilePicture(
   userId: string,
   file: Express.Multer.File,

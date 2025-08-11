@@ -1,9 +1,6 @@
-import { Request, Response } from "express";
-import { ResponseService } from "../utils/response";
-import {
-  ProfileInterface,
-  ProfileUpdateInterface,
-} from "../types/profileInterface";
+import { Request, Response } from 'express';
+import { ResponseService } from '../utils/response';
+import { ProfileInterface, ProfileUpdateInterface } from '../types/profileInterface';
 import {
   createProfile as createProfileService,
   getProfileByUserId,
@@ -11,7 +8,7 @@ import {
   updateProfile as updateProfileService,
   deleteProfile as deleteProfileService,
   updateProfilePicture as updateProfilePictureService,
-} from "../services/profileService";
+} from '../services/profileService';
 
 interface IRequestProfileData extends Request {
   body: ProfileInterface;
@@ -24,16 +21,13 @@ interface IRequestProfileUpdateData extends Request {
 }
 
 // Create a new profile
-export const createProfile = async (
-  req: IRequestProfileData,
-  res: Response,
-) => {
+export const createProfile = async (req: IRequestProfileData, res: Response) => {
   try {
     const profileData = req.body;
     const profile = await createProfileService(profileData, req.file);
     ResponseService({
       data: profile,
-      message: "Profile created successfully",
+      message: 'Profile created successfully',
       success: true,
       status: 201,
       res,
@@ -60,14 +54,14 @@ export const getProfile = async (req: Request, res: Response) => {
         data: null,
         status: 404,
         success: false,
-        message: "Profile not found",
+        message: 'Profile not found',
         res,
       });
     }
 
     ResponseService({
       data: profile,
-      message: "Profile retrieved successfully",
+      message: 'Profile retrieved successfully',
       success: true,
       status: 200,
       res,
@@ -89,7 +83,7 @@ export const getAllProfiles = async (req: Request, res: Response) => {
     const profiles = await getAllProfilesService();
     ResponseService({
       data: profiles,
-      message: "Profiles retrieved successfully",
+      message: 'Profiles retrieved successfully',
       success: true,
       status: 200,
       res,
@@ -106,32 +100,25 @@ export const getAllProfiles = async (req: Request, res: Response) => {
 };
 
 // Update a profile (PUT - full update)
-export const updateProfile = async (
-  req: IRequestProfileUpdateData,
-  res: Response,
-) => {
+export const updateProfile = async (req: IRequestProfileUpdateData, res: Response) => {
   try {
     const userId = req.params.userId;
     const updateData = req.body;
-    const updatedProfile = await updateProfileService(
-      userId,
-      updateData,
-      req.file,
-    );
+    const updatedProfile = await updateProfileService(userId, updateData, req.file);
 
     if (!updatedProfile) {
       return ResponseService({
         data: null,
         status: 404,
         success: false,
-        message: "Profile not found",
+        message: 'Profile not found',
         res,
       });
     }
 
     ResponseService({
       data: updatedProfile,
-      message: "Profile updated successfully",
+      message: 'Profile updated successfully',
       success: true,
       status: 200,
       res,
@@ -148,32 +135,25 @@ export const updateProfile = async (
 };
 
 // Update a profile (PATCH - partial update)
-export const patchProfile = async (
-  req: IRequestProfileUpdateData,
-  res: Response,
-) => {
+export const patchProfile = async (req: IRequestProfileUpdateData, res: Response) => {
   try {
     const userId = req.params.userId;
     const updateData = req.body;
-    const updatedProfile = await updateProfileService(
-      userId,
-      updateData,
-      req.file,
-    );
+    const updatedProfile = await updateProfileService(userId, updateData, req.file);
 
     if (!updatedProfile) {
       return ResponseService({
         data: null,
         status: 404,
         success: false,
-        message: "Profile not found",
+        message: 'Profile not found',
         res,
       });
     }
 
     ResponseService({
       data: updatedProfile,
-      message: "Profile updated successfully",
+      message: 'Profile updated successfully',
       success: true,
       status: 200,
       res,
@@ -200,14 +180,14 @@ export const deleteProfile = async (req: Request, res: Response) => {
         data: null,
         status: 404,
         success: false,
-        message: "Profile not found",
+        message: 'Profile not found',
         res,
       });
     }
 
     ResponseService({
       data: null,
-      message: "Profile deleted successfully",
+      message: 'Profile deleted successfully',
       success: true,
       status: 200,
       res,
@@ -231,7 +211,7 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
         data: null,
         status: 400,
         success: false,
-        message: "No file uploaded",
+        message: 'No file uploaded',
         res,
       });
     }
@@ -244,14 +224,14 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
         data: null,
         status: 404,
         success: false,
-        message: "Profile not found",
+        message: 'Profile not found',
         res,
       });
     }
 
     ResponseService({
       data: updatedProfile,
-      message: "Profile picture updated successfully",
+      message: 'Profile picture updated successfully',
       success: true,
       status: 200,
       res,

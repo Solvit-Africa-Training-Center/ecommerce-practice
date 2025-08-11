@@ -1,4 +1,4 @@
-import { ProfileCreationAttribute } from "../database/models/Profiles";
+import { ProfileCreationAttribute } from '../database/models/Profiles';
 export interface UserInterface {
   name: string;
   email: string;
