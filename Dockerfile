@@ -14,6 +14,7 @@ RUN npm ci
 
 # Copy source code and scripts
 COPY . /app/
+COPY /scripts/start.sh /app/
 
 # Build the application (TypeScript compilation)
 RUN npm run build
