@@ -1,4 +1,6 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
+import { Product } from './Products';
+import { ProductSubCategory } from './productSubCategory';
 
 interface ProductCatAttributes {
   productCatId: string;
@@ -23,7 +25,10 @@ export class ProductCategory
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public static associate(models: any) {
+  public static associate(models: {
+    Product: typeof Product;
+    ProductSubCategory: typeof ProductSubCategory;
+  }): void {
     ProductCategory.hasMany(models.Product, {
       foreignKey: 'productCatId',
       as: 'products',
@@ -45,7 +50,7 @@ export class ProductCategory
   }
 }
 
-export const ProductCategoryModel = (sequelize: Sequelize) => {
+export const ProductCategoryModel = (sequelize: Sequelize): typeof ProductCategory => {
   ProductCategory.init(
     {
       productCatId: {

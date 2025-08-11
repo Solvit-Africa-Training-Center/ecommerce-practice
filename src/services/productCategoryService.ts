@@ -1,277 +1,227 @@
 import { Response } from 'express';
 import { Database } from '../database';
 import { ResponseService } from '../utils/response';
+import { InterfaceAddProductCat } from '../types/productCatInterface';
 
 export const ProductCategory = {
-  viewAll: async (res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const categories = await Database.ProductCategory.findAll({
-          include: [
-            {
-              model: Database.Product,
-              as: 'products',
-              attributes: ['productId', 'name'],
-              required: false,
-            },
-            {
-              model: Database.ProductSubCategory,
-              as: 'subCategories',
-              attributes: ['productSubCatId', 'name'],
-              required: false,
-            },
-          ],
-        });
-        if (!categories || categories.length === 0) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 404,
-            message: 'Product categories not found',
-            res,
-          });
-          resolve();
-          return;
-        }
-        ResponseService({
-          data: categories,
-          success: true,
-          status: 200,
-          message: 'All Product categories successfully fetched',
-          res,
-        });
-        resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
+  // View all product categories
+  viewAll: async (res: Response): Promise<void> => {
+    try {
+      const categories = await Database.ProductCategory.findAll({
+        include: [
+          {
+            model: Database.Product,
+            as: 'products',
+            attributes: ['productId', 'name'],
+            required: false,
+          },
+          {
+            model: Database.ProductSubCategory,
+            as: 'subCategories',
+            attributes: ['productSubCatId', 'name'],
+            required: false,
+          },
+        ],
+      });
+      if (!categories || categories.length === 0) {
         ResponseService({
           data: null,
           success: false,
-          status: 500,
-          message: 'Internal server error',
+          status: 404,
+          message: 'Product categories not found',
           res,
         });
-        resolve();
+        return;
       }
-    }),
+      ResponseService({
+        data: categories,
+        success: true,
+        status: 200,
+        message: 'All Product categories successfully fetched',
+        res,
+      });
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  },
 
-  create: async (data: any, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const user = await Database.User.findOne({ where: { id: userId } });
-        if (!user) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 401,
-            message: 'Unauthorized Access',
-            res,
-          });
-          resolve();
-          return;
-        }
-        const { name, description } = data;
-        const existingCategory = await Database.ProductCategory.findOne({
-          where: { name },
+  // Create a new product category
+  create: async (data: InterfaceAddProductCat, res: Response): Promise<void> => {
+    try {
+      const { name, description } = data;
+      const existingCategory = await Database.ProductCategory.findOne({
+        where: { name },
+      });
+
+      if (existingCategory) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 409,
+          message: 'Product category with this name already exists',
+          res,
         });
+        return;
+      }
+      const category = await Database.ProductCategory.create({
+        name,
+        description,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
 
-        if (existingCategory) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 409,
-            message: 'Product category with this name already exists',
-            res,
-          });
-          resolve();
-          return;
-        }
-        const category = await Database.ProductCategory.create({
+      ResponseService({
+        data: category,
+        success: true,
+        status: 201,
+        message: 'Product category successfully created',
+        res,
+      });
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  },
+
+  // View a single product category
+  viewSingle: async (dataName: string, res: Response): Promise<void> => {
+    try {
+      const category = await Database.ProductCategory.findOne({
+        where: { name: dataName },
+        include: [
+          {
+            model: Database.ProductSubCategory,
+            as: 'subCategories',
+            attributes: ['productSubCatId', 'name'],
+            required: false,
+          },
+          {
+            model: Database.Product,
+            as: 'products',
+            attributes: ['productId', 'name', 'price'],
+            required: false,
+          },
+        ],
+      });
+      if (!category) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 404,
+          message: 'Product category not found',
+          res,
+        });
+        return;
+      }
+      ResponseService({
+        data: category,
+        success: true,
+        status: 200,
+        message: 'Product category successfully fetched',
+        res,
+      });
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  },
+
+  // Delete a product category
+  delete: async (dataId: string, res: Response): Promise<void> => {
+    try {
+      const categoryExists = await Database.ProductCategory.findOne({
+        where: { productCatId: dataId },
+      });
+      if (!categoryExists) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 404,
+          message: 'Product category not found',
+          res,
+        });
+        return;
+      }
+      const category = await Database.ProductCategory.destroy({
+        where: { productCatId: dataId },
+      });
+      ResponseService({
+        data: category,
+        success: true,
+        status: 200,
+        message: 'Product category successfully deleted',
+        res,
+      });
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  },
+
+  // Edit a product category
+  update: async (data: InterfaceAddProductCat, dataId: string, res: Response): Promise<void> => {
+    try {
+      const categoryExists = await Database.ProductCategory.findOne({
+        where: { productCatId: dataId },
+      });
+      if (!categoryExists) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 404,
+          message: 'Product category not found',
+          res,
+        });
+        return;
+      }
+      const { name, description } = data;
+      const updateCategory = await Database.ProductCategory.update(
+        {
           name,
           description,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
-
-        ResponseService({
-          data: category,
-          success: true,
-          status: 201,
-          message: 'Product category successfully created',
-          res,
-        });
-        resolve();
-      } catch (err) {
-        console.error('Database insert error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
-    }),
-
-  viewSingle: async (dataName: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const category = await Database.ProductCategory.findOne({ where: { name: dataName },
-          include: [
-            {
-              model: Database.ProductSubCategory,
-              as: 'subCategories',
-              attributes: ['productSubCatId', 'name'],
-              required: false,
-            },
-            {
-              model: Database.Product,
-              as: 'products',
-              attributes: ['productId', 'name', 'price'],
-              required: false,
-            }
-          ] 
-        });
-        if (!category) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 404,
-            message: 'Product category not found',
-            res,
-          });
-          resolve();
-          return;
-        }
-        ResponseService({
-          data: category,
-          success: true,
-          status: 200,
-          message: 'Product category successfully fetched',
-          res,
-        });
-        resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
-    }),
-
-  delete: (dataId: string, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const user = await Database.User.findOne({ where: { id: userId } });
-        if (!user) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 401,
-            message: 'Unauthorized Access',
-            res,
-          });
-          resolve();
-          return;
-        }
-        const categoryExists = await Database.ProductCategory.findOne({
-          where: { productCatId: dataId },
-        });
-        if (!categoryExists) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 404,
-            message: 'Product category not found',
-            res,
-          });
-          resolve();
-          return;
-        }
-        const category = await Database.ProductCategory.destroy({
-          where: { productCatId: dataId },
-        });
-        ResponseService({
-          data: category,
-          success: true,
-          status: 200,
-          message: 'Product category successfully deleted',
-          res,
-        });
-        resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
-    }),
-
-  update: async (data: any, dataId: string, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const user = await Database.User.findOne({ where: { id: userId } });
-        if (!user) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 401,
-            message: 'Unauthorized Access',
-            res,
-          });
-          resolve();
-          return;
-        }
-
-        const categoryExists = await Database.ProductCategory.findOne({
-          where: { productCatId: dataId },
-        });
-        if (!categoryExists) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 404,
-            message: 'Product category not found',
-            res,
-          });
-          resolve();
-          return;
-        }
-        const { name, description } = data;
-        const updateCategory = await Database.ProductCategory.update(
-          {
-            name,
-            description,
+        },
+        {
+          where: {
+            productCatId: dataId,
           },
-          {
-            where: {
-              productCatId: dataId,
-            },
-          },
-        );
-        ResponseService({
-          data: updateCategory,
-          success: true,
-          status: 200,
-          message: 'Product category successfully updated',
-          res,
-        });
-        resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
-    }),
+        },
+      );
+      ResponseService({
+        data: updateCategory,
+        success: true,
+        status: 200,
+        message: 'Product category successfully updated',
+        res,
+      });
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  },
 };

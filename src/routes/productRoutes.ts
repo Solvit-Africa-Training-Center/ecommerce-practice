@@ -6,7 +6,6 @@ import { authMiddleware, checkRole, rateLimiting } from '../middlewares/authMidd
 import { AddProductCategorySchema } from '../schema/productCategSchema';
 import { productSubCatSchema } from '../schema/productSubCatSchema';
 
-
 const productRoutes = Router();
 const controller = new ProductController();
 
@@ -15,54 +14,77 @@ productRoutes.get('/categories', controller.viewAllCategories);
 productRoutes.get('/categories/:name', controller.viewSingleCategory);
 productRoutes.post(
   '/categories',
+  rateLimiting(30),
   authMiddleware,
-  ValidationMiddleware({ type: 'body', schema: AddProductCategorySchema}),
+  checkRole(['admin', 'seller']),
+  ValidationMiddleware({ type: 'body', schema: AddProductCategorySchema }),
   controller.createCategory,
-); //admin
+);
 productRoutes.patch(
   '/categories/:id',
   authMiddleware,
-  ValidationMiddleware({ type: 'body', schema: AddProductCategorySchema}),
+  checkRole(['admin', 'seller']),
+  ValidationMiddleware({ type: 'body', schema: AddProductCategorySchema }),
   controller.updateCategory,
-); //admin
-// productRoutes.delete('/categories/:id',authMiddleware,ValidationMiddleware({type:'params', schema:IdValidationSchema}),controller.deleteCategory); //admin
+);
+productRoutes.delete(
+  '/categories/:id',
+  authMiddleware,
+  checkRole(['admin', 'seller']),
+  ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
+  controller.deleteCategory,
+);
 
-// // product sub-category routes
-productRoutes.get('/sub-categories',controller.viewAllSubCategories);
+// product sub-category routes
+
+productRoutes.get('/sub-categories', controller.viewAllSubCategories);
 productRoutes.get('/sub-categories/:name', controller.viewSingleSubCategory);
 productRoutes.post(
   '/sub-categories',
+  rateLimiting(30),
   authMiddleware,
-  ValidationMiddleware({ type: 'body', schema:productSubCatSchema}),
+  checkRole(['admin', 'seller']),
+  ValidationMiddleware({ type: 'body', schema: productSubCatSchema }),
   controller.createSubCategory,
-); //admin
+);
 productRoutes.patch(
   '/sub-categories/:id',
   authMiddleware,
-  ValidationMiddleware({ type: 'body', schema:productSubCatSchema}),
+  checkRole(['admin', 'seller']),
+  ValidationMiddleware({ type: 'body', schema: productSubCatSchema }),
   controller.updateSubCategory,
-); //admin
-// productRoutes.delete('/sub-categories/:id',authMiddleware,ValidationMiddleware({type:'params', schema:IdValidationSchema}),controller.deleteSubCategory); //admin
-
+);
+productRoutes.delete(
+  '/sub-categories/:id',
+  authMiddleware,
+  checkRole(['admin', 'seller']),
+  ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
+  controller.deleteSubCategory,
+);
 
 // product routes
+
 productRoutes.get('/products', controller.viewAllProducts);
 productRoutes.get('/products/:id', controller.viewSingleProduct);
 productRoutes.post(
   '/products',
+  rateLimiting(30),
   authMiddleware,
+  checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'body', schema: AddProductSchema }),
   controller.createProduct,
-); // admin
+);
 productRoutes.patch(
   '/products/:id',
   authMiddleware,
+  checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'body', schema: AddProductSchema }),
   controller.updateProduct,
-); // admin
+);
 productRoutes.delete(
   '/products/:id',
   authMiddleware,
+  checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
   controller.deleteProduct,
 ); //admin

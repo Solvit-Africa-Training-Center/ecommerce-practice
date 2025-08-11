@@ -41,7 +41,7 @@ module.exports = {
           key: 'productCatId',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       },
       productSubCatId: {
         type: Sequelize.UUID,
@@ -51,7 +51,7 @@ module.exports = {
           key: 'productSubCatId',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       },
       userId: {
         type: Sequelize.UUID,
@@ -61,11 +61,7 @@ module.exports = {
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      rating: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
+        onDelete: 'CASCADE',
       },
       variation: {
         type: Sequelize.JSON,
@@ -75,6 +71,17 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: false,
       },
+      isAvailable: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+      },
+      expiredAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: true,
+      },
+
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,

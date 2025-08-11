@@ -5,13 +5,12 @@ import { Role } from '../database/models/Roles';
 import rateLimit from 'express-rate-limit';
 
 // Rate limiting middleware
-export const rateLimiting = (customLimit?: number) => {
-  return rateLimit({
+export const rateLimiting = (customLimit?: number) =>
+  rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: customLimit || 100, // Limit each IP to specified requests per windowMs
     message: 'Too many requests from this IP, please try again after 15 minutes',
   });
-};
 
 interface JwtPayload {
   id?: string;
@@ -67,8 +66,8 @@ export const authMiddleware = async (req: IRequestUser, res: Response, next: Nex
   }
 };
 
-export const checkRole = (roles: string[]) => {
-  return async (req: IRequestUser, res: Response, next: NextFunction) => {
+export const checkRole =
+  (roles: string[]) => async (req: IRequestUser, res: Response, next: NextFunction) => {
     try {
       if (!req.user || !req.user.role) {
         return ResponseService({
@@ -113,4 +112,3 @@ export const checkRole = (roles: string[]) => {
       });
     }
   };
-};
