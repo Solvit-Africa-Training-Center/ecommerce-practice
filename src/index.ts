@@ -33,7 +33,7 @@ Database.database
   .then(async () => {
     try {
       app.listen(port, () => {
-        logStartup(port, process.env.NODE_ENV || 'development');
+        logStartup(port, process.env.NODE_ENV || 'DEV');
       });
     } catch (error) {
       errorLogger(error as Error, 'Server Startup');
