@@ -23,6 +23,8 @@ export class User
   extends Model<UserAttribute, UserCreationAttribute>
   implements UserAttribute
 {
+  shippingAddress: string | undefined;
+  orderHistory: never[] | undefined;
   static getUserById(id: string): unknown {
     throw new Error("Method not implemented.");
   }

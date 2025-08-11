@@ -21,6 +21,9 @@ export class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
   implements ProductAttributes
 {
+  static getProductById(productId: any) {
+    throw new Error("Method not implemented.");
+  }
   public productId!: string;
   public name!: string;
   public description!: string;

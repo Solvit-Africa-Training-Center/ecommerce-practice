@@ -1,5 +1,11 @@
 import { Router } from "express";
 import { orderController } from "../controllers/orderController";
+import { isAdmin } from "../middlewares/RoleMiddleware";
 const orderRoutes = Router();
-orderRoutes.post("/makeOrders", orderController.createOrder.bind(orderController)); 
+orderRoutes.post("/makeOrders", orderController.createOrder);
+orderRoutes.get("/getsingleOrder", orderController.getOrder);
+orderRoutes.get("/userOrders", orderController.getUserOrders);
+orderRoutes.get("/allOrders", isAdmin, orderController.getAllOrders);
+orderRoutes.patch("/updateOrder/:orderId", orderController.updateOrder);
+orderRoutes.patch("/cancelOrder/:orderId/cancel", orderController.cancelOrder);
 export { orderRoutes };

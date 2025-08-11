@@ -32,6 +32,7 @@ export class Order
   public createdAt?: Date;
   public updatedAt?: Date;
   public deletedAt?: Date;
+  items: any;
 
   public toJSON(): object | OrderAttributes {
     return {
