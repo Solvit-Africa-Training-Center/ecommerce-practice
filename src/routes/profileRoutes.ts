@@ -14,7 +14,7 @@ import {
   CreateProfileSchema,
   UpdateProfileSchema,
   ProfileParamsSchema,
-} from '../schema/userSchema';
+} from '../schema/profileSchema';
 
 const profileRouter = Router();
 
