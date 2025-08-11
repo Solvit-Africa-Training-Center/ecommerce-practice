@@ -1,4 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
+import { ProductCategory } from './productCategory';
+import { Product } from './Products';
 
 interface ProductSubCatAttributes {
   productSubCatId: string;
@@ -6,7 +8,6 @@ interface ProductSubCatAttributes {
   productCatId: string;
   createdAt?: Date;
   updatedAt?: Date;
-
 }
 
 export interface AddProductSubCat extends Omit<ProductSubCatAttributes, 'productSubCatId'> {
@@ -21,7 +22,13 @@ export class ProductSubCategory
   public name!: string;
   public productCatId!: string;
 
-  public static associate(models: any) {
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  public static associate(models: {
+    ProductCategory: typeof ProductCategory;
+    Product: typeof Product;
+  }): void {
     ProductSubCategory.belongsTo(models.ProductCategory, {
       foreignKey: 'productCatId',
       as: 'category',
@@ -37,11 +44,13 @@ export class ProductSubCategory
       productSubCatId: this.productSubCatId,
       name: this.name,
       productCatId: this.productCatId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
     };
   }
 }
 
-export const ProductSubCategoryModel = (sequelize: Sequelize) => {
+export const ProductSubCategoryModel = (sequelize: Sequelize): typeof ProductSubCategory => {
   ProductSubCategory.init(
     {
       productSubCatId: {
@@ -63,7 +72,7 @@ export const ProductSubCategoryModel = (sequelize: Sequelize) => {
     {
       sequelize,
       tableName: 'product_sub_categories',
-      timestamps: false,
+      timestamps: true,
     },
   );
 

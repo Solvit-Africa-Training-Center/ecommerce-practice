@@ -6,8 +6,13 @@ export interface productInterface {
   description: string;
   price: number;
   stock: number;
-  rating: number;
+  productCatId: string;
+  productSubCatId: string;
   variation: object | null;
+  isAvailable: boolean;
+  expiredAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface interfaceAddProduct extends Omit<productInterface, 'productId'> {

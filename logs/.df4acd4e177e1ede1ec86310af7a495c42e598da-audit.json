@@ -14,6 +14,16 @@
             "date": 1754859671765,
             "name": "/home/fabrice/ecommerce-practice/logs/combined-2025-08-11.log",
             "hash": "700cae6dc6e0e118789acb60c5ffe78f9bcc7a95881f1934c8f2be594f5ce2ee"
+        },
+        {
+            "date": 1754949733032,
+            "name": "/home/fabrice/ecommerce-practice/logs/combined-2025-08-12.log",
+            "hash": "0d5614c4826f822921eef10379bba83c7857b11bb8ecf2690609ae0086695360"
+        },
+        {
+            "date": 1755032749839,
+            "name": "/home/fabrice/ecommerce-practice/logs/combined-2025-08-13.log",
+            "hash": "cd0fc998cffc8683d7b65dfad3d5947c9043b79e0e8affbb0c520ea9b7521620"
         }
     ],
     "hashType": "sha256"

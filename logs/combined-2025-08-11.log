@@ -659,3 +659,217 @@
 {"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 11:51:41"}
 {"level":"http","message":"GET /api/products/cb68066a-66ae-4d35-ba4c-d1408f4a6f8d - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 11:57:53"}
 {"level":"http","message":"GET /api/products - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 11:58:02"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:27:13"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:27:13"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:27:13"}
+{"level":"http","message":"DELETE /api/products/12f1eeec-57e9-4547-8c0f-18700b6834ca - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 12:27:24"}
+{"level":"http","message":"DELETE /api/categories/ad8bb67d-e4c5-45ff-9354-2a3323aa2f82 - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 12:29:27"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:34:16"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:34:16"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:34:16"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:34:28"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:34:28"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:34:28"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:34:35"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:34:35"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:34:35"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:34:42"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:34:42"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:34:42"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:34:50"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:34:50"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:34:50"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:35:00"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:35:00"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:35:00"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:35:14"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:35:14"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:35:14"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:35:27"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:35:27"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:35:27"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:35:32"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:35:32"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:35:32"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:39:09"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:39:09"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:39:09"}
+{"level":"http","message":"DELETE /api/categories/ad8bb67d-e4c5-45ff-9354-2a3323aa2f82 - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 12:39:54"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:46:03"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:46:03"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:46:03"}
+{"level":"http","message":"DELETE /api/categories/ad8bb67d-e4c5-45ff-9354-2a3323aa2f82 - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 12:46:25"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:46:45"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:46:45"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:46:45"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:49:53"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:49:53"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:49:53"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:50:07"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:50:07"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:50:07"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:50:20"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:50:20"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:50:20"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:50:29"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:50:29"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:50:29"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:50:48"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:50:48"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:50:48"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:50:51"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:50:51"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:50:51"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:51:04"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:51:04"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:51:04"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:55:00"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:55:00"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:55:00"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:55:45"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:55:45"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:55:45"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:56:18"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:56:18"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:56:18"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:56:40"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:56:40"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:56:40"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:57:01"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:57:01"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:57:01"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:57:18"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:57:18"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:57:18"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:57:27"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:57:27"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:57:27"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:58:02"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:58:02"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:58:02"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:58:27"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:58:27"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:58:27"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 12:58:42"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 12:58:42"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 12:58:42"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:04:30"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:04:30"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:04:30"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:04:47"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:04:47"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:04:47"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:05:12"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:05:12"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:05:12"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:06:36"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:06:36"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:06:36"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:06:49"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:06:49"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:06:49"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:07:22"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:07:22"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:07:22"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:07:31"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:07:31"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:07:31"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 13:19:27"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 13:19:27"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 13:19:27"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:04:06"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:04:07"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:04:07"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:04:07"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:04:07"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:04:07"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:13:54"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:13:54"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Server started on port 5000 in development mode","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:13:55"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:25:41"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:25:42"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:25:42"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:25:42"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:25:42"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:25:42"}
+{"level":"http","message":"GET /api/products/ - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:28:22"}
+{"level":"http","message":"GET /api/products/a736f6fa-1ea0-4266-9c0c-7617721c43ec - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:29:02"}
+{"level":"http","message":"POST /api/products/ - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:29:33"}
+{"level":"error","message":"[Token Verification] jwt expired","stack":"TokenExpiredError: jwt expired\n    at /home/fabrice/ecommerce-practice/node_modules/jsonwebtoken/verify.js:190:21\n    at getSecret (/home/fabrice/ecommerce-practice/node_modules/jsonwebtoken/verify.js:97:14)\n    at Object.module.exports [as verify] (/home/fabrice/ecommerce-practice/node_modules/jsonwebtoken/verify.js:101:10)\n    at /home/fabrice/ecommerce-practice/src/utils/helper.ts:48:25\n    at Generator.next (<anonymous>)\n    at /home/fabrice/ecommerce-practice/src/utils/helper.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (/home/fabrice/ecommerce-practice/src/utils/helper.ts:4:12)\n    at verifyToken (/home/fabrice/ecommerce-practice/src/utils/helper.ts:45:66)\n    at /home/fabrice/ecommerce-practice/src/middlewares/authMiddleware.ts:44:36","timestamp":"2025-08-11 23:29:33"}
+{"level":"http","message":"POST /api/login - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:29:47"}
+{"level":"http","message":"POST /api/products/ - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:29:53"}
+{"level":"http","message":"DELETE /api/products/6275f580-0d47-42d6-8d44-8ad8485c7cb2 - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:31:09"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:34:42"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:34:43"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:34:43"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:34:43"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:34:43"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:34:43"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:36:05"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:36:06"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:36:06"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:36:06"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:36:06"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:36:06"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:36:13"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:36:14"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:36:14"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:36:14"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:36:14"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:36:14"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:36:55"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:36:55"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:36:55"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:36:55"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:36:55"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:36:55"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:37:50"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:37:51"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:37:51"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:37:51"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:37:51"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:37:51"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:38:13"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:38:14"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:38:14"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:38:14"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:38:14"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:38:14"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:40:52"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:40:52"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:40:52"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:40:53"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:40:53"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:40:53"}
+{"level":"http","message":"POST /api/products/ - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:41:14"}
+{"level":"http","message":"DELETE /api/products/07e20aae-210c-43f3-88d1-7bdff427226d - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:41:40"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:42:16"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:42:17"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:42:17"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:42:17"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:42:17"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:42:17"}
+{"level":"http","message":"DELETE /api/products/07e20aae-210c-43f3-88d1-7bdff427226d - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:42:28"}
+{"level":"info","message":"Redis configuration: localhost:6379, DB:0","timestamp":"2025-08-11 23:42:48"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-11 23:42:49"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-11 23:42:49"}
+{"level":"info","message":"Server started on port 5000 in DEV mode","timestamp":"2025-08-11 23:42:49"}
+{"level":"info","message":"Local: http://localhost:5000","timestamp":"2025-08-11 23:42:49"}
+{"level":"info","message":"Press CTRL+C to stop server","timestamp":"2025-08-11 23:42:49"}
+{"level":"http","message":"DELETE /api/products/07e20aae-210c-43f3-88d1-7bdff427226d - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:43:55"}
+{"level":"http","message":"DELETE /api/products/07e20aae-210c-43f3-88d1-7bdff427226d - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:44:03"}
+{"level":"http","message":"POST /api/products/ - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:44:48"}
+{"level":"http","message":"PATCH /api/products/324308c4-4197-4adb-a2df-2c52ca40918e - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:48:13"}
+{"level":"http","message":"GET /api/categories - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:49:17"}
+{"level":"http","message":"GET /api/categories/furniture - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:50:09"}
+{"level":"http","message":"GET /api/categories/Electronics - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:52:34"}
+{"level":"http","message":"DELETE /api/categories/ad8bb67d-e4c5-45ff-9354-2a3323aa2f82 - IP: ::1 - User-Agent: PostmanRuntime/7.45.0","timestamp":"2025-08-11 23:53:17"}

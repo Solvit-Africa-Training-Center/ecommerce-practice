@@ -6,7 +6,6 @@ import { redis } from './utils/redis';
 import { errorLogger, logStartup, requestLogger } from './utils';
 import { swaggerRouter } from './routes/swaggerRoutes';
 
-
 config();
 
 const app = express();

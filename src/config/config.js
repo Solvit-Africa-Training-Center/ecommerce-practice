@@ -7,13 +7,11 @@ const getPrefix = () => {
   if (!env) {
     return (env = 'DEV');
   }
-  return "DEV";
+  return env;
 };
 
 const databaseConfig = () => {
   const env = getPrefix();
-  // console.log(`Using environment: ${env}`);
-  // console.log(process.env[`${env}_PASSWORD`])
   return {
     username: process.env[`${env}_USERNAME`] || '',
     database: process.env[`${env}_DATABASE`] || '',
@@ -23,4 +21,5 @@ const databaseConfig = () => {
     dialect: 'postgres',
   };
 };
+
 module.exports = databaseConfig;
