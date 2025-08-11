@@ -2,6 +2,8 @@ import { DataTypes, Sequelize, Model } from 'sequelize';
 import { ProductCategory } from './productCategory';
 import { ProductSubCategory } from './productSubCategory';
 import { User } from './Users';
+import { Rating } from './ratings';
+import { allow } from 'joi';
 
 export interface ProductAttributes {
   productId: string;
@@ -12,9 +14,10 @@ export interface ProductAttributes {
   productCatId: string;
   productSubCatId: string;
   userId:string,
-  rating: number;
   variation: object | null;
   image: string[];
+  isAvailable: boolean;
+  expiredAt?:Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -35,14 +38,15 @@ export class Product
   public productCatId!: string;
   public productSubCatId!: string;
   public userId!: string;
-  public rating!: number;
   public variation!: object | null;
   public image!: string[];
+  public isAvailable!: boolean;
+  public expiredAt?: Date | undefined;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public static associate(models: { User: typeof User, ProductCategory: typeof ProductCategory, ProductSubCategory: typeof ProductSubCategory }) {
+  public static associate(models: { User: typeof User, ProductCategory: typeof ProductCategory, ProductSubCategory: typeof ProductSubCategory, Rating: typeof Rating }) {
     Product.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'user'
@@ -56,6 +60,11 @@ export class Product
       foreignKey: 'productSubCatId',
       as: 'subCategory',
     });
+    Product.hasMany(models.Rating,{
+      foreignKey:'productId',
+      as: 'ratings'
+    });
+
   }
 
   public toJSON(): object | ProductAttributes {
@@ -68,9 +77,10 @@ export class Product
       productCatId: this.productCatId,
       productSubCatId: this.productSubCatId,
       userId: this.userId,
-      rating: this.rating,
       variation: this.variation,
       image: this.image,
+      isAvailable: this.isAvailable,
+      expiredAt: this.expiredAt,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
@@ -115,10 +125,6 @@ export const ProductModel = (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      rating: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
       variation: {
         type: DataTypes.JSON,
         allowNull: true,
@@ -126,7 +132,16 @@ export const ProductModel = (sequelize: Sequelize) => {
       image: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true,
+      }, 
+      isAvailable: {
+        type: DataTypes.BOOLEAN,
+        defaultValue:true,
+        allowNull: false,
       },
+      expiredAt:{
+        type: DataTypes.DATE,
+        allowNull: true
+      }
     },
     {
       sequelize,

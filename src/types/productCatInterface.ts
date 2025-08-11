@@ -1,4 +1,4 @@
-import { IRequestUser } from '../middlewares/authMiddleware';
+import { Request } from 'express';
 
 export interface ProductCatInterface {
   productCatId: string;
@@ -8,11 +8,11 @@ export interface ProductCatInterface {
 
 export interface InterfaceAddProductCat extends Omit<ProductCatInterface, 'productCatId'> {};
 
-export interface ProductCategoryRequest extends IRequestUser{
+export interface ProductCategoryRequest extends Request{
   body: ProductCatInterface;
 };
 
-export interface ProductCategoryIdRequest extends IRequestUser {
+export interface ProductCategoryIdRequest extends Request {
   params: {
     id: string;
   };

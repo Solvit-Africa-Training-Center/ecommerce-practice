@@ -4,7 +4,6 @@ import { ResponseService } from '../utils/response';
 
 export const ProductCategory = {
   viewAll: async (res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
         const categories = await Database.ProductCategory.findAll({
           include: [
             {
@@ -40,33 +39,9 @@ export const ProductCategory = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
-  create: async (data: any, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const user = await Database.User.findOne({ where: { id: userId } });
-        if (!user) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 401,
-            message: 'Unauthorized Access',
-            res,
-          });
-          resolve();
-          return;
-        }
+  create: async (data: any, res: Response) => new Promise<void>(async (resolve, reject) => {
         const { name, description } = data;
         const existingCategory = await Database.ProductCategory.findOne({
           where: { name },
@@ -98,21 +73,9 @@ export const ProductCategory = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database insert error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
   viewSingle: async (dataName: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
         const category = await Database.ProductCategory.findOne({ where: { name: dataName },
           include: [
             {
@@ -148,33 +111,9 @@ export const ProductCategory = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
-  delete: (dataId: string, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const user = await Database.User.findOne({ where: { id: userId } });
-        if (!user) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 401,
-            message: 'Unauthorized Access',
-            res,
-          });
-          resolve();
-          return;
-        }
+  delete: (dataId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
         const categoryExists = await Database.ProductCategory.findOne({
           where: { productCatId: dataId },
         });
@@ -200,34 +139,9 @@ export const ProductCategory = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
-  update: async (data: any, dataId: string, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const user = await Database.User.findOne({ where: { id: userId } });
-        if (!user) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 401,
-            message: 'Unauthorized Access',
-            res,
-          });
-          resolve();
-          return;
-        }
-
+  update: async (data: any, dataId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
         const categoryExists = await Database.ProductCategory.findOne({
           where: { productCatId: dataId },
         });
@@ -262,16 +176,5 @@ export const ProductCategory = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 };

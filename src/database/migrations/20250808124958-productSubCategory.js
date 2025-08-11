@@ -18,9 +18,8 @@ module.exports = {
       productCatId: {
         type: Sequelize.UUID,
         allowNull: false,
-        // optionally you can add foreign key constraint here
         references: {
-          model: 'product_categories', // name of the referenced table
+          model: 'product_categories', 
           key: 'productCatId',
         },
         onUpdate: 'CASCADE',

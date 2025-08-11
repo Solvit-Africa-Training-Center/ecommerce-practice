@@ -18,7 +18,7 @@ module.exports = {
     // Proceed with seeding roles
     await queryInterface.bulkInsert('roles', [
       {
-        id: uuidv4(),
+        id: 'e70862b0-fd51-491d-bb54-a691cabf74de',
         name: 'admin',
         description: 'Platform administrator with full access',
         createdAt: new Date(),

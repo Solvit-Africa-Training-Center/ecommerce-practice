@@ -2,9 +2,9 @@ import { Response } from 'express';
 import { Database } from '../database';
 import { ResponseService } from '../utils/response';
 
+
 export const Product = {
   viewAll: async (res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
         const products = await Database.Product.findAll({
           include: [
             {
@@ -20,11 +20,11 @@ export const Product = {
             {
               model: Database.User,
               as: 'user',
-              attributes: ['id', 'name', 'email'] // Adjust based on your User model
+              attributes: ['id', 'name', 'email'] 
             }
           ]
         });
-        if (!products) {
+        if (!products || products.length === 0) {
           ResponseService({
             data: null,
             success: false,
@@ -32,32 +32,22 @@ export const Product = {
             message: 'Products not found',
             res,
           });
+
           resolve();
           return;
         }
+        const displayedProduct = products.filter((product) => product.isAvailable === true);
         ResponseService({
-          data: products,
+          data: displayedProduct,
           success: true,
           status: 200,
           message: 'All Products successfully fetched',
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
   create: async (data: any, userID: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
         const userExists = await Database.User.findOne({ where: { id:userID }});
         if (!userExists) {
           ResponseService({
@@ -100,7 +90,7 @@ export const Product = {
         }
         const image: string[] = [];
         const user: string = userExists?.id;
-        const { name, description, price, stock, productCatId, productSubCatId, rating } = data;
+        const { name, description, price, stock, productCatId, productSubCatId, expiredAt, isAvailable} = data;
         const product = await Database.Product.create({
           name,
           description,
@@ -110,8 +100,9 @@ export const Product = {
           productSubCatId,
           userId:user,
           variation: Object.assign({}, data.variation),
-          rating,
           image,
+          isAvailable,
+          expiredAt,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
@@ -124,21 +115,9 @@ export const Product = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database insert error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
   viewSingle: async (dataId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
         const product = await Database.Product.findOne({ 
           where: { productId: dataId },
           include: [
@@ -178,33 +157,9 @@ export const Product = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
-  delete: (dataId: string, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
-        const user = await Database.User.findOne({ where: { id: userId } });
-        if (!user) {
-          ResponseService({
-            data: null,
-            success: false,
-            status: 401,
-            message: 'Unauthorized Access',
-            res,
-          });
-          resolve();
-          return;
-        }
+  delete: (dataId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
         const productExists = await Database.Product.findOne({ where: { productId: dataId } });
         if (!productExists) {
           ResponseService({
@@ -226,21 +181,9 @@ export const Product = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 
   update: async (data: any, dataId: string, userId: string, res: Response) => new Promise<void>(async (resolve, reject) => {
-      try {
         const userExists = await Database.User.findOne({ where: { id: userId } });
         if (!userExists) {
           ResponseService({
@@ -267,7 +210,7 @@ export const Product = {
         }
         const image: string[] = [];
         const user: string = userExists?.id;
-        const { name, description, price, stock, productCatId, productSubCatId, rating } = data;
+        const { name, description, price, stock, productCatId, productSubCatId, isAvailable, expiredAt} = data;
         const updateProduct = await Database.Product.update(
           {
             name,
@@ -278,8 +221,9 @@ export const Product = {
             productSubCatId,
             userId:user,
             variation: Object.assign({}, data.variation),
-            rating,
             image,
+            isAvailable,
+            expiredAt
           },
           {
             where: {
@@ -295,16 +239,5 @@ export const Product = {
           res,
         });
         resolve();
-      } catch (err) {
-        console.error('Database retrieve error:', err as Error);
-        ResponseService({
-          data: null,
-          success: false,
-          status: 500,
-          message: 'Internal server error',
-          res,
-        });
-        resolve();
-      }
     }),
 };

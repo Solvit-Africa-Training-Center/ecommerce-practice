@@ -63,10 +63,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      rating: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
-      },
       variation: {
         type: Sequelize.JSON,
         allowNull: true,
@@ -75,6 +71,17 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: false,
       },
+      isAvailable: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+      },
+      expiredAt:{
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: true,
+      },
+
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
