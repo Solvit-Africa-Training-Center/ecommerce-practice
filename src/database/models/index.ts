@@ -7,10 +7,8 @@ interface Modals {
   Role: typeof Role;
   Profile: typeof Profile;
 }
-export const AllModal = (sequelize: Sequelize): Modals => {
-  return {
-    User: UserModal(sequelize),
-    Role: RoleModel(sequelize),
-    Profile: ProfileModel(sequelize),
-  };
-};
+export const AllModal = (sequelize: Sequelize): Modals => ({
+  User: UserModal(sequelize),
+  Role: RoleModel(sequelize),
+  Profile: ProfileModel(sequelize),
+});

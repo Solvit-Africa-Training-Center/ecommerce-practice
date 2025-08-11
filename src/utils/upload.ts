@@ -1,4 +1,4 @@
-import multer from 'multer';
+import multer, { FileFilterCallback } from 'multer';
 import { Request, Response } from 'express';
 import { v2 as cloudinary } from 'cloudinary';
 import { config } from 'dotenv';
@@ -16,8 +16,8 @@ cloudinary.config({
 });
 
 // Upload file to Cloudinary
-export const uploadFile = (file: Express.Multer.File): Promise<string> => {
-  return new Promise((resolve, reject) => {
+export const uploadFile = (file: Express.Multer.File): Promise<string> =>
+  new Promise((resolve, reject) => {
     if (!file) {
       reject(new Error('No file provided for upload'));
       return;
@@ -50,36 +50,30 @@ export const uploadFile = (file: Express.Multer.File): Promise<string> => {
       },
     );
   });
-};
 
-// File filter for multer
-const multerFilterFile = (req: any, file: any, cb: any) => {
-  // Check file type
+const multerFilterFile = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
   if (file.mimetype.startsWith('image/')) {
     cb(null, true);
   } else {
-    cb(new Error('Only image files are allowed'), false);
+    cb(new Error('Only image files are allowed'));
   }
 };
 
-// Memory storage for multer (no local files)
 export const storage = multer.memoryStorage();
 
-// Multer configuration
 export const upload = multer({
-  storage: storage,
+  storage,
   fileFilter: multerFilterFile,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 4 * 1024 * 1024,
   },
 });
 
-// Alternative upload function for Cloudinary using buffer
 export const uploadToCloudinary = async (
   fileBuffer: Buffer,
   folder: string = 'ecommerce-profiles',
-) => {
-  return new Promise((resolve, reject) => {
+) =>
+  new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder,
@@ -89,10 +83,12 @@ export const uploadToCloudinary = async (
         resource_type: 'auto',
       },
       (error, result) => {
-        if (error) reject(error);
-        else resolve(result);
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       },
     );
     uploadStream.end(fileBuffer);
   });
-};

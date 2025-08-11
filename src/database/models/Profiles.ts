@@ -1,4 +1,5 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
+import { User } from './Users';
 
 interface ProfileAttribute {
   id: string;
@@ -68,7 +69,7 @@ export class Profile
     };
   }
 
-  static associate(models: any) {
+  static associate(models: { User: typeof User }) {
     Profile.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'user',
