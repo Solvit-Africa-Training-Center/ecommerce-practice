@@ -72,9 +72,7 @@ export class Profile
   static associate(models: { User: typeof User }) {
     Profile.belongsTo(models.User, {
       foreignKey: 'userId',
-      as: 'user',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
+      as: 'user'
     });
   }
 }

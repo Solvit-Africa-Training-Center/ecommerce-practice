@@ -30,3 +30,7 @@ export interface ProfileUpdateInterface {
   lastLogin?: Date;
   isActive?: boolean;
 }
+
+export interface GetProfile {
+  profile: ProfileInterface[];
+}

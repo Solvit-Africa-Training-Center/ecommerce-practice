@@ -3,6 +3,16 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
+
+    const user = await queryInterface.sequelize.query(`SELECT COUNT(*) as count FROM users;`, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+
+    if (user[0].count > 0) {
+      console.log('Users already seeded. Skipping...');
+      return;
+    }
+
     // Retrieve existing roles
     const roles = await queryInterface.sequelize.query(`SELECT id, name FROM roles;`, {
       type: Sequelize.QueryTypes.SELECT,
@@ -22,6 +32,7 @@ module.exports = {
         name: 'Admin Admin',
         email: 'admin@admin.com',
         roleId: getRoleId('admin'),
+        password: '$2b$12$/Hm2jpfZ.RIDPAzfUFDbmeTNVoRzAifnK2PVrWN4nV7A0nesQqQWq',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -30,6 +41,7 @@ module.exports = {
         name: 'Bob Customer',
         email: 'bob@customer.com',
         roleId: getRoleId('customer'),
+        password: '$2b$12$/Hm2jpfZ.RIDPAzfUFDbmeTNVoRzAifnK2PVrWN4nV7A0nesQqQWq',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -38,6 +50,7 @@ module.exports = {
         name: 'Sally Seller',
         email: 'sally@seller.com',
         roleId: getRoleId('seller'),
+        password: '$2b$12$/Hm2jpfZ.RIDPAzfUFDbmeTNVoRzAifnK2PVrWN4nV7A0nesQqQWq',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

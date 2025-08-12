@@ -14,12 +14,6 @@ export interface ProfileInterface extends ProfileCreationAttribute {
   deletedAt?: null;
 }
 
-// export interface ProfileInterface {
-//   createdAt?: Date;
-//   updatedAt?: Date;
-//   deletedAt?: null;
-// }
-
 export type AddUserInterface = Omit<UserInterface, 'createdAt' | 'updatedAt'>;
 export interface GetAllUsers {
   users: UserInterface[];

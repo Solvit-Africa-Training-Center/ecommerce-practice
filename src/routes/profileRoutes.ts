@@ -10,10 +10,10 @@ import {
 } from '../controllers/profileController';
 import { upload } from '../utils/upload';
 import { ValidationMiddleware } from '../middlewares/validationMiddleware';
+import { authMiddleware, checkRole } from '../middlewares/authMiddleware';
 import {
   CreateProfileSchema,
   UpdateProfileSchema,
-  ProfileParamsSchema,
 } from '../schema/profileSchema';
 
 const profileRouter = Router();
@@ -21,6 +21,7 @@ const profileRouter = Router();
 // Create a new profile
 profileRouter.post(
   '/profiles',
+  authMiddleware,
   upload.single('profilePicture'),
   ValidationMiddleware({
     type: 'body',
@@ -30,26 +31,20 @@ profileRouter.post(
 );
 
 // Get all profiles
-profileRouter.get('/profiles', getAllProfiles);
+profileRouter.get('/profiles', authMiddleware, checkRole(['admin']), getAllProfiles);
 
 // Get profile by user ID
 profileRouter.get(
-  '/profiles/:userId',
-  ValidationMiddleware({
-    type: 'params',
-    schema: ProfileParamsSchema,
-  }),
+  '/profile',
+  authMiddleware,
   getProfile,
 );
 
 // Update profile (PUT - full update)
 profileRouter.put(
-  '/profiles/:userId',
+  '/profiles',
+  authMiddleware,
   upload.single('profilePicture'),
-  ValidationMiddleware({
-    type: 'params',
-    schema: ProfileParamsSchema,
-  }),
   ValidationMiddleware({
     type: 'body',
     schema: UpdateProfileSchema,
@@ -59,12 +54,9 @@ profileRouter.put(
 
 // Update profile (PATCH - partial update)
 profileRouter.patch(
-  '/profiles/:userId',
+  '/profiles',
+  authMiddleware,
   upload.single('profilePicture'),
-  ValidationMiddleware({
-    type: 'params',
-    schema: ProfileParamsSchema,
-  }),
   ValidationMiddleware({
     type: 'body',
     schema: UpdateProfileSchema,
@@ -74,22 +66,16 @@ profileRouter.patch(
 
 // Delete profile
 profileRouter.delete(
-  '/profiles/:userId',
-  ValidationMiddleware({
-    type: 'params',
-    schema: ProfileParamsSchema,
-  }),
+  '/profiles',
+  authMiddleware,
   deleteProfile,
 );
 
 // Update profile picture only
 profileRouter.patch(
-  '/profiles/:userId/picture',
+  '/profiles/picture',
+  authMiddleware,
   upload.single('profilePicture'),
-  ValidationMiddleware({
-    type: 'params',
-    schema: ProfileParamsSchema,
-  }),
   updateProfilePicture,
 );
 

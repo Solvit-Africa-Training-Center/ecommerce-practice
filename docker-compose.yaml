@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database - only external database needed
+  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: ecommerce-practice-postgres
@@ -22,6 +22,24 @@ services:
       timeout: 5s
       retries: 5
 
+  # Redis Service
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce-practice-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Main Ecommerce Application
   app:
     build:
@@ -30,31 +48,39 @@ services:
     container_name: ecommerce-practice-app
     restart: unless-stopped
     environment:
-      NODE_ENV: ${NODE_ENV}
-      PORT: 5000
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 5500
       # Database
       DEV_DATABASE: ${DEV_DATABASE}
       DEV_USERNAME: ${DEV_USERNAME}
       DEV_PASSWORD: ${DEV_PASSWORD}
       DEV_HOST: postgres
       DEV_PORT: 5432
-      # External Redis (your cloud Redis)
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      REDIS_DB: ${REDIS_DB}
+      # Redis configuration - using internal Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ''
+      REDIS_DB: 0
       # JWT Secret
-      JWT_SECRET: ${JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET:-mysecretkey}
     ports:
-      - '5000:5000'
+      - '5500:5500'
+    volumes:
+      - app_logs:/app/logs
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - ecommerce-network
 
 volumes:
   postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_logs:
     driver: local
 
 networks:

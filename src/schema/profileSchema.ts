@@ -1,8 +1,6 @@
-// Profile validation schemas
 import joi from 'joi';
  
 export const CreateProfileSchema = joi.object({
-  userId: joi.string().uuid().required(),
   phone: joi.string().optional(),
   bio: joi.string().max(500).optional(),
   gender: joi.string().valid('male', 'female', 'other').optional(),
@@ -26,6 +24,4 @@ export const UpdateProfileSchema = joi.object({
   isActive: joi.boolean().optional(),
 });
 
-export const ProfileParamsSchema = joi.object({
-  userId: joi.string().uuid().required(),
-});
+

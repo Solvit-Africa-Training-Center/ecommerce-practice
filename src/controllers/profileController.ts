@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ResponseService } from '../utils/response';
-import { ProfileInterface, ProfileUpdateInterface } from '../types/profileInterface';
+import { ProfileInterface, ProfileUpdateInterface, GetProfile } from '../types/profileInterface';
+import { IRequestUser } from '../middlewares/authMiddleware';
 import {
   createProfile as createProfileService,
   getProfileByUserId,
@@ -10,12 +11,12 @@ import {
   updateProfilePicture as updateProfilePictureService,
 } from '../services/profileService';
 
-interface IRequestProfileData extends Request {
+interface IRequestProfileData extends IRequestUser {
   body: ProfileInterface;
   file?: Express.Multer.File;
 }
 
-interface IRequestProfileUpdateData extends Request {
+interface IRequestProfileUpdateData extends IRequestUser {
   body: ProfileUpdateInterface;
   file?: Express.Multer.File;
 }
@@ -23,7 +24,10 @@ interface IRequestProfileUpdateData extends Request {
 // Create a new profile
 export const createProfile = async (req: IRequestProfileData, res: Response) => {
   try {
-    const profileData = req.body;
+    const profileData: ProfileInterface = {
+      ...req.body,
+      userId: req.user?.id as string,
+    };
     const profile = await createProfileService(profileData, req.file);
     ResponseService({
       data: profile,
@@ -44,10 +48,9 @@ export const createProfile = async (req: IRequestProfileData, res: Response) => 
 };
 
 // Get profile by user ID
-export const getProfile = async (req: Request, res: Response) => {
+export const getProfile = async (req: IRequestUser, res: Response) => {
   try {
-    const userId = req.params.userId;
-    const profile = await getProfileByUserId(userId);
+    const profile = await getProfileByUserId(req.user?.id as string);
 
     if (!profile) {
       return ResponseService({
@@ -102,7 +105,7 @@ export const getAllProfiles = async (req: Request, res: Response) => {
 // Update a profile (PUT - full update)
 export const updateProfile = async (req: IRequestProfileUpdateData, res: Response) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user?.id as string;
     const updateData = req.body;
     const updatedProfile = await updateProfileService(userId, updateData, req.file);
 
@@ -137,7 +140,7 @@ export const updateProfile = async (req: IRequestProfileUpdateData, res: Respons
 // Update a profile (PATCH - partial update)
 export const patchProfile = async (req: IRequestProfileUpdateData, res: Response) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user?.id as string;
     const updateData = req.body;
     const updatedProfile = await updateProfileService(userId, updateData, req.file);
 
@@ -170,9 +173,9 @@ export const patchProfile = async (req: IRequestProfileUpdateData, res: Response
 };
 
 // Delete a profile
-export const deleteProfile = async (req: Request, res: Response) => {
+export const deleteProfile = async (req: IRequestUser, res: Response) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user?.id as string;
     const deleted = await deleteProfileService(userId);
 
     if (!deleted) {
@@ -204,7 +207,7 @@ export const deleteProfile = async (req: Request, res: Response) => {
 };
 
 // Update profile picture only
-export const updateProfilePicture = async (req: Request, res: Response) => {
+export const updateProfilePicture = async (req: IRequestUser, res: Response) => {
   try {
     if (!req.file) {
       return ResponseService({
@@ -216,7 +219,7 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
       });
     }
 
-    const userId = req.params.userId;
+    const userId = req.user?.id as string;
     const updatedProfile = await updateProfilePictureService(userId, req.file);
 
     if (!updatedProfile) {

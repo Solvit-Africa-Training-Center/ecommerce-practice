@@ -1,6 +1,5 @@
 import { Database } from '../database';
 import { ProfileInterface, ProfileUpdateInterface } from '../types/profileInterface';
-import { ProfileCreationAttribute, Profile } from '../database/models/Profiles';
 import { uploadFile } from '../utils/upload';
 
 export async function createProfile(
@@ -12,11 +11,7 @@ export async function createProfile(
     profileData.profilePicture = imageUrl;
   }
 
-  if (!profileData.userId) {
-    throw new Error('userId is required');
-  }
-
-  const existingProfile = await Database?.Profile.findOne({
+  const existingProfile = await Database.Profile.findOne({
     where: { userId: profileData.userId },
   });
 
@@ -30,7 +25,7 @@ export async function createProfile(
     isVerified: profileData.isVerified ?? false,
   };
 
-  const profile = await Database?.Profile.create(profileToCreate);
+  const profile = await Database.Profile.create(profileToCreate);
   return profile.toJSON() as ProfileInterface;
 }
 
