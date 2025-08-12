@@ -4,26 +4,45 @@ import { GetAllUsers, UserInterface } from '../types/userInterface';
 import { Database } from '../database';
 import { IRequestUser } from '../middlewares/authMiddleware';
 import { comparePassword, destroyToken, generateToken, hashPassword } from '../utils/helper';
+import { buildQueryParams, buildPaginatedResponse } from '../utils/uqueryBuilder';
 
 interface IRequestUserData extends Request {
   body: UserInterface;
 }
 
-export const getAllUsers = async (req: IRequestUserData, res: Response) => {
+export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await Database.User.findAll();
-    if (!users) {
+    const queryParams = buildQueryParams(req.query, {
+      searchFields: ['name', 'email'],
+      allowedSortFields: ['name', 'email', 'createdAt', 'updatedAt'],
+      maxLimit: 100,
+      defaultSortBy: 'createdAt'
+    });
+
+    const { count, rows: users } = await Database.User.findAndCountAll({
+      ...queryParams,
+      include: [{
+        model: Database.Role,
+        as: 'role',
+        attributes: ['id', 'name']
+      }],
+      attributes: { exclude: ['password'] }
+    });
+
+    if (count === 0) {
       return ResponseService({
         data: null,
-        status: 409,
+        status: 404,
         success: false,
         message: 'No users found',
         res,
       });
     }
 
-    ResponseService<GetAllUsers>({
-      data: { users },
+    const response = buildPaginatedResponse(users, count, queryParams.pagination);
+
+    ResponseService({
+      data: response,
       status: 200,
       success: true,
       message: 'Users retrieved successfully',
@@ -72,8 +91,6 @@ export const createUser = async (req: IRequestUserData, res: Response) => {
       password: await hashPassword(password),
       roleId: role.id,
     });
-
-    await user.save();
 
     ResponseService({
       data: user,
@@ -141,9 +158,7 @@ export const loginUser = async (req: IRequestUserData, res: Response) => {
 
 export const logoutUser = async (req: IRequestUser, res: Response) => {
   try {
-    const token = req.token;
-
-    await destroyToken(token);
+    await destroyToken(req.token);
 
     ResponseService({
       data: null,
