@@ -1,66 +1,125 @@
 import { Op, WhereOptions, Order } from "sequelize";
 
 interface FilterOptions {
-  // List of fields to apply a keyword search on
   searchFields?: string[];
-
-  // Extra key-value filters to include in the query
   extraFilters?: Record<string, any>;
+  dateField?: string;
+  maxLimit?: number;
+  defaultSortBy?: string;
+  allowedSortFields?: string[];
 }
 
-/**
- * Builds Sequelize query parameters for common API filtering needs.
- *
- * Supports:
- *  - Pagination (page, limit)
- *  - Sorting (sortBy, order)
- *  - Keyword search across multiple fields
- *  - Extra custom filters
- *  - Date range filtering (startDate, endDate)
- *
- * @param query - Incoming request query parameters
- * @param options - Optional configuration for search and extra filters
- * @returns Object containing Sequelize `where`, `limit`, `offset`, and `order`
- */
+interface QueryParams {
+  page?: string | number;
+  limit?: string | number;
+  sortBy?: string;
+  order?: 'ASC' | 'DESC' | 'asc' | 'desc';
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+  [key: string]: any;
+}
+
+interface BuildQueryResult {
+  where: WhereOptions<any>;
+  limit: number;
+  offset: number;
+  order: Order;
+  pagination: {
+    page: number;
+    limit: number;
+    offset: number;
+  };
+}
+
 export function buildQueryParams(
-  query: Record<string, any>,
+  query: QueryParams = {},
   options: FilterOptions = {}
-): { where: WhereOptions<any>; limit: number; offset: number; order: Order } {
-  // --- Pagination ---
-  const page = Number(query.page) || 1;
-  const limit = Number(query.limit) || 10; 
+): BuildQueryResult {
+  const {
+    searchFields = [],
+    extraFilters = {},
+    dateField = "createdAt",
+    maxLimit = 100,
+    defaultSortBy = "createdAt",
+    allowedSortFields = []
+  } = options;
+
+  // Pagination
+  const page = Math.max(1, Number(query.page) || 1);
+  const requestedLimit = Number(query.limit) || 10;
+  const limit = Math.min(Math.max(1, requestedLimit), maxLimit);
   const offset = (page - 1) * limit;
 
-  // --- Sorting ---
-  const sortBy = query.sortBy || "createdAt"; // default sort field
-  const order: Order = [[sortBy, query.order === "ASC" ? "ASC" : "DESC"]];
+  // Sorting
+  let sortBy = query.sortBy || defaultSortBy;
+  if (allowedSortFields.length > 0 && !allowedSortFields.includes(sortBy)) {
+    sortBy = defaultSortBy;
+  }
+  const orderDirection = (query.order?.toString().toUpperCase() === "ASC") ? "ASC" : "DESC";
+  const order: Order = [[sortBy, orderDirection]];
 
-  // --- Filters ---
+  // Filters
   const where: WhereOptions<any> = {};
 
-  // Keyword search on multiple fields (case-insensitive)
-  if (query.search && options.searchFields?.length) {
-    (where as any)[Op.or] = options.searchFields.map((field) => ({
-      [field]: { [Op.iLike]: `%${query.search}%` },
+  // Search
+  if (query.search?.toString().trim() && searchFields.length > 0) {
+    const searchTerm = query.search.toString().trim();
+    (where as any)[Op.or] = searchFields.map((field) => ({
+      [field]: { [Op.iLike]: `%${searchTerm}%` },
     }));
   }
 
-  // Extra custom filters passed from options
-  if (options.extraFilters) {
-    Object.entries(options.extraFilters).forEach(([key, value]) => {
-      if (value !== undefined) {
-        where[key] = value;
-      }
-    });
+  // Extra filters
+  Object.entries(extraFilters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      where[key] = value;
+    }
+  });
+
+  // Date filtering
+  if (query.startDate || query.endDate) {
+    const startDate = query.startDate ? new Date(query.startDate.toString()) : null;
+    const endDate = query.endDate ? new Date(query.endDate.toString()) : null;
+
+    const isValidStart = startDate && !isNaN(startDate.getTime());
+    const isValidEnd = endDate && !isNaN(endDate.getTime());
+
+    if (isValidStart && isValidEnd) {
+      where[dateField] = { [Op.between]: [startDate, endDate] };
+    } else if (isValidStart) {
+      where[dateField] = { [Op.gte]: startDate };
+    } else if (isValidEnd) {
+      where[dateField] = { [Op.lte]: endDate };
+    }
   }
 
-  // Date range filtering (if both startDate and endDate are provided)
-  if (query.startDate && query.endDate) {
-    where.createdAt = {
-      [Op.between]: [new Date(query.startDate), new Date(query.endDate)],
-    };
-  }
+  return {
+    where,
+    limit,
+    offset,
+    order,
+    pagination: { page, limit, offset },
+  };
+}
 
-  // Return query config for Sequelize
-  return { where, limit, offset, order };
+export function buildPaginatedResponse<T>(
+  data: T[],
+  totalCount: number,
+  pagination: { page: number; limit: number; offset: number }
+) {
+  const { page, limit } = pagination;
+  const totalPages = Math.ceil(totalCount / limit);
+  
+  return {
+    data,
+    pagination: {
+      currentPage: page,
+      totalPages,
+      totalCount,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+      itemsPerPage: limit,
+    },
+  };
 }

@@ -6,7 +6,7 @@ import { authMiddleware, checkRole, rateLimiting } from '../middlewares/authMidd
 
 const userRouter = Router();
 
-userRouter.get('/users', rateLimiting(50), authMiddleware, checkRole(['admin']), getAllUsers);
+userRouter.get('/users', /*rateLimiting(50), authMiddleware, checkRole(['admin']),*/ getAllUsers);
 
 userRouter.post(
   '/users',
