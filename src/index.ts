@@ -4,6 +4,8 @@ import { Database } from './database';
 import { routers } from './routes';
 import { redis } from './utils/redis';
 import { errorLogger, logStartup, requestLogger } from './utils';
+import { swaggerRouter } from './routes/swaggerRoutes';
+
 
 config();
 
@@ -13,6 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json());
+app.use(swaggerRouter);
 
 app.use(routers);
 
