@@ -1,3 +1,5 @@
+// route/userRoutse.ts
+
 import { Router } from 'express';
 import { ValidationMiddleware } from '../middlewares/validationMiddleware';
 import { getAllUsers, createUser, loginUser, logoutUser } from '../controllers/userController';
