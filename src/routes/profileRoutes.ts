@@ -11,10 +11,7 @@ import {
 import { upload } from '../utils/upload';
 import { ValidationMiddleware } from '../middlewares/validationMiddleware';
 import { authMiddleware, checkRole } from '../middlewares/authMiddleware';
-import {
-  CreateProfileSchema,
-  UpdateProfileSchema,
-} from '../schema/profileSchema';
+import { CreateProfileSchema, UpdateProfileSchema } from '../schema/profileSchema';
 
 const profileRouter = Router();
 
@@ -34,11 +31,7 @@ profileRouter.post(
 profileRouter.get('/profiles', authMiddleware, checkRole(['admin']), getAllProfiles);
 
 // Get profile by user ID
-profileRouter.get(
-  '/profile',
-  authMiddleware,
-  getProfile,
-);
+profileRouter.get('/profile', authMiddleware, getProfile);
 
 // Update profile (PUT - full update)
 profileRouter.put(
@@ -65,11 +58,7 @@ profileRouter.patch(
 );
 
 // Delete profile
-profileRouter.delete(
-  '/profiles',
-  authMiddleware,
-  deleteProfile,
-);
+profileRouter.delete('/profiles', authMiddleware, deleteProfile);
 
 // Update profile picture only
 profileRouter.patch(

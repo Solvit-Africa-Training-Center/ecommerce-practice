@@ -42,7 +42,7 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     };
   }
 
-  static associate(models: { Role: typeof Role, Profile: typeof Profile } ): void {
+  static associate(models: { Role: typeof Role; Profile: typeof Profile }): void {
     User.belongsTo(models.Role, {
       foreignKey: 'roleId',
       as: 'role',
@@ -50,8 +50,8 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
 
     User.hasMany(models.Profile, {
       foreignKey: 'userId',
-      as: 'user'
-    })
+      as: 'user',
+    });
   }
 }
 

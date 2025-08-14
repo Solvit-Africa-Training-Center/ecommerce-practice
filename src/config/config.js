@@ -12,8 +12,6 @@ const getPrefix = () => {
 
 const databaseConfig = () => {
   const env = getPrefix();
-  // console.log(`Using environment: ${env}`);
-  // console.log(process.env[`${env}_PASSWORD`])
   return {
     username: process.env[`${env}_USERNAME`] || '',
     database: process.env[`${env}_DATABASE`] || '',

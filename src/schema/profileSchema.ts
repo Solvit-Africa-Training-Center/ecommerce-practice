@@ -1,5 +1,5 @@
 import joi from 'joi';
- 
+
 export const CreateProfileSchema = joi.object({
   phone: joi.string().optional(),
   bio: joi.string().max(500).optional(),
@@ -23,5 +23,3 @@ export const UpdateProfileSchema = joi.object({
   isVerified: joi.boolean().optional(),
   isActive: joi.boolean().optional(),
 });
-
-
