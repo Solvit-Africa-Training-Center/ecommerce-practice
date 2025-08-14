@@ -1,3 +1,4 @@
+
 import joi from 'joi';
 
 export const AddUserSchema = joi.object({
@@ -13,4 +14,11 @@ export const LoginUserSchema = joi.object({
 
 export const UserParamsSchema = joi.object({
   id: joi.string().min(24),
+});
+
+// coupon
+export const AddCouponSchema = joi.object({
+  code: joi.string().required(),
+  discount: joi.number().min(0).required(),
+  expiredDate: joi.date().greater('now').required(),
 });

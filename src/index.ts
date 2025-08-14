@@ -5,16 +5,22 @@ import { routers } from './routes';
 import { redis } from './utils/redis';
 import { errorLogger, logStartup, requestLogger } from './utils';
 import { swaggerRouter } from './routes/swaggerRoutes';
+import couponRouter from './routes/couponRoutes';  
 
 config();
 
 const app = express();
+
 app.use((req, res, next) => {
   requestLogger(req);
   next();
 });
+
 app.use(express.json());
 app.use(swaggerRouter);
+
+// coupon 
+app.use('/api/coupons', couponRouter);
 
 app.use(routers);
 
@@ -45,4 +51,4 @@ Database.database
     errorLogger(error as Error, 'Database Connection');
   });
 
-export { app };
+export default app;

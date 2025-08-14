@@ -1,3 +1,5 @@
+//model/User.ts
+
 import { Sequelize, Model, DataTypes } from 'sequelize';
 import { Role } from './Roles';
 import { Profile } from './Profiles';

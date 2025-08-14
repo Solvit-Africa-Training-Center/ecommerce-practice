@@ -1,3 +1,4 @@
+
 import { Request, Response } from 'express';
 import { ResponseService } from '../utils/response';
 import { GetAllUsers, UserInterface } from '../types/userInterface';

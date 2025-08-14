@@ -18,3 +18,4 @@ export type AddUserInterface = Omit<UserInterface, 'createdAt' | 'updatedAt'>;
 export interface GetAllUsers {
   users: UserInterface[];
 }
+
