@@ -5,7 +5,10 @@ import { AddProductSchema, IdValidationSchema } from '../schema/productSchema';
 import { authMiddleware, checkRole, rateLimiting } from '../middlewares/authMiddleware';
 import { AddProductCategorySchema } from '../schema/productCategSchema';
 import { productSubCatSchema } from '../schema/productSubCatSchema';
+import { storage } from '../utils/upload';
+import multer from 'multer';
 
+const uploadMiddleware = multer({ storage });
 const productRoutes = Router();
 const controller = new ProductController();
 
@@ -71,6 +74,7 @@ productRoutes.post(
   rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
+  uploadMiddleware.array('images', 4),
   ValidationMiddleware({ type: 'body', schema: AddProductSchema }),
   controller.createProduct,
 );
@@ -78,6 +82,7 @@ productRoutes.patch(
   '/products/:id',
   authMiddleware,
   checkRole(['admin', 'seller']),
+  uploadMiddleware.array('images', 4),
   ValidationMiddleware({ type: 'body', schema: AddProductSchema }),
   controller.updateProduct,
 );

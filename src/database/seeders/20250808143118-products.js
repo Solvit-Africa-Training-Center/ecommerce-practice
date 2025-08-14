@@ -26,12 +26,15 @@ module.exports = {
           stock: 50,
           productCatId: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
           productSubCatId: '44f3d9fa-66c7-4708-93bd-14578574480f', // Smartphones
-          userId: '81ebc41c-6196-427c-8b71-68fc97069cf9',
+          userId: '59b8b530-6d26-479d-b220-371445773cc2',
           variation: JSON.stringify({
             colors: ['Black', 'White', 'Purple'],
             storage: ['128GB', '256GB', '512GB'],
           }),
-          image: ['https://example.com/samsung-s24-1.jpg', 'https://example.com/samsung-s24-2.jpg'],
+          images: [
+            'https://example.com/samsung-s24-1.jpg',
+            'https://example.com/samsung-s24-2.jpg',
+          ],
           isAvailable: true,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -44,12 +47,12 @@ module.exports = {
           stock: 0,
           productCatId: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
           productSubCatId: '44f3d9fa-66c7-4708-93bd-14578574480f', // Smartphones
-          userId: 'db754a82-5a7d-4a2d-9e0a-297cd985104a',
+          userId: '59b8b530-6d26-479d-b220-371445773cc2',
           variation: JSON.stringify({
             colors: ['Natural Titanium', 'Blue Titanium', 'White Titanium'],
             storage: ['128GB', '256GB', '512GB', '1TB'],
           }),
-          image: [
+          images: [
             'https://example.com/iphone-15-pro-1.jpg',
             'https://example.com/iphone-15-pro-2.jpg',
           ],
@@ -65,13 +68,16 @@ module.exports = {
           stock: 15,
           productCatId: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
           productSubCatId: '37bd634e-df79-4eba-a830-26da92dcc9e6', // Laptops
-          userId: '2a2096f6-a336-4cc4-bc95-717fc9c0b436',
+          userId: '59b8b530-6d26-479d-b220-371445773cc2',
           variation: JSON.stringify({
             colors: ['Space Gray', 'Silver'],
             memory: ['18GB', '36GB'],
             storage: ['512GB', '1TB', '2TB'],
           }),
-          image: ['https://example.com/macbook-pro-1.jpg', 'https://example.com/macbook-pro-2.jpg'],
+          images: [
+            'https://example.com/macbook-pro-1.jpg',
+            'https://example.com/macbook-pro-2.jpg',
+          ],
           isAvailable: true,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -84,12 +90,15 @@ module.exports = {
           stock: 100,
           productCatId: 'c840fa32-4331-423e-a849-c70e48700111', // Clothing
           productSubCatId: '187abcad-68d6-4221-8e64-c9ee33448917', // Men's Clothing
-          userId: '2c5aac8f-0712-4014-af95-7fed831b2753',
+          userId: '59b8b530-6d26-479d-b220-371445773cc2',
           variation: JSON.stringify({
             colors: ['White', 'Black', 'Navy', 'Gray'],
             sizes: ['S', 'M', 'L', 'XL', 'XXL'],
           }),
-          image: ['https://example.com/mens-tshirt-1.jpg', 'https://example.com/mens-tshirt-2.jpg'],
+          images: [
+            'https://example.com/mens-tshirt-1.jpg',
+            'https://example.com/mens-tshirt-2.jpg',
+          ],
           isAvailable: true,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -102,12 +111,12 @@ module.exports = {
           stock: 75,
           productCatId: 'a4a61c4d-2b57-469f-9386-4c88c13bea24', // Books
           productSubCatId: '01100301-3a4c-4d97-9023-4f839bb991c9', // Technical
-          userId: '2c5aac8f-0712-4014-af95-7fed831b2753',
+          userId: '59b8b530-6d26-479d-b220-371445773cc2',
           variation: JSON.stringify({
             format: ['Paperback', 'Hardcover', 'E-book'],
             language: ['English'],
           }),
-          image: ['https://example.com/js-book-1.jpg', 'https://example.com/js-book-2.jpg'],
+          images: ['https://example.com/js-book-1.jpg', 'https://example.com/js-book-2.jpg'],
           isAvailable: true,
           createdAt: new Date(),
           updatedAt: new Date(),

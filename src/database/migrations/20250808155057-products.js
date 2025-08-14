@@ -67,7 +67,7 @@ module.exports = {
         type: Sequelize.JSON,
         allowNull: true,
       },
-      image: {
+      images: {
         type: Sequelize.ARRAY(Sequelize.STRING),
         allowNull: false,
       },

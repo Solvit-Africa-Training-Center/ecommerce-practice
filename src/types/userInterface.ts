@@ -1,3 +1,4 @@
+import { ProfileCreationAttribute } from '../database/models/Profiles';
 export interface UserInterface {
   name: string;
   email: string;
@@ -7,7 +8,7 @@ export interface UserInterface {
   deletedAt?: null;
 }
 
-export interface ProfileInterface {
+export interface ProfileInterface extends ProfileCreationAttribute {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: null;

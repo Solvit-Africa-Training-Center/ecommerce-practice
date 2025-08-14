@@ -14,7 +14,7 @@ export interface ProductAttributes {
   productSubCatId: string;
   userId: string;
   variation: object | null;
-  image: string[];
+  images: string[];
   isAvailable: boolean;
   expiredAt?: Date;
   createdAt?: Date;
@@ -38,7 +38,7 @@ export class Product
   public productSubCatId!: string;
   public userId!: string;
   public variation!: object | null;
-  public image!: string[];
+  public images!: string[];
   public isAvailable!: boolean;
   public expiredAt?: Date | undefined;
 
@@ -81,7 +81,7 @@ export class Product
       productSubCatId: this.productSubCatId,
       userId: this.userId,
       variation: this.variation,
-      image: this.image,
+      images: this.images,
       isAvailable: this.isAvailable,
       expiredAt: this.expiredAt,
       createdAt: this.createdAt,
@@ -132,7 +132,7 @@ export const ProductModel = (sequelize: Sequelize): typeof Product => {
         type: DataTypes.JSON,
         allowNull: true,
       },
-      image: {
+      images: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true,
       },

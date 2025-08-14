@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { Database } from '../database';
 import { ResponseService } from '../utils/response';
 import { interfaceAddProduct } from '../types/productInterface';
+import { uploadFile } from '../utils/upload';
 
 export const Product = {
   // View all products
@@ -55,7 +56,12 @@ export const Product = {
     }
   },
   // Create a new product
-  create: async (data: interfaceAddProduct, userID: string, res: Response): Promise<void> => {
+  create: async (
+    data: interfaceAddProduct,
+    userID: string,
+    files: Express.Multer.File[],
+    res: Response,
+  ): Promise<void> => {
     try {
       const userExists = await Database.User.findOne({ where: { id: userID } });
       if (!userExists) {
@@ -94,7 +100,22 @@ export const Product = {
         });
         return;
       }
-      const image: string[] = [];
+      let image_urls: string[] = [];
+
+      if (files && files.length > 0) {
+        try {
+          const uploadPromises = files.map((file) => uploadFile(file));
+          image_urls = await Promise.all(uploadPromises);
+        } catch (err) {
+          const { message, stack } = err as Error;
+          ResponseService({
+            data: { message, stack },
+            status: 500,
+            success: false,
+            res,
+          });
+        }
+      }
       const user: string = userExists?.id;
       const {
         name,
@@ -115,7 +136,7 @@ export const Product = {
         productSubCatId,
         userId: user,
         variation: Object.assign({}, data.variation),
-        image,
+        images: image_urls,
         isAvailable,
         expiredAt,
         createdAt: new Date(),
@@ -229,6 +250,7 @@ export const Product = {
     data: interfaceAddProduct,
     dataId: string,
     userId: string,
+    files: Express.Multer.File[],
     res: Response,
   ): Promise<void> => {
     try {
@@ -254,7 +276,23 @@ export const Product = {
         });
         return;
       }
-      const image: string[] = [];
+      let image_urls: string[] = [];
+
+      if (files && files.length > 0) {
+        try {
+          const uploadPromises = files.map((file) => uploadFile(file));
+          image_urls = await Promise.all(uploadPromises);
+        } catch (err) {
+          const { message, stack } = err as Error;
+          ResponseService({
+            data: { message, stack },
+            status: 500,
+            success: false,
+            res,
+          });
+        }
+      }
+
       const user: string = userExists?.id;
       const {
         name,
@@ -276,7 +314,7 @@ export const Product = {
           productSubCatId,
           userId: user,
           variation: Object.assign({}, data.variation),
-          image,
+          images: image_urls,
           isAvailable,
           expiredAt,
         },

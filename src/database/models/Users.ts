@@ -1,5 +1,6 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 import { Role } from './Roles';
+import { Profile } from './Profiles';
 
 interface UserAttribute {
   id: string;
@@ -41,10 +42,15 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     };
   }
 
-  static associate(models: { Role: typeof Role }): void {
+  static associate(models: { Role: typeof Role; Profile: typeof Profile }): void {
     User.belongsTo(models.Role, {
       foreignKey: 'roleId',
       as: 'role',
+    });
+
+    User.hasMany(models.Profile, {
+      foreignKey: 'userId',
+      as: 'user',
     });
   }
 }
@@ -73,6 +79,12 @@ export const UserModal = (sequelize: Sequelize) => {
       roleId: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: 'roles',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
     },
     {

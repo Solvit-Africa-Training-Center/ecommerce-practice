@@ -16,7 +16,7 @@ export interface productInterface {
 }
 
 export interface interfaceAddProduct extends Omit<productInterface, 'productId'> {
-  image: string[];
+  images: string[];
 }
 
 export interface ProductIdRequest extends IRequestUser {
