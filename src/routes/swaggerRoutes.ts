@@ -6,11 +6,14 @@ const swaggerRouter = Router();
 
 // Serve swagger documentation
 swaggerRouter.use('/docs', swaggerUi.serve);
-swaggerRouter.get('/docs', swaggerUi.setup(swaggerSpec, {
-  explorer: true,
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'Ecommerce Practice API Documentation'
-}));
+swaggerRouter.get(
+  '/docs',
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'Ecommerce Practice API Documentation',
+  }),
+);
 
 // Serve swagger JSON
 swaggerRouter.get('/docs.json', (req, res) => {

@@ -40,10 +40,7 @@ const swaggerDefinition: SwaggerDefinition = {
 
 const options = {
   definition: swaggerDefinition,
-  apis: [
-    './src/swagger/paths/*.yaml',
-    './src/swagger/schemas/*.yaml',
-  ],
+  apis: ['./src/swagger/paths/*.yaml', './src/swagger/schemas/*.yaml'],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);

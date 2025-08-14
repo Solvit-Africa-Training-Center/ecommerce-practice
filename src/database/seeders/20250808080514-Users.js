@@ -3,7 +3,6 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-
     const user = await queryInterface.sequelize.query(`SELECT COUNT(*) as count FROM users;`, {
       type: Sequelize.QueryTypes.SELECT,
     });
@@ -28,7 +27,7 @@ module.exports = {
 
     const users = [
       {
-        id: uuidv4(),
+        id: 'af4357d9-72a9-45d7-a288-4fcfbb59fc9f',
         name: 'Admin Admin',
         email: 'admin@admin.com',
         roleId: getRoleId('admin'),
@@ -37,7 +36,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: uuidv4(),
+        id: 'acc284e1-c124-4c56-80c3-259d18768d0b',
         name: 'Bob Customer',
         email: 'bob@customer.com',
         roleId: getRoleId('customer'),
@@ -46,7 +45,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: uuidv4(),
+        id: '59b8b530-6d26-479d-b220-371445773cc2',
         name: 'Sally Seller',
         email: 'sally@seller.com',
         roleId: getRoleId('seller'),
