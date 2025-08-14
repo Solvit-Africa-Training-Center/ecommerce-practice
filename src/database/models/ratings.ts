@@ -1,18 +1,32 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-import { User } from './Users';
-import { Product } from './Products';
+import { DataTypes, Sequelize, Model } from "sequelize";
+import { Product } from "./Products";
+import { User } from "./Users";
 
-interface RatingAttributes {
+export interface RatingAttributes {
   ratingId: string;
-  userId: string;
+  star: number;
+  review: string;
+  postedBy: string; // userId
   productId: string;
-  ratings: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface RatingCreationAttributes extends Omit<RatingAttributes, 'ratingId'> {
+export interface RatingCreationAttributes
+  extends Omit<RatingAttributes, "ratingId" | "createdAt" | "updatedAt"> {
   ratingId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface RatingStats {
+  averageRating: number;
+  totalRatings: number;
+  fiveStars: number;
+  fourStars: number;
+  threeStars: number;
+  twoStars: number;
+  oneStar: number;
 }
 
 export class Rating
@@ -20,77 +34,111 @@ export class Rating
   implements RatingAttributes
 {
   public ratingId!: string;
-  public userId!: string;
+  public star!: number;
+  public review!: string;
+  public postedBy!: string;
   public productId!: string;
-  public ratings!: number;
+  public updatedAt!: Date;
+  public createdAt!: Date;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-
-  public static associate(models: { User: typeof User; Product: typeof Product }): void {
-    Rating.belongsTo(models.User, {
-      foreignKey: 'userId',
-      as: 'user',
-    });
-    Rating.belongsTo(models.Product, {
-      foreignKey: 'productId',
-      as: 'product',
-    });
-  }
-
-  public toJSON(): object {
+  public toJSON(): object | RatingAttributes {
     return {
       ratingId: this.ratingId,
-      userId: this.userId,
+      star: this.star,
+      review: this.review,
+      postedBy: this.postedBy,
       productId: this.productId,
-      ratings: this.ratings,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
   }
+
+  static associate(models: { User: typeof User; Product: typeof Product }): void {
+    // Rating belongs to User
+    Rating.belongsTo(models.User, {
+      foreignKey: 'postedBy',
+      as: 'user'
+    });
+
+    // Rating belongs to Product
+    Rating.belongsTo(models.Product, {
+      foreignKey: 'productId',
+      as: 'product'
+    });
+  }
 }
 
-export const RatingModel = (sequelize: Sequelize): typeof Rating => {
+export const RatingModel = (sequelize: Sequelize) => {
   Rating.init(
     {
       ratingId: {
         type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
       },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-      },
-      productId: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-      },
-      ratings: {
-        type: DataTypes.NUMBER,
+      star: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           min: 1,
           max: 5,
         },
       },
+      review: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      postedBy: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
+      },
+      productId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'products',
+          key: 'id'
+        }
+      },
     },
     {
       sequelize,
-      modelName: 'Rating',
-      tableName: 'ratings',
+      modelName: "Rating",
+      tableName: "ratings",
       timestamps: true,
-      indexes: [
-        {
-          unique: true,
-          fields: ['productId', 'userId'],
+      hooks: {
+        async afterCreate(rating) {
+          await updateProductRating(rating.productId);
         },
-      ],
-    },
+        async afterUpdate(rating) {
+          await updateProductRating(rating.productId);
+        },
+      },
+    }
   );
 
   return Rating;
 };
+
+// Helper function to update product's average rating
+async function updateProductRating(productId: string) {
+  const ratings = await Rating.findAll({
+    where: { productId },
+    attributes: ["star"],
+    raw: true,
+  });
+
+  if (!ratings.length) return;
+
+  const avg =
+    ratings.reduce((sum, r) => sum + r.star, 0) / ratings.length;
+
+  await Product.update(
+    { rating: parseFloat(avg.toFixed(2)) },
+    { where: { productId } }
+  );
+}

@@ -76,6 +76,14 @@ module.exports = {
         defaultValue: true,
         allowNull: false,
       },
+      rating: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
+      },
+      review: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       expiredAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,

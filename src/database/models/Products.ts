@@ -16,12 +16,14 @@ export interface ProductAttributes {
   variation: object | null;
   images: string[];
   isAvailable: boolean;
+  rating: number;
+  review: string;
   expiredAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface ProductCreationAttributes extends Omit<ProductAttributes, 'productId'> {
+export interface ProductCreationAttributes extends Omit<ProductAttributes, 'productId' | 'rating' | 'review'> {
   productId?: string;
 }
 
@@ -40,6 +42,8 @@ export class Product
   public variation!: object | null;
   public images!: string[];
   public isAvailable!: boolean;
+  public rating!: number;
+  public review!: string;
   public expiredAt?: Date | undefined;
 
   public readonly createdAt!: Date;
@@ -83,6 +87,8 @@ export class Product
       variation: this.variation,
       images: this.images,
       isAvailable: this.isAvailable,
+      rating: this.rating,
+      review: this.review,
       expiredAt: this.expiredAt,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
@@ -140,6 +146,14 @@ export const ProductModel = (sequelize: Sequelize): typeof Product => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false,
+      },
+      rating: {
+        type: DataTypes.FLOAT,
+        allowNull: true
+      },
+      review: {
+        type: DataTypes.STRING,
+        allowNull: true
       },
       expiredAt: {
         type: DataTypes.DATE,
