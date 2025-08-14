@@ -1,0 +1,273 @@
+/sub-categories:
+  get:
+    tags:
+      - Product Sub-Categories
+    summary: Get all product sub-categories
+    description: Retrieve a list of all product sub-categories with their associated categories and products
+    responses:
+      '200':
+        description: Sub-categories retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'All Product subCategories successfully fetched'
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductSubCategory'
+      '404':
+        description: Product sub-categories not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  post:
+    tags:
+      - Product Sub-Categories
+    summary: Create new product sub-category
+    description: Create a new product sub-category (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateProductSubCategory'
+    responses:
+      '201':
+        description: Product sub-category created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product sub-category successfully created'
+                data:
+                  $ref: '#/components/schemas/ProductSubCategory'
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '409':
+        description: Product sub-category with this name already exists
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '429':
+        description: Too many requests - rate limit exceeded
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/sub-categories/{name}:
+  get:
+    tags:
+      - Product Sub-Categories
+    summary: Get single product sub-category by name
+    description: Retrieve a specific product sub-category with its parent category and products
+    parameters:
+      - name: name
+        in: path
+        required: true
+        description: Sub-category name
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Product sub-category retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product sub-category successfully fetched'
+                data:
+                  $ref: '#/components/schemas/ProductSubCategory'
+      '404':
+        description: Product sub-category not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/sub-categories/{id}:
+  patch:
+    tags:
+      - Product Sub-Categories
+    summary: Update product sub-category
+    description: Update an existing product sub-category (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Sub-category ID
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateProductSubCategory'
+    responses:
+      '200':
+        description: Product sub-category updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product sub-category successfully updated'
+                data:
+                  type: array
+                  description: Number of affected rows
+                  items:
+                    type: integer
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product sub-category not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  delete:
+    tags:
+      - Product Sub-Categories
+    summary: Delete product sub-category
+    description: Delete an existing product sub-category (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Sub-category ID
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Product sub-category deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product sub-category successfully deleted'
+                data:
+                  type: integer
+                  description: Number of deleted rows
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product sub-category not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

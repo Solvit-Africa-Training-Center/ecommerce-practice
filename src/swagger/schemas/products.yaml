@@ -1,0 +1,304 @@
+components:
+  schemas:
+    ProductCategory:
+      type: object
+      properties:
+        productCatId:
+          type: string
+          format: uuid
+          description: Unique product category identifier
+        name:
+          type: string
+          description: Category name
+        description:
+          type: string
+          description: Category description
+        createdAt:
+          type: string
+          format: date-time
+          description: Category creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                format: uuid
+              name:
+                type: string
+        subCategories:
+          type: array
+          items:
+            type: object
+            properties:
+              productSubCatId:
+                type: string
+                format: uuid
+              name:
+                type: string
+      example:
+        productCatId: '123e4567-e89b-12d3-a456-426614174000'
+        name: 'Electronics'
+        description: 'Electronic devices and accessories'
+        createdAt: '2024-01-15T10:30:00Z'
+        updatedAt: '2024-01-15T10:30:00Z'
+
+    ProductSubCategory:
+      type: object
+      properties:
+        productSubCatId:
+          type: string
+          format: uuid
+          description: Unique product sub-category identifier
+        name:
+          type: string
+          description: Sub-category name
+        productCatId:
+          type: string
+          format: uuid
+          description: Parent category ID
+        createdAt:
+          type: string
+          format: date-time
+          description: Sub-category creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        category:
+          type: object
+          properties:
+            productCatId:
+              type: string
+              format: uuid
+            name:
+              type: string
+            description:
+              type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                format: uuid
+              name:
+                type: string
+              price:
+                type: number
+      example:
+        productSubCatId: '456e7890-e89b-12d3-a456-426614174111'
+        name: 'Smartphones'
+        productCatId: '123e4567-e89b-12d3-a456-426614174000'
+        createdAt: '2024-01-15T10:30:00Z'
+        updatedAt: '2024-01-15T10:30:00Z'
+
+    Product:
+      type: object
+      properties:
+        productId:
+          type: string
+          format: uuid
+          description: Unique product identifier
+        name:
+          type: string
+          description: Product name
+        description:
+          type: string
+          description: Product description
+        price:
+          type: number
+          format: float
+          description: Product price
+        stock:
+          type: integer
+          description: Available stock quantity
+        productCatId:
+          type: string
+          format: uuid
+          description: Product category ID
+        productSubCatId:
+          type: string
+          format: uuid
+          description: Product sub-category ID
+        userId:
+          type: string
+          format: uuid
+          description: Seller/Creator user ID
+        variation:
+          type: object
+          nullable: true
+          description: Product variations (size, color, etc.)
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Product images URLs
+        isAvailable:
+          type: boolean
+          description: Product availability status
+        expiredAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Product expiration date
+        createdAt:
+          type: string
+          format: date-time
+          description: Product creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        category:
+          type: object
+          properties:
+            productCatId:
+              type: string
+              format: uuid
+            name:
+              type: string
+            description:
+              type: string
+        subCategory:
+          type: object
+          properties:
+            productSubCatId:
+              type: string
+              format: uuid
+            name:
+              type: string
+            productCatId:
+              type: string
+              format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+      example:
+        productId: '789e0123-e89b-12d3-a456-426614174222'
+        name: 'iPhone 15 Pro'
+        description: 'Latest iPhone with advanced features'
+        price: 1099.99
+        stock: 50
+        productCatId: '123e4567-e89b-12d3-a456-426614174000'
+        productSubCatId: '456e7890-e89b-12d3-a456-426614174111'
+        userId: '321e6547-e89b-12d3-a456-426614174333'
+        variation:
+          {
+            'colors': ['Natural Titanium', 'Blue Titanium'],
+            'storage': ['128GB', '256GB', '512GB', '1TB'],
+          }
+        images: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg']
+        isAvailable: true
+        expiredAt: null
+        createdAt: '2024-01-15T10:30:00Z'
+        updatedAt: '2024-01-15T10:30:00Z'
+
+    CreateProductCategory:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Category name
+        description:
+          type: string
+          minLength: 10
+          maxLength: 1000
+          description: Category description
+      example:
+        name: 'Home & Garden'
+        description: 'Products for home improvement and gardening'
+
+    CreateProductSubCategory:
+      type: object
+      required:
+        - name
+        - productCatId
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Sub-category name
+        productCatId:
+          type: string
+          format: uuid
+          description: Parent category ID
+      example:
+        name: 'Garden Tools'
+        productCatId: '123e4567-e89b-12d3-a456-426614174000'
+
+    CreateProduct:
+      type: object
+      required:
+        - name
+        - description
+        - price
+        - stock
+        - productCatId
+        - productSubCatId
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Product name
+        description:
+          type: string
+          minLength: 10
+          maxLength: 1000
+          description: Product description
+        price:
+          type: number
+          format: float
+          minimum: 0
+          description: Product price
+        stock:
+          type: integer
+          minimum: 0
+          description: Available stock quantity
+        productCatId:
+          type: string
+          format: uuid
+          description: Product category ID
+        productSubCatId:
+          type: string
+          format: uuid
+          description: Product sub-category ID
+        variation:
+          type: object
+          nullable: true
+          description: Product variations (optional)
+        expiredAt:
+          type: string
+          format: date-time
+          description: Product expiration date (optional)
+      example:
+        name: 'Wireless Bluetooth Headphones'
+        description: 'High-quality wireless headphones with noise cancellation'
+        price: 199.99
+        stock: 100
+        productCatId: '123e4567-e89b-12d3-a456-426614174000'
+        productSubCatId: '456e7890-e89b-12d3-a456-426614174111'
+        variation: { 'colors': ['Black', 'White', 'Blue'] }
+        expiredAt: '2025-12-31T23:59:59Z'
