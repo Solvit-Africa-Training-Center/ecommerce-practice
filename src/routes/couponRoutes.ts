@@ -1,10 +1,11 @@
-import { Router } from 'express';
+import express from 'express';
 import { createCoupon, validateCoupon } from '../controllers/couponController';
+import { authMiddleware, checkRole } from '../middlewares/authMiddleware';
 
-const router = Router();
+const router = express.Router();
 
-router.post('/coupons', createCoupon);
+router.post('/', authMiddleware, checkRole(['admin']), createCoupon);
 
-router.get('/coupons/:code', validateCoupon);
+router.get('/:code', authMiddleware, validateCoupon);
 
 export default router;

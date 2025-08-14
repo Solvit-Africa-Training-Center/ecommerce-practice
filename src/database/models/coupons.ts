@@ -1,5 +1,5 @@
 import { Model, DataTypes, Optional, Sequelize } from 'sequelize';
-import { CouponAttributes } from '../../types/userInterface';
+import { CouponAttributes } from '../../types/couponInterface';
 
 export type CouponCreationAttributes = Optional<CouponAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 

@@ -18,13 +18,4 @@ export type AddUserInterface = Omit<UserInterface, 'createdAt' | 'updatedAt'>;
 export interface GetAllUsers {
   users: UserInterface[];
 }
-// coupon interface
-export interface CouponAttributes {
-  id: number;
-  code: string;
-  discount: number;
-  isActive: boolean;
-  expiredDate: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+
