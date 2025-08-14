@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Coupon } from '../database/models/coupon';
+import { Coupon } from '../database/models/coupons';
 import { AddCouponSchema } from '../schema/userSchema';
 
 
