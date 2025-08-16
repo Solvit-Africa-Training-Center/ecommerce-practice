@@ -1,0 +1,273 @@
+/categories:
+  get:
+    tags:
+      - Product Categories
+    summary: Get all product categories
+    description: Retrieve a list of all product categories with their associated products and sub-categories
+    responses:
+      '200':
+        description: Categories retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'All Product categories successfully fetched'
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductCategory'
+      '404':
+        description: Product categories not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  post:
+    tags:
+      - Product Categories
+    summary: Create new product category
+    description: Create a new product category (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateProductCategory'
+    responses:
+      '201':
+        description: Product category created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product category successfully created'
+                data:
+                  $ref: '#/components/schemas/ProductCategory'
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '409':
+        description: Product category with this name already exists
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '429':
+        description: Too many requests - rate limit exceeded
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/categories/{name}:
+  get:
+    tags:
+      - Product Categories
+    summary: Get single product category by name
+    description: Retrieve a specific product category with its sub-categories and products
+    parameters:
+      - name: name
+        in: path
+        required: true
+        description: Category name
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Product category retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product category successfully fetched'
+                data:
+                  $ref: '#/components/schemas/ProductCategory'
+      '404':
+        description: Product category not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/categories/{id}:
+  patch:
+    tags:
+      - Product Categories
+    summary: Update product category
+    description: Update an existing product category (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Category ID
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateProductCategory'
+    responses:
+      '200':
+        description: Product category updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product category successfully updated'
+                data:
+                  type: array
+                  description: Number of affected rows
+                  items:
+                    type: integer
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product category not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  delete:
+    tags:
+      - Product Categories
+    summary: Delete product category
+    description: Delete an existing product category (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Category ID
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Product category deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product category successfully deleted'
+                data:
+                  type: integer
+                  description: Number of deleted rows
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product category not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

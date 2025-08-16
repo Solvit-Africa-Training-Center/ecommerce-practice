@@ -1,0 +1,425 @@
+/profiles:
+  post:
+    tags:
+      - Profiles
+    summary: Create new profile
+    description: Create a profile for the authenticated user
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: false
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              phone:
+                type: string
+              bio:
+                type: string
+                maxLength: 500
+              gender:
+                type: string
+                enum: [male, female, other]
+              dateOfBirth:
+                type: string
+                format: date
+              country:
+                type: string
+              city:
+                type: string
+              address:
+                type: string
+              isVerified:
+                type: boolean
+              isActive:
+                type: boolean
+              profilePicture:
+                type: string
+                format: binary
+                description: Profile picture file (image only, max 4MB)
+    responses:
+      '201':
+        description: Profile created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Profile created successfully'
+                data:
+                  $ref: '#/components/schemas/Profile'
+      '400':
+        description: Validation error or profile already exists
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  get:
+    tags:
+      - Profiles
+    summary: Get all profiles
+    description: Retrieve all user profiles (Admin only)
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: Profiles retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Profiles retrieved successfully'
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Profile'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Admin role required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  put:
+    tags:
+      - Profiles
+    summary: Update profile (full update)
+    description: Update the authenticated user's profile completely
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: false
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              phone:
+                type: string
+              bio:
+                type: string
+                maxLength: 500
+              gender:
+                type: string
+                enum: [male, female, other]
+              dateOfBirth:
+                type: string
+                format: date
+              country:
+                type: string
+              city:
+                type: string
+              address:
+                type: string
+              isVerified:
+                type: boolean
+              isActive:
+                type: boolean
+              profilePicture:
+                type: string
+                format: binary
+                description: Profile picture file (image only, max 4MB)
+    responses:
+      '200':
+        description: Profile updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Profile updated successfully'
+                data:
+                  $ref: '#/components/schemas/Profile'
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Profile not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  patch:
+    tags:
+      - Profiles
+    summary: Update profile (partial update)
+    description: Partially update the authenticated user's profile
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: false
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              phone:
+                type: string
+              bio:
+                type: string
+                maxLength: 500
+              gender:
+                type: string
+                enum: [male, female, other]
+              dateOfBirth:
+                type: string
+                format: date
+              country:
+                type: string
+              city:
+                type: string
+              address:
+                type: string
+              isVerified:
+                type: boolean
+              isActive:
+                type: boolean
+              profilePicture:
+                type: string
+                format: binary
+                description: Profile picture file (image only, max 4MB)
+    responses:
+      '200':
+        description: Profile updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Profile updated successfully'
+                data:
+                  $ref: '#/components/schemas/Profile'
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Profile not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  delete:
+    tags:
+      - Profiles
+    summary: Delete profile
+    description: Delete the authenticated user's profile
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: Profile deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Profile deleted successfully'
+                data:
+                  type: 'null'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Profile not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/profile:
+  get:
+    tags:
+      - Profiles
+    summary: Get current user's profile
+    description: Retrieve the authenticated user's profile
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: Profile retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Profile retrieved successfully'
+                data:
+                  $ref: '#/components/schemas/Profile'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Profile not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/profiles/picture:
+  patch:
+    tags:
+      - Profiles
+    summary: Update profile picture
+    description: Update only the profile picture for the authenticated user
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - profilePicture
+            properties:
+              profilePicture:
+                type: string
+                format: binary
+                description: Profile picture file (image only, max 4MB)
+    responses:
+      '200':
+        description: Profile picture updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Profile picture updated successfully'
+                data:
+                  $ref: '#/components/schemas/Profile'
+      '400':
+        description: No file uploaded or invalid file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Profile not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

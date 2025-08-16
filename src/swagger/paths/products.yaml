@@ -1,0 +1,368 @@
+/products:
+  get:
+    tags:
+      - Products
+    summary: Get all products
+    description: Retrieve a list of all available products with their categories, sub-categories, and seller information
+    responses:
+      '200':
+        description: Products retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'All Products successfully fetched'
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Product'
+      '404':
+        description: Products not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  post:
+    tags:
+      - Products
+    summary: Create new product
+    description: Create a new product with image uploads (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+              - description
+              - price
+              - stock
+              - productCatId
+              - productSubCatId
+            properties:
+              name:
+                type: string
+                minLength: 2
+                maxLength: 100
+                description: Product name
+              description:
+                type: string
+                minLength: 10
+                maxLength: 1000
+                description: Product description
+              price:
+                type: number
+                format: float
+                minimum: 0
+                description: Product price
+              stock:
+                type: integer
+                minimum: 0
+                description: Available stock quantity
+              productCatId:
+                type: string
+                format: uuid
+                description: Product category ID
+              productSubCatId:
+                type: string
+                format: uuid
+                description: Product sub-category ID
+              variation:
+                type: string
+                description: Product variations as JSON string (optional)
+              expiredAt:
+                type: string
+                format: date-time
+                description: Product expiration date (optional)
+              images:
+                type: array
+                items:
+                  type: string
+                  format: binary
+                maxItems: 4
+                description: Product images (up to 4 files)
+    responses:
+      '201':
+        description: Product created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product successfully created'
+                data:
+                  $ref: '#/components/schemas/Product'
+      '400':
+        description: Validation error or invalid category/subcategory ID
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication token is missing or invalid / Unauthorized Access
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '429':
+        description: Too many requests - rate limit exceeded
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/products/{id}:
+  get:
+    tags:
+      - Products
+    summary: Get single product by ID
+    description: Retrieve a specific product with its category, sub-category, and seller information
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Product retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product successfully fetched'
+                data:
+                  $ref: '#/components/schemas/Product'
+      '404':
+        description: Product not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  patch:
+    tags:
+      - Products
+    summary: Update product
+    description: Update an existing product with optional image uploads (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+              - description
+              - price
+              - stock
+              - productCatId
+              - productSubCatId
+            properties:
+              name:
+                type: string
+                minLength: 2
+                maxLength: 100
+                description: Product name
+              description:
+                type: string
+                minLength: 10
+                maxLength: 1000
+                description: Product description
+              price:
+                type: number
+                format: float
+                minimum: 0
+                description: Product price
+              stock:
+                type: integer
+                minimum: 0
+                description: Available stock quantity
+              productCatId:
+                type: string
+                format: uuid
+                description: Product category ID
+              productSubCatId:
+                type: string
+                format: uuid
+                description: Product sub-category ID
+              variation:
+                type: string
+                description: Product variations as JSON string (optional)
+              isAvailable:
+                type: boolean
+                description: Product availability status
+              expiredAt:
+                type: string
+                format: date-time
+                description: Product expiration date (optional)
+              images:
+                type: array
+                items:
+                  type: string
+                  format: binary
+                maxItems: 4
+                description: Product images (up to 4 files, optional)
+    responses:
+      '200':
+        description: Product updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product successfully updated'
+                data:
+                  type: array
+                  description: Number of affected rows
+                  items:
+                    type: integer
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication token is missing or invalid / Unauthorized Access
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  delete:
+    tags:
+      - Products
+    summary: Delete product
+    description: Delete an existing product (Admin/Seller only)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Product deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Product successfully deleted'
+                data:
+                  type: integer
+                  description: Number of deleted rows
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin/Seller role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
