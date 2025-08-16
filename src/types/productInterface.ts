@@ -1,7 +1,7 @@
 import { IRequestUser } from '../middlewares/authMiddleware';
 
-export interface productInterface {
-  productId: string;
+export interface ProductInterface {
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -15,8 +15,14 @@ export interface productInterface {
   updatedAt: Date;
 }
 
-export interface interfaceAddProduct extends Omit<productInterface, 'productId'> {
-  images: string[];
+export interface CreateProductInterface
+  extends Omit<ProductInterface, 'id' | 'createdAt' | 'updatedAt'> {
+  images?: string[];
+}
+
+export interface UpdateProductInterface
+  extends Partial<Omit<ProductInterface, 'id' | 'createdAt' | 'updatedAt'>> {
+  images?: string[];
 }
 
 export interface ProductIdRequest extends IRequestUser {
@@ -26,5 +32,5 @@ export interface ProductIdRequest extends IRequestUser {
 }
 
 export interface ProductRequest extends IRequestUser {
-  body: interfaceAddProduct;
+  body: CreateProductInterface;
 }

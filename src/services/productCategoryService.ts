@@ -12,13 +12,13 @@ export const ProductCategory = {
           {
             model: Database.Product,
             as: 'products',
-            attributes: ['productId', 'name'],
+            attributes: ['id', 'name'],
             required: false,
           },
           {
             model: Database.ProductSubCategory,
             as: 'subCategories',
-            attributes: ['productSubCatId', 'name'],
+            attributes: ['id', 'name'],
             required: false,
           },
         ],
@@ -103,13 +103,13 @@ export const ProductCategory = {
           {
             model: Database.ProductSubCategory,
             as: 'subCategories',
-            attributes: ['productSubCatId', 'name'],
+            attributes: ['id', 'name'],
             required: false,
           },
           {
             model: Database.Product,
             as: 'products',
-            attributes: ['productId', 'name', 'price'],
+            attributes: ['id', 'name', 'price'],
             required: false,
           },
         ],
@@ -146,7 +146,7 @@ export const ProductCategory = {
   delete: async (dataId: string, res: Response): Promise<void> => {
     try {
       const categoryExists = await Database.ProductCategory.findOne({
-        where: { productCatId: dataId },
+        where: { id: dataId },
       });
       if (!categoryExists) {
         ResponseService({
@@ -159,7 +159,7 @@ export const ProductCategory = {
         return;
       }
       const category = await Database.ProductCategory.destroy({
-        where: { productCatId: dataId },
+        where: { id: dataId },
       });
       ResponseService({
         data: category,
@@ -183,7 +183,7 @@ export const ProductCategory = {
   update: async (data: InterfaceAddProductCat, dataId: string, res: Response): Promise<void> => {
     try {
       const categoryExists = await Database.ProductCategory.findOne({
-        where: { productCatId: dataId },
+        where: { id: dataId },
       });
       if (!categoryExists) {
         ResponseService({
@@ -203,7 +203,7 @@ export const ProductCategory = {
         },
         {
           where: {
-            productCatId: dataId,
+            id: dataId,
           },
         },
       );

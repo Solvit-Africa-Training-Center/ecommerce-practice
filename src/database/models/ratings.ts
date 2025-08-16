@@ -1,81 +1,112 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
+import { DataTypes, Sequelize, Model } from 'sequelize';
 import { User } from './Users';
 import { Product } from './Products';
 
-interface RatingAttributes {
-  ratingId: string;
-  userId: string;
+export interface RatingAttributes {
+  id: string;
+  star: number;
+  review: string;
+  postedBy: string; // userId
   productId: string;
-  ratings: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface RatingCreationAttributes extends Omit<RatingAttributes, 'ratingId'> {
-  ratingId?: string;
+export interface RatingCreationAttributes
+  extends Omit<RatingAttributes, 'id' | 'createdAt' | 'updatedAt'> {
+  id?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface RatingStats {
+  averageRating: number;
+  totalRatings: number;
+  fiveStars: number;
+  fourStars: number;
+  threeStars: number;
+  twoStars: number;
+  oneStar: number;
 }
 
 export class Rating
   extends Model<RatingAttributes, RatingCreationAttributes>
   implements RatingAttributes
 {
-  public ratingId!: string;
-  public userId!: string;
+  public id!: string;
+  public star!: number;
+  public review!: string;
+  public postedBy!: string;
   public productId!: string;
-  public ratings!: number;
+  public updatedAt!: Date;
+  public createdAt!: Date;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public toJSON(): object | RatingAttributes {
+    return {
+      id: this.id,
+      star: this.star,
+      review: this.review,
+      postedBy: this.postedBy,
+      productId: this.productId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
 
-  public static associate(models: { User: typeof User; Product: typeof Product }): void {
+  static associate(models: { User: typeof User; Product: typeof Product }): void {
+    // Rating belongs to User
     Rating.belongsTo(models.User, {
-      foreignKey: 'userId',
+      foreignKey: 'postedBy',
       as: 'user',
     });
+
+    // Rating belongs to Product
     Rating.belongsTo(models.Product, {
       foreignKey: 'productId',
       as: 'product',
     });
   }
-
-  public toJSON(): object {
-    return {
-      ratingId: this.ratingId,
-      userId: this.userId,
-      productId: this.productId,
-      ratings: this.ratings,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-    };
-  }
 }
 
-export const RatingModel = (sequelize: Sequelize): typeof Rating => {
+export const RatingModel = (sequelize: Sequelize) => {
   Rating.init(
     {
-      ratingId: {
+      id: {
         type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
       },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-      },
-      productId: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-      },
-      ratings: {
-        type: DataTypes.NUMBER,
+      star: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           min: 1,
           max: 5,
         },
+      },
+      review: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      postedBy: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      productId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'products',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
     },
     {
@@ -83,12 +114,6 @@ export const RatingModel = (sequelize: Sequelize): typeof Rating => {
       modelName: 'Rating',
       tableName: 'ratings',
       timestamps: true,
-      indexes: [
-        {
-          unique: true,
-          fields: ['productId', 'userId'],
-        },
-      ],
     },
   );
 

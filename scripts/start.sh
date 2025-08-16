@@ -6,9 +6,13 @@ echo "Starting Ecommerce Application..."
 # Wait for PostgreSQL to be ready
 echo "Waiting for PostgreSQL to be ready..."
 while ! nc -z postgres 5432; do
-  sleep 1
+  echo "PostgreSQL not ready yet, waiting..."
+  sleep 2
 done
 echo "PostgreSQL is ready!"
+
+# Wait a bit more for PostgreSQL to fully initialize
+sleep 3
 
 # Check current directory and files
 echo "Current directory: $(pwd)"
@@ -35,7 +39,7 @@ echo "Running database migrations..."
 npx sequelize-cli db:migrate --config src/config/config.js
 
 echo "Seeding database..."
-npx sequelize-cli db:seed:all --config src/config/config.js
+npx sequelize-cli db:seed:all --config src/config/config.js || echo "Seeding failed, but continuing..."
 
 echo "Starting the server..."
 npm start

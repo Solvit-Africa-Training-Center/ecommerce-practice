@@ -12,6 +12,7 @@ import { upload } from '../utils/upload';
 import { ValidationMiddleware } from '../middlewares/validationMiddleware';
 import { authMiddleware, checkRole } from '../middlewares/authMiddleware';
 import { CreateProfileSchema, UpdateProfileSchema } from '../schema/profileSchema';
+import { profileImageValidation } from '../middlewares/fileValidationMiddleware';
 
 const profileRouter = Router();
 
@@ -20,6 +21,7 @@ profileRouter.post(
   '/profiles',
   authMiddleware,
   upload.single('profilePicture'),
+  profileImageValidation,
   ValidationMiddleware({
     type: 'body',
     schema: CreateProfileSchema,
@@ -38,6 +40,7 @@ profileRouter.put(
   '/profiles',
   authMiddleware,
   upload.single('profilePicture'),
+  profileImageValidation,
   ValidationMiddleware({
     type: 'body',
     schema: UpdateProfileSchema,
@@ -50,6 +53,7 @@ profileRouter.patch(
   '/profiles',
   authMiddleware,
   upload.single('profilePicture'),
+  profileImageValidation,
   ValidationMiddleware({
     type: 'body',
     schema: UpdateProfileSchema,
@@ -65,6 +69,7 @@ profileRouter.patch(
   '/profiles/picture',
   authMiddleware,
   upload.single('profilePicture'),
+  profileImageValidation,
   updateProfilePicture,
 );
 

@@ -1,15 +1,24 @@
 'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('ratings', {
-      ratingId: {
+      id: {
+        type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUID4,
+        defaultValue: Sequelize.UUIDV4, // Use Postgres UUID function
       },
-      userId: {
+      star: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      review: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      postedBy: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
@@ -24,34 +33,24 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'products',
-          key: 'productId',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      ratings: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-          min: 1,
-          max: 5,
-        },
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
       },
     });
-    await queryInterface.addIndex('ratings', ['productId']);
-    await queryInterface.addIndex('ratings', ['userId']);
-    await queryInterface.addIndex('ratings', ['productId', 'userId'], {
-      unique: true,
-    });
   },
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('ratings');
   },

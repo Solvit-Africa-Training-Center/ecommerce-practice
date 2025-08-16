@@ -1,13 +1,13 @@
 import { Database } from '../database';
 import { ProfileInterface, ProfileUpdateInterface } from '../types/profileInterface';
-import { uploadFile } from '../utils/upload';
+import { uploadProfileFile } from '../utils/upload';
 
 export async function createProfile(
   profileData: ProfileInterface,
   file?: Express.Multer.File,
 ): Promise<ProfileInterface> {
   if (file) {
-    const imageUrl = await uploadFile(file);
+    const imageUrl = await uploadProfileFile(file);
     profileData.profilePicture = imageUrl;
   }
 
@@ -62,7 +62,7 @@ export async function updateProfile(
   file?: Express.Multer.File,
 ): Promise<ProfileInterface | null> {
   if (file) {
-    const imageUrl = await uploadFile(file);
+    const imageUrl = await uploadProfileFile(file);
     updateData.profilePicture = imageUrl;
   }
 
@@ -89,7 +89,7 @@ export async function updateProfilePicture(
   userId: string,
   file: Express.Multer.File,
 ): Promise<ProfileInterface | null> {
-  const imageUrl = await uploadFile(file);
+  const imageUrl = await uploadProfileFile(file);
 
   const [updated] = await Database.Profile.update(
     { profilePicture: imageUrl },

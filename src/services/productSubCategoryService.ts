@@ -12,13 +12,13 @@ export const ProductSubCategory = {
           {
             model: Database.ProductCategory,
             as: 'category',
-            attributes: ['productCatId', 'name', 'description'],
+            attributes: ['id', 'name', 'description'],
             required: false,
           },
           {
             model: Database.Product,
             as: 'products',
-            attributes: ['productId', 'name', 'price'],
+            attributes: ['id', 'name', 'price'],
             required: false,
           },
         ],
@@ -103,13 +103,13 @@ export const ProductSubCategory = {
           {
             model: Database.ProductCategory,
             as: 'category',
-            attributes: ['productCatId', 'name', 'description'],
+            attributes: ['id', 'name', 'description'],
             required: false,
           },
           {
             model: Database.Product,
             as: 'products',
-            attributes: ['productId', 'name', 'price'],
+            attributes: ['id', 'name', 'price'],
             required: false,
           },
         ],
@@ -147,7 +147,7 @@ export const ProductSubCategory = {
   delete: async (dataId: string, res: Response): Promise<void> => {
     try {
       const categoryExists = await Database.ProductSubCategory.findOne({
-        where: { productSubCatId: dataId },
+        where: { id: dataId },
       });
       if (!categoryExists) {
         ResponseService({
@@ -160,7 +160,7 @@ export const ProductSubCategory = {
         return;
       }
       const subcategory = await Database.ProductSubCategory.destroy({
-        where: { productSubCatId: dataId },
+        where: { id: dataId },
       });
       ResponseService({
         data: subcategory,
@@ -184,7 +184,7 @@ export const ProductSubCategory = {
   update: async (data: InterfaceAddProductSub, dataId: string, res: Response): Promise<void> => {
     try {
       const categoryExists = await Database.ProductSubCategory.findOne({
-        where: { productSubCatId: dataId },
+        where: { id: dataId },
       });
       if (!categoryExists) {
         ResponseService({
@@ -205,7 +205,7 @@ export const ProductSubCategory = {
         },
         {
           where: {
-            productSubCatId: dataId,
+            id: dataId,
           },
         },
       );

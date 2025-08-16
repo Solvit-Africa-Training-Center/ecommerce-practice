@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 export interface ProductSubInterface {
-  productSubId: string;
+  id: string;
   name: string;
   description: string;
   productCatId: string;
@@ -9,10 +9,7 @@ export interface ProductSubInterface {
   updatedAt: Date;
 }
 
-export type InterfaceAddProductSub = Omit<
-  ProductSubInterface,
-  'productSubId' | 'createdAt' | 'updatedAt'
->;
+export type InterfaceAddProductSub = Omit<ProductSubInterface, 'id' | 'createdAt' | 'updatedAt'>;
 
 export interface ProductSubCategoryRequest extends Request {
   body: ProductSubInterface;

@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Database } from '../database';
 import { ResponseService } from '../utils/response';
-import { interfaceAddProduct } from '../types/productInterface';
+import { CreateProductInterface, UpdateProductInterface } from '../types/productInterface';
 import { uploadFile } from '../utils/upload';
 
 export const Product = {
@@ -13,17 +13,29 @@ export const Product = {
           {
             model: Database.ProductCategory,
             as: 'category',
-            attributes: ['productCatId', 'name', 'description'],
+            attributes: ['id', 'name', 'description'],
           },
           {
             model: Database.ProductSubCategory,
             as: 'subCategory',
-            attributes: ['productSubCatId', 'name', 'productCatId'],
+            attributes: ['id', 'name'],
           },
           {
             model: Database.User,
             as: 'user',
             attributes: ['id', 'name', 'email'],
+          },
+          {
+            model: Database.Rating,
+            as: 'ratings',
+            attributes: ['id', 'star', 'review', 'createdAt'],
+            include: [
+              {
+                model: Database.User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            ],
           },
         ],
       });
@@ -55,9 +67,10 @@ export const Product = {
       });
     }
   },
+
   // Create a new product
   create: async (
-    data: interfaceAddProduct,
+    data: CreateProductInterface,
     userID: string,
     files: Express.Multer.File[],
     res: Response,
@@ -75,7 +88,7 @@ export const Product = {
         return;
       }
       const categoryExists = await Database.ProductCategory.findOne({
-        where: { productCatId: data.productCatId },
+        where: { id: data.productCatId },
       });
       if (!categoryExists) {
         ResponseService({
@@ -88,7 +101,7 @@ export const Product = {
         return;
       }
       const subCategoryExists = await Database.ProductSubCategory.findOne({
-        where: { productSubCatId: data.productSubCatId },
+        where: { id: data.productSubCatId },
       });
       if (!subCategoryExists) {
         ResponseService({
@@ -165,22 +178,34 @@ export const Product = {
   viewSingle: async (dataId: string, res: Response): Promise<void> => {
     try {
       const product = await Database.Product.findOne({
-        where: { productId: dataId },
+        where: { id: dataId },
         include: [
           {
             model: Database.ProductCategory,
             as: 'category',
-            attributes: ['productCatId', 'name', 'description'],
+            attributes: ['id', 'name', 'description'],
           },
           {
             model: Database.ProductSubCategory,
             as: 'subCategory',
-            attributes: ['productSubCatId', 'name', 'productCatId'],
+            attributes: ['id', 'name'],
           },
           {
             model: Database.User,
             as: 'user',
             attributes: ['id', 'name', 'email'],
+          },
+          {
+            model: Database.Rating,
+            as: 'ratings',
+            attributes: ['id', 'star', 'review', 'createdAt'],
+            include: [
+              {
+                model: Database.User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            ],
           },
         ],
       });
@@ -215,7 +240,7 @@ export const Product = {
   // Delete a product
   delete: async (dataId: string, res: Response): Promise<void> => {
     try {
-      const productExists = await Database.Product.findOne({ where: { productId: dataId } });
+      const productExists = await Database.Product.findOne({ where: { id: dataId } });
       if (!productExists) {
         ResponseService({
           data: null,
@@ -226,7 +251,7 @@ export const Product = {
         });
         return;
       }
-      const product = await Database.Product.destroy({ where: { productId: dataId } });
+      const product = await Database.Product.destroy({ where: { id: dataId } });
       ResponseService({
         data: product,
         success: true,
@@ -247,7 +272,7 @@ export const Product = {
 
   // Edit a product
   update: async (
-    data: interfaceAddProduct,
+    data: UpdateProductInterface, // Use proper type for type safety
     dataId: string,
     userId: string,
     files: Express.Multer.File[],
@@ -265,7 +290,7 @@ export const Product = {
         });
         return;
       }
-      const productExists = await Database.Product.findOne({ where: { productId: dataId } });
+      const productExists = await Database.Product.findOne({ where: { id: dataId } });
       if (!productExists) {
         ResponseService({
           data: null,
@@ -276,6 +301,40 @@ export const Product = {
         });
         return;
       }
+
+      // Validate category and subcategory if they're being updated
+      if (data.productCatId) {
+        const categoryExists = await Database.ProductCategory.findOne({
+          where: { id: data.productCatId },
+        });
+        if (!categoryExists) {
+          ResponseService({
+            data: null,
+            success: false,
+            status: 400,
+            message: 'Invalid product category ID',
+            res,
+          });
+          return;
+        }
+      }
+
+      if (data.productSubCatId) {
+        const subCategoryExists = await Database.ProductSubCategory.findOne({
+          where: { id: data.productSubCatId },
+        });
+        if (!subCategoryExists) {
+          ResponseService({
+            data: null,
+            success: false,
+            status: 400,
+            message: 'Invalid product subcategory ID',
+            res,
+          });
+          return;
+        }
+      }
+
       let image_urls: string[] = [];
 
       if (files && files.length > 0) {
@@ -294,36 +353,20 @@ export const Product = {
       }
 
       const user: string = userExists?.id;
-      const {
-        name,
-        description,
-        price,
-        stock,
-        productCatId,
-        productSubCatId,
-        isAvailable,
-        expiredAt,
-      } = data;
-      const updateProduct = await Database.Product.update(
-        {
-          name,
-          description,
-          price,
-          stock,
-          productCatId,
-          productSubCatId,
-          userId: user,
-          variation: Object.assign({}, data.variation),
-          images: image_urls,
-          isAvailable,
-          expiredAt,
+
+      // Prepare update data - Sequelize will handle partial updates automatically
+      const updateData = { ...data };
+
+      // Only add images if new files were uploaded
+      if (image_urls.length > 0) {
+        updateData.images = image_urls;
+      }
+
+      const updateProduct = await Database.Product.update(updateData, {
+        where: {
+          id: dataId,
         },
-        {
-          where: {
-            productId: dataId,
-          },
-        },
-      );
+      });
       ResponseService({
         data: updateProduct,
         success: true,
