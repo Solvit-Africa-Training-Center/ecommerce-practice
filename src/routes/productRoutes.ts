@@ -1,10 +1,15 @@
 import { Router } from 'express';
 import { ProductController } from '../controllers/productController';
 import { ValidationMiddleware } from '../middlewares/validationMiddleware';
-import { AddProductSchema, IdValidationSchema } from '../schema/productSchema';
+import {
+  CreateProductSchema,
+  UpdateProductSchema,
+  IdValidationSchema,
+} from '../schema/productSchema';
 import { authMiddleware, checkRole, rateLimiting } from '../middlewares/authMiddleware';
 import { AddProductCategorySchema } from '../schema/productCategSchema';
 import { productSubCatSchema } from '../schema/productSubCatSchema';
+import { productImageValidation } from '../middlewares/fileValidationMiddleware';
 import { storage } from '../utils/upload';
 import multer from 'multer';
 
@@ -74,16 +79,18 @@ productRoutes.post(
   rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
-  uploadMiddleware.array('images', 4),
-  ValidationMiddleware({ type: 'body', schema: AddProductSchema }),
+  uploadMiddleware.array('images', 8),
+  productImageValidation,
+  ValidationMiddleware({ type: 'body', schema: CreateProductSchema }),
   controller.createProduct,
 );
 productRoutes.patch(
   '/products/:id',
   authMiddleware,
   checkRole(['admin', 'seller']),
-  uploadMiddleware.array('images', 4),
-  ValidationMiddleware({ type: 'body', schema: AddProductSchema }),
+  uploadMiddleware.array('images', 8),
+  productImageValidation,
+  ValidationMiddleware({ type: 'body', schema: UpdateProductSchema }),
   controller.updateProduct,
 );
 productRoutes.delete(

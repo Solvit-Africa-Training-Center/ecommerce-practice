@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('product_sub_categories', {
-      productSubCatId: {
+      id: {
         type: Sequelize.UUID,
         primaryKey: true,
         allowNull: false,
@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'product_categories',
-          key: 'productCatId',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT',

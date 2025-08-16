@@ -19,7 +19,7 @@ module.exports = {
       'products',
       [
         {
-          productId: '6f258de1-2138-405a-9a4c-ff7ea7cbc3b0',
+          id: '6f258de1-2138-405a-9a4c-ff7ea7cbc3b0',
           name: 'Samsung Galaxy S24',
           description: 'Latest smartphone from Samsung with advanced features',
           price: 999.99,
@@ -40,7 +40,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          productId: 'b795e83e-738a-4fee-a6ae-5887ec4aea83',
+          id: 'b795e83e-738a-4fee-a6ae-5887ec4aea83',
           name: 'iPhone 15 Pro',
           description: "Apple's flagship smartphone with titanium design",
           price: 1199.99,
@@ -61,7 +61,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          productId: '665cb50f-d015-4d73-937f-2be9cc0b096f',
+          id: '665cb50f-d015-4d73-937f-2be9cc0b096f',
           name: 'MacBook Pro 16"',
           description: 'Professional laptop with M3 chip for power users',
           price: 2499.99,
@@ -83,7 +83,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          productId: 'a7e481fc-e04e-4c56-93d4-f890b20681c1',
+          id: 'a7e481fc-e04e-4c56-93d4-f890b20681c1',
           name: "Men's Cotton T-Shirt",
           description: 'Comfortable cotton t-shirt for everyday wear',
           price: 24.99,
@@ -104,7 +104,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          productId: 'b2acdd3b-1807-4772-8a4c-82614ea283a7',
+          id: 'b2acdd3b-1807-4772-8a4c-82614ea283a7',
           name: 'JavaScript: The Complete Guide',
           description: 'Comprehensive guide to modern JavaScript programming',
           price: 49.99,

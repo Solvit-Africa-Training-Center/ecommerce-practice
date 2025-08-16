@@ -2,13 +2,10 @@
 node_modules
 npm-debug.log
 coverage
-dist
 .git
 .gitignore
 README.md
-.env
 .env.local
-.env.example
 .env.development.local
 .env.test.local
 .env.production.local
@@ -41,3 +38,7 @@ docs
 Dockerfile*
 docker-compose*.yml
 .dockerignore
+
+# Keep scripts directory
+!scripts/
+!scripts/start.sh

@@ -16,7 +16,10 @@ cloudinary.config({
 });
 
 // Upload file to Cloudinary
-export const uploadFile = (file: Express.Multer.File): Promise<string> =>
+export const uploadFile = (
+  file: Express.Multer.File,
+  folder: string = 'ecommerce-products',
+): Promise<string> =>
   new Promise((resolve, reject) => {
     if (!file) {
       reject(new Error('No file provided for upload'));
@@ -30,7 +33,7 @@ export const uploadFile = (file: Express.Multer.File): Promise<string> =>
     cloudinary.uploader.upload(
       dataURI,
       {
-        folder: 'ecommerce-profiles',
+        folder,
         use_filename: true,
         unique_filename: true,
         overwrite: false,
@@ -51,6 +54,10 @@ export const uploadFile = (file: Express.Multer.File): Promise<string> =>
     );
   });
 
+// Upload profile image to Cloudinary
+export const uploadProfileFile = (file: Express.Multer.File): Promise<string> =>
+  uploadFile(file, 'ecommerce-profiles');
+
 const multerFilterFile = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
   if (file.mimetype.startsWith('image/')) {
     cb(null, true);
@@ -65,7 +72,7 @@ export const upload = multer({
   storage,
   fileFilter: multerFilterFile,
   limits: {
-    fileSize: 4 * 1024 * 1024,
+    fileSize: 5 * 1024 * 1024, // 5MB to match our validation
   },
 });
 

@@ -1,4 +1,5 @@
 import joi from 'joi';
+import { UuidIdSchema } from './commonSchemas';
 
 export const AddUserSchema = joi.object({
   name: joi.string().required(),
@@ -11,6 +12,4 @@ export const LoginUserSchema = joi.object({
   password: joi.string().required(),
 });
 
-export const UserParamsSchema = joi.object({
-  id: joi.string().min(24),
-});
+export const UserParamsSchema = UuidIdSchema;

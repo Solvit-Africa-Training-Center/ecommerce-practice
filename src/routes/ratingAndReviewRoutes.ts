@@ -14,7 +14,7 @@ ratingRoutes.post(
   authMiddleware,
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
   ValidationMiddleware({ type: 'body', schema: AddRatingReviewSchema }),
-  controller.rateProduct.bind(controller)
+  controller.rateProduct.bind(controller),
 );
 
 ratingRoutes.get(
@@ -23,14 +23,14 @@ ratingRoutes.get(
   authMiddleware,
   checkRole(['admin']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
-  controller.getAllProductRatings.bind(controller)
+  controller.getAllProductRatings.bind(controller),
 );
 
 ratingRoutes.get(
   '/:productId/ratings/stats',
   rateLimiting(50),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
-  controller.getProductRatingStats.bind(controller)
+  controller.getProductRatingStats.bind(controller),
 );
 
 ratingRoutes.get(
@@ -38,14 +38,14 @@ ratingRoutes.get(
   rateLimiting(30),
   authMiddleware,
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
-  controller.getUserRatingForProduct.bind(controller)
+  controller.getUserRatingForProduct.bind(controller),
 );
 
 ratingRoutes.get(
   '/user/my-ratings',
   rateLimiting(20),
   authMiddleware,
-  controller.getUserRatings.bind(controller)
+  controller.getUserRatings.bind(controller),
 );
 
 export { ratingRoutes };

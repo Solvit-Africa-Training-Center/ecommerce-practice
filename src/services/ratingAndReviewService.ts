@@ -6,14 +6,13 @@ import { ResponseService } from '../utils/response';
 import { Err } from 'joi';
 
 export class RatingService {
-  
   /**
    * Create or update a product rating
    */
   public static async createOrUpdate(
-    data: { productId: string; star: number; review: string }, 
-    userId: string, 
-    res: Response
+    data: { productId: string; star: number; review: string },
+    userId: string,
+    res: Response,
   ): Promise<void> {
     try {
       const { productId, star, review } = data;
@@ -25,9 +24,9 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "Product not found",
-          res
-        })
+          message: 'Product not found',
+          res,
+        });
         return;
       }
 
@@ -46,24 +45,24 @@ export class RatingService {
       ResponseService({
         status: 200,
         success: true,
-        message: "Rating submitted successfully",
+        message: 'Rating submitted successfully',
         data: {
-          ratingId: rating.ratingId,
+          id: rating.id,
           star: rating.star,
           review: rating.review,
           productId: rating.productId,
-          isUpdate: !!existingRating
+          isUpdate: !!existingRating,
         },
-        res
-      })
+        res,
+      });
     } catch (error) {
-      const { message, stack } = error as Error
+      const { message, stack } = error as Error;
       ResponseService({
         data: { message, stack },
         status: 500,
         success: false,
-        res
-      })
+        res,
+      });
     }
   }
 
@@ -71,10 +70,10 @@ export class RatingService {
    * Get all ratings for a specific product
    */
   public static async getAllByProduct(
-    productId: string, 
-    page: number = 1, 
-    limit: number = 10, 
-    res: Response
+    productId: string,
+    page: number = 1,
+    limit: number = 10,
+    res: Response,
   ): Promise<void> {
     try {
       const offset = (page - 1) * limit;
@@ -86,9 +85,9 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "Product not found",
-          res
-        })
+          message: 'Product not found',
+          res,
+        });
         return;
       }
 
@@ -98,12 +97,12 @@ export class RatingService {
           {
             model: User,
             as: 'user',
-            attributes: ['id', 'name','email']
-          }
+            attributes: ['id', 'name', 'email'],
+          },
         ],
         order: [['createdAt', 'DESC']],
-        limit: limit,
-        offset: offset,
+        limit,
+        offset,
       });
 
       if (!ratings.length) {
@@ -111,36 +110,36 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "No ratings found for this product",
-          res
-        })
+          message: 'No ratings found for this product',
+          res,
+        });
         return;
       }
 
       ResponseService({
         status: 200,
         success: true,
-        message: "Ratings retrieved successfully",
+        message: 'Ratings retrieved successfully',
         data: {
-          ratings: ratings,
+          ratings,
           pagination: {
             currentPage: page,
             totalPages: Math.ceil(count / limit),
             totalRatings: count,
             hasNext: page < Math.ceil(count / limit),
-            hasPrev: page > 1
-          }
+            hasPrev: page > 1,
+          },
         },
-        res
-      })
+        res,
+      });
     } catch (error) {
-      const { message, stack } = error as Error
+      const { message, stack } = error as Error;
       ResponseService({
         data: { message, stack },
         status: 500,
         success: false,
-        res
-      })
+        res,
+      });
     }
   }
 
@@ -156,15 +155,15 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "Product not found",
-          res
-        })
+          message: 'Product not found',
+          res,
+        });
         return;
       }
 
       const ratings = await Rating.findAll({
         where: { productId },
-        attributes: ["star"],
+        attributes: ['star'],
         raw: true,
       });
 
@@ -173,9 +172,9 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "No ratings found for this product",
-          res
-        })
+          message: 'No ratings found for this product',
+          res,
+        });
         return;
       }
 
@@ -185,10 +184,13 @@ export class RatingService {
       const averageRating = parseFloat((ratingsSum / totalRatings).toFixed(2));
 
       // Count ratings by star level
-      const starCounts = ratings.reduce((acc, rating) => {
-        acc[rating.star] = (acc[rating.star] || 0) + 1;
-        return acc;
-      }, {} as Record<number, number>);
+      const starCounts = ratings.reduce(
+        (acc, rating) => {
+          acc[rating.star] = (acc[rating.star] || 0) + 1;
+          return acc;
+        },
+        {} as Record<number, number>,
+      );
 
       const stats: RatingStats = {
         averageRating,
@@ -209,24 +211,24 @@ export class RatingService {
           threeStars: parseFloat(((stats.threeStars / totalRatings) * 100).toFixed(1)),
           twoStars: parseFloat(((stats.twoStars / totalRatings) * 100).toFixed(1)),
           oneStar: parseFloat(((stats.oneStar / totalRatings) * 100).toFixed(1)),
-        }
+        },
       };
 
       ResponseService({
         status: 200,
         success: true,
-        message: "Rating statistics retrieved successfully",
+        message: 'Rating statistics retrieved successfully',
         data: statsWithPercentages,
-        res
-      })
+        res,
+      });
     } catch (error) {
-      const { message, stack } = error as Error
+      const { message, stack } = error as Error;
       ResponseService({
         data: { message, stack },
         status: 500,
         success: false,
-        res
-      })
+        res,
+      });
     }
   }
 
@@ -234,9 +236,9 @@ export class RatingService {
    * Get user's rating for a specific product
    */
   public static async getUserRatingForProduct(
-    productId: string, 
-    userId: string, 
-    res: Response
+    productId: string,
+    userId: string,
+    res: Response,
   ): Promise<void> {
     try {
       // Check if product exists
@@ -246,9 +248,9 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "Product not found",
-          res
-        })
+          message: 'Product not found',
+          res,
+        });
         return;
       }
 
@@ -258,9 +260,9 @@ export class RatingService {
           {
             model: User,
             as: 'user',
-            attributes: ['id', 'name', 'email']
-          }
-        ]
+            attributes: ['id', 'name', 'email'],
+          },
+        ],
       });
 
       if (!rating) {
@@ -269,26 +271,26 @@ export class RatingService {
           status: 404,
           success: false,
           message: "You haven't rated this product yet",
-          res
-        })
+          res,
+        });
         return;
       }
 
       ResponseService({
         status: 200,
         success: true,
-        message: "User rating retrieved successfully",
+        message: 'User rating retrieved successfully',
         data: rating,
-        res
-      })
+        res,
+      });
     } catch (error) {
-      const { message, stack } = error as Error
+      const { message, stack } = error as Error;
       ResponseService({
         data: { message, stack },
         status: 500,
         success: false,
-        res
-      })
+        res,
+      });
     }
   }
 
@@ -296,10 +298,10 @@ export class RatingService {
    * Get all ratings by a specific user
    */
   public static async getAllByUser(
-    userId: string, 
-    page: number = 1, 
-    limit: number = 10, 
-    res: Response
+    userId: string,
+    page: number = 1,
+    limit: number = 10,
+    res: Response,
   ): Promise<void> {
     try {
       const offset = (page - 1) * limit;
@@ -310,12 +312,12 @@ export class RatingService {
           {
             model: Product,
             as: 'product',
-            attributes: ['productId', 'productName', 'productImage', 'price']
-          }
+            attributes: ['id', 'name', 'images', 'price'],
+          },
         ],
         order: [['createdAt', 'DESC']],
-        limit: limit,
-        offset: offset,
+        limit,
+        offset,
       });
 
       if (!ratings.length) {
@@ -323,36 +325,36 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "No ratings found for this user",
-          res
-        })
+          message: 'No ratings found for this user',
+          res,
+        });
         return;
       }
 
       ResponseService({
         status: 200,
         success: true,
-        message: "User ratings retrieved successfully",
+        message: 'User ratings retrieved successfully',
         data: {
-          ratings: ratings,
+          ratings,
           pagination: {
             currentPage: page,
             totalPages: Math.ceil(count / limit),
             totalRatings: count,
             hasNext: page < Math.ceil(count / limit),
-            hasPrev: page > 1
-          }
+            hasPrev: page > 1,
+          },
         },
-        res
-      })
+        res,
+      });
     } catch (error) {
-      const { message, stack } = error as Error
+      const { message, stack } = error as Error;
       ResponseService({
         data: { message, stack },
         status: 500,
         success: false,
-        res
-      })
+        res,
+      });
     }
   }
 }

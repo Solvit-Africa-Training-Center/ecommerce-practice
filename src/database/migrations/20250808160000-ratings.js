@@ -4,11 +4,11 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('ratings', {
-      ratingId: {
+      id: {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4,  // Use Postgres UUID function
+        defaultValue: Sequelize.UUIDV4, // Use Postgres UUID function
       },
       star: {
         type: Sequelize.INTEGER,
@@ -21,10 +21,22 @@ module.exports = {
       postedBy: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       productId: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'products',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -35,11 +47,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('NOW()'),
-      }
+      },
     });
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('ratings');
-  }
+  },
 };

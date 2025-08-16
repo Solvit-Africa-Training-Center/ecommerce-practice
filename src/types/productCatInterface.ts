@@ -1,17 +1,14 @@
 import { Request } from 'express';
 
 export interface ProductCatInterface {
-  productCatId: string;
+  id: string;
   name: string;
   description: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export type InterfaceAddProductCat = Omit<
-  ProductCatInterface,
-  'productCatId' | 'createdAt' | 'updatedAt'
->;
+export type InterfaceAddProductCat = Omit<ProductCatInterface, 'id' | 'createdAt' | 'updatedAt'>;
 
 export interface ProductCategoryRequest extends Request {
   body: ProductCatInterface;

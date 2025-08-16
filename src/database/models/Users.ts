@@ -43,7 +43,11 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     };
   }
 
-  static associate(models: { Role: typeof Role; Profile: typeof Profile; Rating: typeof Rating }): void {
+  static associate(models: {
+    Role: typeof Role;
+    Profile: typeof Profile;
+    Rating: typeof Rating;
+  }): void {
     User.belongsTo(models.Role, {
       foreignKey: 'roleId',
       as: 'role',
@@ -55,8 +59,8 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     });
 
     User.hasMany(Rating, {
-        foreignKey: 'postedBy',
-        as: 'ratings'
+      foreignKey: 'postedBy',
+      as: 'ratings',
     });
   }
 }
@@ -90,7 +94,7 @@ export const UserModal = (sequelize: Sequelize) => {
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
       },
     },
     {

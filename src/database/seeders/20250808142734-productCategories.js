@@ -17,28 +17,28 @@ module.exports = {
 
     const categories = [
       {
-        productCatId: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
+        id: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
         name: 'Electronics',
         description: 'Electronic devices and gadgets',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        productCatId: 'c840fa32-4331-423e-a849-c70e48700111', // Clothing
+        id: 'c840fa32-4331-423e-a849-c70e48700111', // Clothing
         name: 'Clothing',
         description: 'Fashion and apparel items',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        productCatId: 'a4a61c4d-2b57-469f-9386-4c88c13bea24', // Books
+        id: 'a4a61c4d-2b57-469f-9386-4c88c13bea24', // Books
         name: 'Books',
         description: 'Books and educational materials',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        productCatId: '762cd95b-1840-4261-98d0-01e35626d8b7', // Home & Garden
+        id: '762cd95b-1840-4261-98d0-01e35626d8b7', // Home & Garden
         name: 'Home & Garden',
         description: 'Home improvement and garden supplies',
         createdAt: new Date(),

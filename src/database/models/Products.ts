@@ -5,7 +5,7 @@ import { User } from './Users';
 import { Rating } from './ratings';
 
 export interface ProductAttributes {
-  productId: string;
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -16,22 +16,20 @@ export interface ProductAttributes {
   variation: object | null;
   images: string[];
   isAvailable: boolean;
-  rating: number;
-  review: string;
   expiredAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface ProductCreationAttributes extends Omit<ProductAttributes, 'productId' | 'rating' | 'review'> {
-  productId?: string;
+export interface ProductCreationAttributes extends Omit<ProductAttributes, 'id'> {
+  id?: string;
 }
 
 export class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
   implements ProductAttributes
 {
-  public productId!: string;
+  public id!: string;
   public name!: string;
   public description!: string;
   public price!: number;
@@ -42,8 +40,6 @@ export class Product
   public variation!: object | null;
   public images!: string[];
   public isAvailable!: boolean;
-  public rating!: number;
-  public review!: string;
   public expiredAt?: Date | undefined;
 
   public readonly createdAt!: Date;
@@ -76,7 +72,7 @@ export class Product
 
   public toJSON(): object | ProductAttributes {
     return {
-      productId: this.productId,
+      id: this.id,
       name: this.name,
       description: this.description,
       price: this.price,
@@ -87,8 +83,6 @@ export class Product
       variation: this.variation,
       images: this.images,
       isAvailable: this.isAvailable,
-      rating: this.rating,
-      review: this.review,
       expiredAt: this.expiredAt,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
@@ -99,7 +93,7 @@ export class Product
 export const ProductModel = (sequelize: Sequelize): typeof Product => {
   Product.init(
     {
-      productId: {
+      id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
@@ -125,14 +119,32 @@ export const ProductModel = (sequelize: Sequelize): typeof Product => {
       productCatId: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: 'product_categories',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       productSubCatId: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: 'product_sub_categories',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       variation: {
         type: DataTypes.JSON,
@@ -147,14 +159,7 @@ export const ProductModel = (sequelize: Sequelize): typeof Product => {
         defaultValue: true,
         allowNull: false,
       },
-      rating: {
-        type: DataTypes.FLOAT,
-        allowNull: true
-      },
-      review: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
+
       expiredAt: {
         type: DataTypes.DATE,
         allowNull: true,

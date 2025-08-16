@@ -3,22 +3,22 @@ import { ProductCategory } from './productCategory';
 import { Product } from './Products';
 
 interface ProductSubCatAttributes {
-  productSubCatId: string;
+  id: string;
   name: string;
   productCatId: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface AddProductSubCat extends Omit<ProductSubCatAttributes, 'productSubCatId'> {
-  productSubCatId?: string;
+export interface AddProductSubCat extends Omit<ProductSubCatAttributes, 'id'> {
+  id?: string;
 }
 
 export class ProductSubCategory
   extends Model<ProductSubCatAttributes, AddProductSubCat>
   implements ProductSubCatAttributes
 {
-  public productSubCatId!: string;
+  public id!: string;
   public name!: string;
   public productCatId!: string;
 
@@ -41,7 +41,7 @@ export class ProductSubCategory
 
   public toJSON(): object {
     return {
-      productSubCatId: this.productSubCatId,
+      id: this.id,
       name: this.name,
       productCatId: this.productCatId,
       createdAt: this.createdAt,
@@ -53,7 +53,7 @@ export class ProductSubCategory
 export const ProductSubCategoryModel = (sequelize: Sequelize): typeof ProductSubCategory => {
   ProductSubCategory.init(
     {
-      productSubCatId: {
+      id: {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
@@ -67,6 +67,12 @@ export const ProductSubCategoryModel = (sequelize: Sequelize): typeof ProductSub
       productCatId: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: 'product_categories',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
       },
     },
     {

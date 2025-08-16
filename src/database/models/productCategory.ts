@@ -3,22 +3,22 @@ import { Product } from './Products';
 import { ProductSubCategory } from './productSubCategory';
 
 interface ProductCatAttributes {
-  productCatId: string;
+  id: string;
   name: string;
   description: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface ProductCatCreationAttributes extends Omit<ProductCatAttributes, 'productCatId'> {
-  productCatId?: string;
+export interface ProductCatCreationAttributes extends Omit<ProductCatAttributes, 'id'> {
+  id?: string;
 }
 
 export class ProductCategory
   extends Model<ProductCatAttributes, ProductCatCreationAttributes>
   implements ProductCatAttributes
 {
-  public productCatId!: string;
+  public id!: string;
   public name!: string;
   public description!: string;
 
@@ -41,7 +41,7 @@ export class ProductCategory
 
   public toJSON(): object {
     return {
-      productCatId: this.productCatId,
+      id: this.id,
       name: this.name,
       description: this.description,
       createdAt: this.createdAt,
@@ -53,7 +53,7 @@ export class ProductCategory
 export const ProductCategoryModel = (sequelize: Sequelize): typeof ProductCategory => {
   ProductCategory.init(
     {
-      productCatId: {
+      id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,

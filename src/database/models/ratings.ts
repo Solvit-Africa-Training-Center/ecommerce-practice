@@ -1,9 +1,9 @@
-import { DataTypes, Sequelize, Model } from "sequelize";
-import { Product } from "./Products";
-import { User } from "./Users";
+import { DataTypes, Sequelize, Model } from 'sequelize';
+import { User } from './Users';
+import { Product } from './Products';
 
 export interface RatingAttributes {
-  ratingId: string;
+  id: string;
   star: number;
   review: string;
   postedBy: string; // userId
@@ -13,8 +13,8 @@ export interface RatingAttributes {
 }
 
 export interface RatingCreationAttributes
-  extends Omit<RatingAttributes, "ratingId" | "createdAt" | "updatedAt"> {
-  ratingId?: string;
+  extends Omit<RatingAttributes, 'id' | 'createdAt' | 'updatedAt'> {
+  id?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -33,7 +33,7 @@ export class Rating
   extends Model<RatingAttributes, RatingCreationAttributes>
   implements RatingAttributes
 {
-  public ratingId!: string;
+  public id!: string;
   public star!: number;
   public review!: string;
   public postedBy!: string;
@@ -43,7 +43,7 @@ export class Rating
 
   public toJSON(): object | RatingAttributes {
     return {
-      ratingId: this.ratingId,
+      id: this.id,
       star: this.star,
       review: this.review,
       postedBy: this.postedBy,
@@ -57,13 +57,13 @@ export class Rating
     // Rating belongs to User
     Rating.belongsTo(models.User, {
       foreignKey: 'postedBy',
-      as: 'user'
+      as: 'user',
     });
 
     // Rating belongs to Product
     Rating.belongsTo(models.Product, {
       foreignKey: 'productId',
-      as: 'product'
+      as: 'product',
     });
   }
 }
@@ -71,7 +71,7 @@ export class Rating
 export const RatingModel = (sequelize: Sequelize) => {
   Rating.init(
     {
-      ratingId: {
+      id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
@@ -86,59 +86,36 @@ export const RatingModel = (sequelize: Sequelize) => {
       },
       review: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       postedBy: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id'
-        }
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       productId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
           model: 'products',
-          key: 'id'
-        }
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
     },
     {
       sequelize,
-      modelName: "Rating",
-      tableName: "ratings",
+      modelName: 'Rating',
+      tableName: 'ratings',
       timestamps: true,
-      hooks: {
-        async afterCreate(rating) {
-          await updateProductRating(rating.productId);
-        },
-        async afterUpdate(rating) {
-          await updateProductRating(rating.productId);
-        },
-      },
-    }
+    },
   );
 
   return Rating;
 };
-
-// Helper function to update product's average rating
-async function updateProductRating(productId: string) {
-  const ratings = await Rating.findAll({
-    where: { productId },
-    attributes: ["star"],
-    raw: true,
-  });
-
-  if (!ratings.length) return;
-
-  const avg =
-    ratings.reduce((sum, r) => sum + r.star, 0) / ratings.length;
-
-  await Product.update(
-    { rating: parseFloat(avg.toFixed(2)) },
-    { where: { productId } }
-  );
-}

@@ -11,7 +11,7 @@ module.exports = {
      */
 
     await queryInterface.createTable('products', {
-      productId: {
+      id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
@@ -38,7 +38,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'product_categories',
-          key: 'productCatId',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
@@ -48,7 +48,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'product_sub_categories',
-          key: 'productSubCatId',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
@@ -76,14 +76,7 @@ module.exports = {
         defaultValue: true,
         allowNull: false,
       },
-      rating: {
-        type: Sequelize.FLOAT,
-        allowNull: true,
-      },
-      review: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
+
       expiredAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
