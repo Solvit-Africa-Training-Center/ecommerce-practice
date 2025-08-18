@@ -32,7 +32,7 @@ export class CartItem extends Model<CartItemAttributes, CartItemCreationAttribut
         });
         CartItem.belongsTo(models.Product, {
             foreignKey: 'productId',
-            targetKey: 'productId',
+            targetKey: 'id',
             as: 'product',
         });
     }
