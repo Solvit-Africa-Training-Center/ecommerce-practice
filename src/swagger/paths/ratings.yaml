@@ -1,0 +1,330 @@
+/rate/{productId}:
+  post:
+    tags:
+      - Ratings & Reviews
+    summary: Rate a product or update existing rating
+    description: Submit a rating and optional review for a product. If user has already rated this product, it will update the existing rating.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        description: Product ID to rate
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRating'
+    responses:
+      '200':
+        description: Rating submitted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Rating submitted successfully'
+                data:
+                  $ref: '#/components/schemas/RatingResponse'
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '429':
+        description: Too many requests - rate limit exceeded (10 requests per 15 minutes)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+# Get all ratings for a product (Admin only)
+/{productId}/ratings:
+  get:
+    tags:
+      - Ratings & Reviews
+    summary: Get all ratings for a product (Admin only)
+    description: Retrieve paginated list of all ratings and reviews for a specific product with user details
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Page number for pagination
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: limit
+        in: query
+        description: Number of ratings per page
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+    responses:
+      '200':
+        description: Ratings retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Ratings retrieved successfully'
+                data:
+                  $ref: '#/components/schemas/PaginatedRatings'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Admin role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product not found or no ratings found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '429':
+        description: Too many requests - rate limit exceeded (100 requests per 15 minutes)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+# Get rating statistics for a product
+/{productId}/ratings/stats:
+  get:
+    tags:
+      - Ratings & Reviews
+    summary: Get rating statistics for a product
+    description: Retrieve comprehensive rating statistics including average rating, total count, and distribution breakdown
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: Rating statistics retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Rating statistics retrieved successfully'
+                data:
+                  $ref: '#/components/schemas/RatingStats'
+      '404':
+        description: Product not found or no ratings found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '429':
+        description: Too many requests - rate limit exceeded (50 requests per 15 minutes)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+# Get current user's rating for a product
+/{productId}/my-rating:
+  get:
+    tags:
+      - Ratings & Reviews
+    summary: Get current user's rating for a product
+    description: Retrieve the authenticated user's rating and review for a specific product
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+          format: uuid
+    responses:
+      '200':
+        description: User rating retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'User rating retrieved successfully'
+                data:
+                  $ref: '#/components/schemas/Rating'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product not found or user hasn't rated this product
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: "You haven't rated this product yet"
+                data:
+                  type: 'null'
+      '429':
+        description: Too many requests - rate limit exceeded (30 requests per 15 minutes)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+# Get current user's all ratings
+/user/my-ratings:
+  get:
+    tags:
+      - Ratings & Reviews
+    summary: Get current user's all ratings
+    description: Retrieve paginated list of all ratings and reviews posted by the authenticated user
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: page
+        in: query
+        description: Page number for pagination
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: limit
+        in: query
+        description: Number of ratings per page
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+    responses:
+      '200':
+        description: User ratings retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'User ratings retrieved successfully'
+                data:
+                  $ref: '#/components/schemas/PaginatedRatings'
+      '401':
+        description: Authentication token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: No ratings found for this user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '429':
+        description: Too many requests - rate limit exceeded (20 requests per 15 minutes)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
