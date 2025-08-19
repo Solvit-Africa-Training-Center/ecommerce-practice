@@ -45,7 +45,7 @@ cartRoutes.delete(
 cartRoutes.delete(
   '/carts/clear',
   authMiddleware,
-  checkRole(['admin']),
+  checkRole(['admin','customer']),
   CartController.clearCart
 );
 
