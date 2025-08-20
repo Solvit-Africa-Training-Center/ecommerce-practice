@@ -1,5 +1,5 @@
-import { Cart } from '../database/models/cartModel';
-import { CartItem } from '../database/models/cartItemModel';
+import { Cart, CartModel } from '../database/models/cartModel';
+import { CartItem, CartItemModel } from '../database/models/cartItemModel';
 import { Product } from '../database/models/Products';
 import { ICart, ICartItem } from '../types/cartInterface';
 
@@ -56,7 +56,27 @@ export class CartService {
     if (!product) {
       throw new Error('Product not found');
     }
+      // 2. Validate stock availability
+  if (data.quantity > product.stock) {
+    throw new Error(`Only ${product.stock} units available in stock.`);
+  }
+      //If product already in cart, check total won’t exceed stock
+  const existingCartItem = await CartItem.findOne({
+    where: { cartId: cart.id, productId: data.productId },
+  });
 
+  if (existingCartItem) {
+    if (existingCartItem.quantity + data.quantity > product.stock) {
+      throw new Error(
+        `You already have ${existingCartItem.quantity} in cart. Only ${product.stock} units available in stock.`
+      );
+    }
+    existingCartItem.quantity += data.quantity;
+    existingCartItem.totalprice =
+      Number(product.price) * existingCartItem.quantity;
+    await existingCartItem.save();
+    return existingCartItem;
+  }
     const totalprice = Number(product.price) * data.quantity;
 
     const cartItem = await CartItem.create({

@@ -21,6 +21,7 @@ export class Cart extends Model<CartAttributes, CartCreationAttributes> implemen
   public items?: CartItem[];
 
   public getItems!: HasManyGetAssociationsMixin<CartItem>;
+  quantity: number | undefined;
 
   public static associate(models: { CartItem: typeof CartItem; User: typeof User }): void {
     Cart.hasMany(models.CartItem, {
