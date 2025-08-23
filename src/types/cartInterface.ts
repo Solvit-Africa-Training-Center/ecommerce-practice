@@ -3,9 +3,8 @@ import { CartItem } from '../database/models/cartItemModel';
 import { CartAttributes } from '../database/models/cartModel';
 
 export interface ICartWithItems extends CartAttributes {
-  items?: CartItem[]; 
+  items?: CartItem[];
 }
-
 
 export interface ICartItem {
   id?: string;
@@ -22,7 +21,6 @@ export interface ICart {
   items?: ICartItem[];
   totalPrice?: number;
 }
-
 
 export interface IRequestUser extends Request {
   user?: { id: string; role?: string };

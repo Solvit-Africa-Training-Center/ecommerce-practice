@@ -18,8 +18,8 @@ const productRoutes = Router();
 const controller = new ProductController();
 
 // product category routes
-productRoutes.get('/categories', controller.viewAllCategories);
-productRoutes.get('/categories/:name', controller.viewSingleCategory);
+productRoutes.get('/categories', rateLimiting(30), controller.viewAllCategories);
+productRoutes.get('/categories/:name', rateLimiting(30), controller.viewSingleCategory);
 productRoutes.post(
   '/categories',
   rateLimiting(30),
@@ -30,6 +30,7 @@ productRoutes.post(
 );
 productRoutes.patch(
   '/categories/:id',
+  rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'body', schema: AddProductCategorySchema }),
@@ -37,6 +38,7 @@ productRoutes.patch(
 );
 productRoutes.delete(
   '/categories/:id',
+  rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
@@ -45,8 +47,8 @@ productRoutes.delete(
 
 // product sub-category routes
 
-productRoutes.get('/sub-categories', controller.viewAllSubCategories);
-productRoutes.get('/sub-categories/:name', controller.viewSingleSubCategory);
+productRoutes.get('/sub-categories', rateLimiting(30), controller.viewAllSubCategories);
+productRoutes.get('/sub-categories/:name', rateLimiting(30), controller.viewSingleSubCategory);
 productRoutes.post(
   '/sub-categories',
   rateLimiting(30),
@@ -57,6 +59,7 @@ productRoutes.post(
 );
 productRoutes.patch(
   '/sub-categories/:id',
+  rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'body', schema: productSubCatSchema }),
@@ -64,6 +67,7 @@ productRoutes.patch(
 );
 productRoutes.delete(
   '/sub-categories/:id',
+  rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
@@ -72,8 +76,24 @@ productRoutes.delete(
 
 // product routes
 
-productRoutes.get('/products', controller.viewAllProducts);
-productRoutes.get('/products/:id', controller.viewSingleProduct);
+productRoutes.get(
+  '/products/admin',
+  rateLimiting(30),
+  authMiddleware,
+  checkRole(['admin']),
+  controller.viewAllProducts,
+);
+
+productRoutes.get(
+  '/products/seller',
+  rateLimiting(30),
+  authMiddleware,
+  checkRole(['seller']),
+  controller.sellerViewAllProducts,
+);
+
+productRoutes.get('/products', rateLimiting(30), controller.customerViewAllProducts);
+productRoutes.get('/products/:id', rateLimiting(30), controller.viewSingleProduct);
 productRoutes.post(
   '/products',
   rateLimiting(30),
@@ -86,6 +106,7 @@ productRoutes.post(
 );
 productRoutes.patch(
   '/products/:id',
+  rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
   uploadMiddleware.array('images', 8),
@@ -95,6 +116,7 @@ productRoutes.patch(
 );
 productRoutes.delete(
   '/products/:id',
+  rateLimiting(30),
   authMiddleware,
   checkRole(['admin', 'seller']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),

@@ -9,6 +9,7 @@ import {
   ProductSubCategoryRequest,
 } from '../types/productSubInterface';
 import { ResponseService } from '../utils/response';
+import { IRequestUser } from '../middlewares/authMiddleware';
 
 export class ProductController {
   // Product catgories
@@ -160,9 +161,39 @@ export class ProductController {
   }
 
   // Products
-  public async viewAllProducts(req: Request, res: Response): Promise<void> {
+  public async viewAllProducts(req: IRequestUser, res: Response): Promise<void> {
     try {
-      Product.viewAll(res);
+      const user = req?.user?.id as string;
+      Product.viewAll(user, res);
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  }
+
+  public async sellerViewAllProducts(req: IRequestUser, res: Response): Promise<void> {
+    try {
+      const user = req?.user?.id as string;
+      Product.sellerViewAll(user, res);
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  }
+
+  public async customerViewAllProducts(req: Request, res: Response): Promise<void> {
+    try {
+      Product.customerViewAll(res);
     } catch (err) {
       const { message, stack } = err as Error;
       ResponseService({

@@ -3,11 +3,23 @@ import { Database } from '../database';
 import { ResponseService } from '../utils/response';
 import { CreateProductInterface, UpdateProductInterface } from '../types/productInterface';
 import { uploadFile } from '../utils/upload';
+import { errorLogger } from '../utils';
 
 export const Product = {
   // View all products
-  viewAll: async (res: Response): Promise<void> => {
+  viewAll: async (userId: string, res: Response): Promise<void> => {
     try {
+      const userExists = await Database.User.findOne({ where: { id: userId } });
+      if (!userExists) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 401,
+          message: 'Unauthorized Access',
+          res,
+        });
+        return;
+      }
       const products = await Database.Product.findAll({
         include: [
           {
@@ -49,9 +61,148 @@ export const Product = {
         });
         return;
       }
-      const displayedProduct = products.filter((product) => product.isAvailable === true);
       ResponseService({
-        data: displayedProduct,
+        data: products,
+        success: true,
+        status: 200,
+        message: 'All Products successfully fetched',
+        res,
+      });
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  },
+
+  sellerViewAll: async (userId: string, res: Response): Promise<void> => {
+    try {
+      const userExists = await Database.User.findOne({ where: { id: userId } });
+      if (!userExists) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 401,
+          message: 'Unauthorized Access',
+          res,
+        });
+        return;
+      }
+      const products = await Database.Product.findAll({
+        include: [
+          {
+            model: Database.ProductCategory,
+            as: 'category',
+            attributes: ['id', 'name', 'description'],
+          },
+          {
+            model: Database.ProductSubCategory,
+            as: 'subCategory',
+            attributes: ['id', 'name'],
+          },
+          {
+            model: Database.User,
+            as: 'user',
+            attributes: ['id', 'name', 'email'],
+          },
+          {
+            model: Database.Rating,
+            as: 'ratings',
+            attributes: ['id', 'star', 'review', 'createdAt'],
+            include: [
+              {
+                model: Database.User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            ],
+          },
+        ],
+        where: {
+          userId,
+        },
+      });
+      if (!products || products.length === 0) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 404,
+          message: 'Products not found',
+          res,
+        });
+        return;
+      }
+      ResponseService({
+        data: products,
+        success: true,
+        status: 200,
+        message: 'All Products successfully fetched',
+        res,
+      });
+    } catch (err) {
+      const { message, stack } = err as Error;
+      ResponseService({
+        data: { message, stack },
+        success: false,
+        status: 500,
+        res,
+      });
+    }
+  },
+
+  customerViewAll: async (res: Response): Promise<void> => {
+    try {
+      const products = await Database.Product.findAll({
+        include: [
+          {
+            model: Database.ProductCategory,
+            as: 'category',
+            attributes: ['id', 'name', 'description'],
+          },
+          {
+            model: Database.ProductSubCategory,
+            as: 'subCategory',
+            attributes: ['id', 'name'],
+          },
+          {
+            model: Database.User,
+            as: 'user',
+            attributes: ['id', 'name', 'email'],
+          },
+          {
+            model: Database.Rating,
+            as: 'ratings',
+            attributes: ['id', 'star', 'review', 'createdAt'],
+            include: [
+              {
+                model: Database.User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            ],
+          },
+        ],
+        where: {
+          isAvailable: true,
+        },
+      });
+
+      if (!products || products.length === 0) {
+        ResponseService({
+          data: null,
+          success: false,
+          status: 404,
+          message: 'Products not found',
+          res,
+        });
+        return;
+      }
+      ResponseService({
+        data: products,
         success: true,
         status: 200,
         message: 'All Products successfully fetched',
@@ -351,9 +502,6 @@ export const Product = {
           });
         }
       }
-
-      const user: string = userExists?.id;
-
       // Prepare update data - Sequelize will handle partial updates automatically
       const updateData = { ...data };
 
@@ -362,11 +510,33 @@ export const Product = {
         updateData.images = image_urls;
       }
 
-      const updateProduct = await Database.Product.update(updateData, {
-        where: {
-          id: dataId,
-        },
-      });
+      let updateProduct;
+      if (Number(data.stock) === 0) {
+        updateProduct = await Database.Product.update(
+          {
+            ...updateData,
+            isAvailable: false,
+          },
+          {
+            where: {
+              id: dataId,
+            },
+          },
+        );
+      } else {
+        updateProduct = await Database.Product.update(
+          {
+            ...updateData,
+            isAvailable: true,
+          },
+          {
+            where: {
+              id: dataId,
+            },
+          },
+        );
+      }
+
       ResponseService({
         data: updateProduct,
         success: true,
@@ -382,6 +552,36 @@ export const Product = {
         status: 500,
         res,
       });
+    }
+  },
+
+  checkStock: async (): Promise<void> => {
+    try {
+      const products = await Database.Product.findAll({
+        where: {
+          isAvailable: true,
+        },
+      });
+
+      if (products.length > 0) {
+        products.forEach(async (item) => {
+          if (item.stock === 0){
+            await Database.Product.update(
+              {
+                isAvailable: false,
+              },
+              {
+                where: {
+                  id: item.id,
+                },
+              },
+            );
+          }
+        });
+      }
+    } catch (err) {
+      const { message, stack } = err as Error;
+      errorLogger({message, stack} as Error, '[Check product stock service Error]');
     }
   },
 };

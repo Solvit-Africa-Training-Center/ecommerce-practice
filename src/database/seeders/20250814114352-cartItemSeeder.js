@@ -3,14 +3,13 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const carts = await queryInterface.sequelize.query(
-      `SELECT id FROM carts;`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
+    const carts = await queryInterface.sequelize.query(`SELECT id FROM carts;`, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
 
     const products = await queryInterface.sequelize.query(
       `SELECT  price, name FROM products ORDER BY name;`,
-      { type: Sequelize.QueryTypes.SELECT }
+      { type: Sequelize.QueryTypes.SELECT },
     );
 
     if (!carts.length || !products.length) {
@@ -43,7 +42,6 @@ module.exports = {
     });
 
     // Sally gets third and fourth products
-   
 
     await queryInterface.bulkInsert('cart_items', cartItems, {});
   },
