@@ -5,7 +5,7 @@ import { Product } from '../services/productService';
 export const checkProductStock = async (): Promise<void> => {
   try {
     logger.info('[Cron:checkProductStock] Starting stock check');
-    Product.checkStock();
+    await Product.checkStock();
     logger.info('[Cron:checkProductStock] Completed successfully');
   } catch (error) {
     errorLogger(error as Error, `[Cron:checkProductStock] Failed: ${(error as Error).message}`);

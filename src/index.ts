@@ -35,7 +35,7 @@ Database.database
   .authenticate()
   .then(async () => {
     try {
-      // initCronJobs(); // start scheduled tasks
+      initCronJobs();
       app.listen(port, () => {
         logStartup(port, process.env.NODE_ENV || 'DEV');
       });

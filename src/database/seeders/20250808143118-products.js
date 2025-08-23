@@ -90,7 +90,7 @@ module.exports = {
           stock: 100,
           productCatId: 'c840fa32-4331-423e-a849-c70e48700111', // Clothing
           productSubCatId: '187abcad-68d6-4221-8e64-c9ee33448917', // Men's Clothing
-          userId: '59b8b530-6d26-479d-b220-371445773cc2',
+          userId: 'dd83607b-cb78-4eee-a0c8-64bc8dfe1e44',
           variation: JSON.stringify({
             colors: ['White', 'Black', 'Navy', 'Gray'],
             sizes: ['S', 'M', 'L', 'XL', 'XXL'],
@@ -111,7 +111,7 @@ module.exports = {
           stock: 75,
           productCatId: 'a4a61c4d-2b57-469f-9386-4c88c13bea24', // Books
           productSubCatId: '01100301-3a4c-4d97-9023-4f839bb991c9', // Technical
-          userId: '59b8b530-6d26-479d-b220-371445773cc2',
+          userId: 'dd83607b-cb78-4eee-a0c8-64bc8dfe1e44',
           variation: JSON.stringify({
             format: ['Paperback', 'Hardcover', 'E-book'],
             language: ['English'],

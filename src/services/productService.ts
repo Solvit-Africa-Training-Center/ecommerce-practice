@@ -564,20 +564,22 @@ export const Product = {
       });
 
       if (products.length > 0) {
-        products.forEach(async (item) => {
-          if (item.stock === 0){
-            await Database.Product.update(
-              {
-                isAvailable: false,
-              },
-              {
-                where: {
-                  id: item.id,
+        await Promise.all(
+          products.map(async (item) => {
+            if (item.stock === 0) {
+              await Database.Product.update(
+                {
+                  isAvailable: false,
                 },
-              },
-            );
-          }
-        });
+                {
+                  where: {
+                    id: item.id,
+                  },
+                },
+              );
+            }
+          })
+        );
       }
     } catch (err) {
       const { message, stack } = err as Error;

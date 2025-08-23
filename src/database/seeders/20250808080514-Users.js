@@ -53,6 +53,15 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        id: 'dd83607b-cb78-4eee-a0c8-64bc8dfe1e44',
+        name: 'Alice Seller',
+        email: 'alice@seller.com',
+        roleId: getRoleId('seller'),
+        password: '$2b$12$/Hm2jpfZ.RIDPAzfUFDbmeTNVoRzAifnK2PVrWN4nV7A0nesQqQWq',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
     ];
 
     await queryInterface.bulkInsert('users', users, {});
