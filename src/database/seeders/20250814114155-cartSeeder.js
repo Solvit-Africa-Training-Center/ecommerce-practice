@@ -3,10 +3,9 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const existing = await queryInterface.sequelize.query(
-      `SELECT COUNT(*) as count FROM carts;`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
+    const existing = await queryInterface.sequelize.query(`SELECT COUNT(*) as count FROM carts;`, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
 
     if (existing[0].count > 0) {
       console.log('Carts already seeded. Skipping...');

@@ -31,7 +31,6 @@ const swaggerDefinition: SwaggerDefinition = {
       },
     },
   },
-  
 };
 
 const options = {

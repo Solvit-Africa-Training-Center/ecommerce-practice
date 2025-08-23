@@ -7,32 +7,32 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'users', 
-          key: 'id'
+          model: 'users',
+          key: 'id',
         },
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('NOW()')
+        defaultValue: Sequelize.literal('NOW()'),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('NOW()')
-      }
+        defaultValue: Sequelize.literal('NOW()'),
+      },
     });
   },
 
   async down(queryInterface) {
     await queryInterface.dropTable('carts');
-  }
+  },
 };

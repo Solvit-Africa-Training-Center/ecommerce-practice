@@ -5,6 +5,7 @@ import { routers } from './routes';
 import { redis } from './utils/redis';
 import { errorLogger, logStartup, requestLogger } from './utils';
 import { swaggerRouter } from './routes/swaggerRoutes';
+import { initCronJobs } from './cron';
 
 config();
 
@@ -34,6 +35,7 @@ Database.database
   .authenticate()
   .then(async () => {
     try {
+      initCronJobs();
       app.listen(port, () => {
         logStartup(port, process.env.NODE_ENV || 'DEV');
       });

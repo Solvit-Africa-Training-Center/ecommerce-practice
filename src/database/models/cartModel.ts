@@ -18,10 +18,8 @@ export class Cart extends Model<CartAttributes, CartCreationAttributes> implemen
   public createdAt!: Date;
   public updatedAt!: Date;
 
-  
   public items?: CartItem[];
 
-  
   public getItems!: HasManyGetAssociationsMixin<CartItem>;
 
   public static associate(models: { CartItem: typeof CartItem; User: typeof User }): void {

@@ -1,11 +1,14 @@
 import { Response } from 'express';
 import { CartService } from '../services/cartService';
 import { IRequestUser } from '../types/cartInterface';
-import { addCartItemSchema, updateCartItemSchema, removeCartItemSchema } from '../schema/CartSchema';
+import {
+  addCartItemSchema,
+  updateCartItemSchema,
+  removeCartItemSchema,
+} from '../schema/CartSchema';
 import { ResponseService } from '../utils/response';
 
 export class CartController {
-  
   static async getCart(req: IRequestUser, res: Response): Promise<void> {
     try {
       if (!req.user?.id) {
@@ -117,7 +120,6 @@ export class CartController {
         success: true,
         data: updatedItem,
       });
-
     } catch (error) {
       const { message, stack } = error as Error;
       ResponseService({
@@ -135,7 +137,7 @@ export class CartController {
     try {
       const { error } = removeCartItemSchema.validate(req.body);
       if (error) {
-      ResponseService({
+        ResponseService({
           res,
           status: 400,
           message: error.details[0].message,
@@ -154,7 +156,7 @@ export class CartController {
         data: null,
       });
     } catch (error) {
-     const { message, stack } = error as Error;
+      const { message, stack } = error as Error;
       ResponseService({
         data: { message, stack },
         status: 500,
@@ -200,7 +202,7 @@ export class CartController {
         data: null,
       });
     } catch (error) {
-         const { message, stack } = error as Error;
+      const { message, stack } = error as Error;
       ResponseService({
         data: { message, stack },
         status: 500,
