@@ -3,6 +3,7 @@ import { Role } from './Roles';
 import { Profile } from './Profiles';
 import { Rating } from './ratings';
 import { Product } from './Products';
+
 interface UserAttribute {
   id: string;
   name: string;
@@ -48,6 +49,7 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     Profile: typeof Profile;
     Rating: typeof Rating;
     Product: typeof Product;
+    Product: typeof Product;
   }): void {
     User.belongsTo(models.Role, {
       foreignKey: 'roleId',
@@ -67,6 +69,11 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     User.hasMany(Rating, {
       foreignKey: 'postedBy',
       as: 'ratings',
+    });
+
+    User.hasMany(models.Product, {
+      foreignKey: 'userId',
+      as: 'products',
     });
   }
 }

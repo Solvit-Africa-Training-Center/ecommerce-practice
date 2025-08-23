@@ -9,6 +9,7 @@ import {
   ProductSubCategoryRequest,
 } from '../types/productSubInterface';
 import { ResponseService } from '../utils/response';
+import { eventEmitter } from '../utils/notifications';
 import { IRequestUser } from '../middlewares/authMiddleware';
 
 export class ProductController {
@@ -163,6 +164,8 @@ export class ProductController {
   // Products
   public async viewAllProducts(req: IRequestUser, res: Response): Promise<void> {
     try {
+      Product.viewAll(res);
+
       const user = req?.user?.id as string;
       Product.viewAll(user, res);
     } catch (err) {
@@ -205,21 +208,28 @@ export class ProductController {
     }
   }
 
-  public async createProduct(req: ProductRequest, res: Response): Promise<void> {
-    try {
+   public async createProduct(req: ProductRequest, res: Response): Promise<void> {
+     try {
       const user = req?.user?.id as string;
       const { files } = req;
       Product.create(req.body, user, files as Express.Multer.File[], res);
+      eventEmitter.emit("productAdded", req.body);
+
+     
+
     } catch (err) {
       const { message, stack } = err as Error;
-      ResponseService({
+       ResponseService({
         data: { message, stack },
         success: false,
-        status: 500,
+         status: 500,
         res,
-      });
+       });
     }
-  }
+   }
+
+
+  
 
   public async viewSingleProduct(req: Request, res: Response): Promise<void> {
     try {

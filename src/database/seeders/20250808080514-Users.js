@@ -46,8 +46,10 @@ module.exports = {
       },
       {
         id: '59b8b530-6d26-479d-b220-371445773cc2',
-        name: 'Sally Seller',
-        email: 'sally@seller.com',
+        //name: 'Sally Seller',
+        name: 'Therese Niyigena',
+        //email: 'sally@seller.com',
+        email: 'therese14niyigena@gmail.com',
         roleId: getRoleId('seller'),
         password: '$2b$12$/Hm2jpfZ.RIDPAzfUFDbmeTNVoRzAifnK2PVrWN4nV7A0nesQqQWq',
         createdAt: new Date(),
