@@ -3,6 +3,7 @@ import { Database } from '../database';
 import { ResponseService } from '../utils/response';
 import { CreateProductInterface, UpdateProductInterface } from '../types/productInterface';
 import { uploadFile } from '../utils/upload';
+import { eventEmitter } from '../utils/notifications';
 
 export const Product = {
   // View all products
@@ -155,6 +156,8 @@ export const Product = {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
+
+      // eventEmitter.emit("productAdded", { ...product, userId: user });
 
       ResponseService({
         data: product,

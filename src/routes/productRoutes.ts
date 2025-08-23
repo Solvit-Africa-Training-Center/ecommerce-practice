@@ -70,6 +70,9 @@ productRoutes.delete(
   controller.deleteSubCategory,
 );
 
+
+
+
 // product routes
 
 productRoutes.get('/products', controller.viewAllProducts);

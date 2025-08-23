@@ -9,7 +9,7 @@ import {
   ProductSubCategoryRequest,
 } from '../types/productSubInterface';
 import { ResponseService } from '../utils/response';
-
+import { eventEmitter } from '../utils/notifications';
 export class ProductController {
   // Product catgories
   public async viewAllCategories(req: Request, res: Response): Promise<void> {
@@ -163,6 +163,7 @@ export class ProductController {
   public async viewAllProducts(req: Request, res: Response): Promise<void> {
     try {
       Product.viewAll(res);
+
     } catch (err) {
       const { message, stack } = err as Error;
       ResponseService({
@@ -174,21 +175,28 @@ export class ProductController {
     }
   }
 
-  public async createProduct(req: ProductRequest, res: Response): Promise<void> {
-    try {
+   public async createProduct(req: ProductRequest, res: Response): Promise<void> {
+     try {
       const user = req?.user?.id as string;
       const { files } = req;
       Product.create(req.body, user, files as Express.Multer.File[], res);
+      eventEmitter.emit("productAdded", req.body);
+
+     
+
     } catch (err) {
       const { message, stack } = err as Error;
-      ResponseService({
+       ResponseService({
         data: { message, stack },
         success: false,
-        status: 500,
+         status: 500,
         res,
-      });
+       });
     }
-  }
+   }
+
+
+  
 
   public async viewSingleProduct(req: Request, res: Response): Promise<void> {
     try {
