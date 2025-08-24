@@ -3,8 +3,10 @@ import { ResponseService } from '../utils/response';
 import { GetAllUsers, UserInterface } from '../types/userInterface';
 import { Database } from '../database';
 import { IRequestUser } from '../middlewares/authMiddleware';
-import { comparePassword, destroyToken, generateToken, hashPassword } from '../utils/helper';
-
+import { comparePassword, destroyToken, generateToken, hashPassword, signEmailToken, verifyEmailToken  } from '../utils/helper';
+import { config } from 'dotenv';
+import { sendEmail, confirmationTemplate } from "../utils/emailService";
+config();
 interface IRequestUserData extends Request {
   body: UserInterface;
 }
@@ -162,3 +164,68 @@ export const logoutUser = async (req: IRequestUser, res: Response) => {
     });
   }
 };
+
+export async function forgotPassword(req: Request, res: Response) {
+  try {
+    const { email } = req.body;
+    const user = await Database.User.findOne({ where: { email } });
+    if (!user) {
+      return ResponseService({
+        data: null,
+        status: 404,
+        success: false,
+        message: 'User not found',
+        res,
+      });
+    }
+
+    const token = signEmailToken(email);
+    const link = `${process.env.APP_BASE_URL}/auth/reset-password?token=${encodeURIComponent(token)}`;
+    await sendEmail(email, "Reset your password", confirmationTemplate(link));
+
+    return ResponseService({
+      data: token,
+      status: 200,
+      success: true,
+      message: 'email sent successfully for password reset',
+      res,
+    });
+  } catch (error) {
+    const { message, stack } = error as Error;
+    return ResponseService({
+      data: { message, stack },
+      status: 500,
+      success: false,
+      res,
+    });
+  }
+}
+
+export async function resetPassword(req: Request, res: Response) {
+  try {
+    const { token, newPassword } = req.body;
+    const decoded = verifyEmailToken(token);
+
+    const hashedPassword = await hashPassword(newPassword);
+    await Database.User.update(
+      { password: hashedPassword },
+      { where: { email: decoded.email } }
+    );
+
+    return ResponseService({
+      data: null,
+      status: 200,
+      success: true,
+      message: 'Password reset successful',
+      res,
+    });
+  } catch (error) {
+    const { message, stack } = error as Error;
+    return ResponseService({
+      data: { message, stack },
+      status: 500,
+      success: false,
+      res,
+    });
+  }
+}

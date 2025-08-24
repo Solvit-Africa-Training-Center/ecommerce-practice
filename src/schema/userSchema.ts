@@ -13,3 +13,12 @@ export const LoginUserSchema = joi.object({
 });
 
 export const UserParamsSchema = UuidIdSchema;
+
+export const ForgotPasswordSchema = joi.object({
+  email: joi.string().email().required(),
+});
+
+export const ResetPasswordSchema = joi.object({
+  token: joi.string().required(),
+  newPassword: joi.string().min(8).required(),
+});
