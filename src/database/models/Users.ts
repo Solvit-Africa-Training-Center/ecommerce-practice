@@ -49,7 +49,6 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     Profile: typeof Profile;
     Rating: typeof Rating;
     Product: typeof Product;
-    Product: typeof Product;
   }): void {
     User.belongsTo(models.Role, {
       foreignKey: 'roleId',
