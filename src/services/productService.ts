@@ -310,6 +310,8 @@ export const Product = {
 
       // eventEmitter.emit("productAdded", { ...product, userId: user });
 
+      // eventEmitter.emit("productAdded", { ...product, userId: user });
+
       ResponseService({
         data: product,
         success: true,

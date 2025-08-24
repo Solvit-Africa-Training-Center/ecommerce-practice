@@ -208,6 +208,7 @@ export class ProductController {
     }
   }
 
+  
    public async createProduct(req: ProductRequest, res: Response): Promise<void> {
      try {
       const user = req?.user?.id as string;
@@ -217,16 +218,27 @@ export class ProductController {
 
      
 
+      eventEmitter.emit("productAdded", req.body);
+
+     
+
     } catch (err) {
       const { message, stack } = err as Error;
+       ResponseService({
        ResponseService({
         data: { message, stack },
         success: false,
          status: 500,
+         status: 500,
         res,
+       });
        });
     }
    }
+   }
+
+
+  
 
 
   

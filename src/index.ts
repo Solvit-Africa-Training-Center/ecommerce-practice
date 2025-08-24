@@ -58,7 +58,6 @@ import { routers } from './routes';
 import { redis } from './utils/redis';
 import { errorLogger, logStartup, requestLogger } from './utils';
 import { swaggerRouter } from './routes/swaggerRoutes';
-import { initCronJobs } from './cron';
 import setupSocket from "./utils/notificationSocket"; 
 import { createServer } from 'http';
 import { Server } from "socket.io";
@@ -107,8 +106,6 @@ Database.database
   .authenticate()
   .then(async () => {
     try {
-      initCronJobs();
-      app.listen(port, () => {
       server.listen(port, () => {
         logStartup(port, process.env.NODE_ENV || 'DEV');
       });
