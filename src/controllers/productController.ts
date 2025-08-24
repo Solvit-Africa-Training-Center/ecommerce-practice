@@ -164,8 +164,7 @@ export class ProductController {
   // Products
   public async viewAllProducts(req: IRequestUser, res: Response): Promise<void> {
     try {
-      Product.viewAll(res);
-
+  
       const user = req?.user?.id as string;
       Product.viewAll(user, res);
     } catch (err) {
@@ -224,18 +223,18 @@ export class ProductController {
 
     } catch (err) {
       const { message, stack } = err as Error;
-       ResponseService({
+      
        ResponseService({
         data: { message, stack },
         success: false,
          status: 500,
-         status: 500,
+         
         res,
        });
-       });
+       
     }
    }
-   }
+   
 
 
   
