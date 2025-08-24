@@ -1,0 +1,222 @@
+components:
+  schemas:
+    Rating:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique rating identifier
+        star:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Rating score from 1 to 5 stars
+        review:
+          type: string
+          description: Optional review text
+        postedBy:
+          type: string
+          format: uuid
+          description: User ID who posted the rating
+        productId:
+          type: string
+          format: uuid
+          description: Product ID being rated
+        createdAt:
+          type: string
+          format: date-time
+          description: Rating creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+          description: User who posted the rating
+        product:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            images:
+              type: array
+              items:
+                type: string
+                format: uri
+            price:
+              type: number
+              format: float
+          description: Product being rated
+      example:
+        id: '123e4567-e89b-12d3-a456-426614174000'
+        star: 5
+        review: 'Excellent product! Highly recommend.'
+        postedBy: '456e7890-e89b-12d3-a456-426614174111'
+        productId: '789e0123-e89b-12d3-a456-426614174222'
+        createdAt: '2024-01-15T10:30:00Z'
+        updatedAt: '2024-01-15T10:30:00Z'
+
+    CreateRating:
+      type: object
+      required:
+        - star
+      properties:
+        star:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Rating score from 1 to 5 stars
+        review:
+          type: string
+          minLength: 3
+          maxLength: 500
+          description: Optional review text (3-500 characters)
+      example:
+        star: 4
+        review: 'Good quality product, fast shipping!'
+
+    RatingStats:
+      type: object
+      properties:
+        averageRating:
+          type: number
+          format: float
+          description: Average rating score
+        totalRatings:
+          type: integer
+          description: Total number of ratings
+        fiveStars:
+          type: integer
+          description: Number of 5-star ratings
+        fourStars:
+          type: integer
+          description: Number of 4-star ratings
+        threeStars:
+          type: integer
+          description: Number of 3-star ratings
+        twoStars:
+          type: integer
+          description: Number of 2-star ratings
+        oneStar:
+          type: integer
+          description: Number of 1-star ratings
+        percentages:
+          type: object
+          properties:
+            fiveStars:
+              type: number
+              format: float
+              description: Percentage of 5-star ratings
+            fourStars:
+              type: number
+              format: float
+              description: Percentage of 4-star ratings
+            threeStars:
+              type: number
+              format: float
+              description: Percentage of 3-star ratings
+            twoStars:
+              type: number
+              format: float
+              description: Percentage of 2-star ratings
+            oneStar:
+              type: number
+              format: float
+              description: Percentage of 1-star ratings
+      example:
+        averageRating: 4.2
+        totalRatings: 150
+        fiveStars: 75
+        fourStars: 45
+        threeStars: 20
+        twoStars: 7
+        oneStar: 3
+        percentages:
+          fiveStars: 50.0
+          fourStars: 30.0
+          threeStars: 13.3
+          twoStars: 4.7
+          oneStar: 2.0
+
+    RatingResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        star:
+          type: integer
+        review:
+          type: string
+        productId:
+          type: string
+          format: uuid
+        isUpdate:
+          type: boolean
+          description: Whether this was an update to existing rating
+      example:
+        id: '123e4567-e89b-12d3-a456-426614174000'
+        star: 5
+        review: 'Amazing product!'
+        productId: '789e0123-e89b-12d3-a456-426614174222'
+        isUpdate: false
+
+    PaginatedRatings:
+      type: object
+      properties:
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
+        pagination:
+          type: object
+          properties:
+            currentPage:
+              type: integer
+              description: Current page number
+            totalPages:
+              type: integer
+              description: Total number of pages
+            totalRatings:
+              type: integer
+              description: Total number of ratings
+            hasNext:
+              type: boolean
+              description: Whether there is a next page
+            hasPrev:
+              type: boolean
+              description: Whether there is a previous page
+      example:
+        ratings: []
+        pagination:
+          currentPage: 1
+          totalPages: 5
+          totalRatings: 47
+          hasNext: true
+          hasPrev: false
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Error message
+        error:
+          type: object
+          description: Additional error details
