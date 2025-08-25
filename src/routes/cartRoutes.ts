@@ -33,16 +33,16 @@ cartRoutes.put(
 
 //  Remove one item (admin or customer)
 cartRoutes.delete(
-  '/carts',
+  '/carts/:cartItemId',
   authMiddleware,
   checkRole(['admin', 'customer']),
   ValidationMiddleware({ type: 'body', schema: removeCartItemSchema }),
   CartController.removeItem,
 );
 
-// Clear entire cart (admin only)
+// Clear all items in a cart
 cartRoutes.delete(
-  '/carts/clear',
+  '/carts/:cartId/clear',
   authMiddleware,
   checkRole(['admin', 'customer']),
   CartController.clearCart,
