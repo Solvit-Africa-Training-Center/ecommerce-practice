@@ -11,7 +11,7 @@ cartRoutes.get(
   '/carts',
   authMiddleware,
   checkRole(['admin', 'customer']),
-  CartController.getCart
+  CartController.getCart,
 );
 
 //  Add item (admin or customer)
@@ -20,7 +20,7 @@ cartRoutes.post(
   authMiddleware,
   checkRole(['admin', 'customer']),
   ValidationMiddleware({ type: 'body', schema: addCartItemSchema }),
-  CartController.addItem
+  CartController.addItem,
 );
 
 //  Update item (admin or customer)
@@ -29,7 +29,7 @@ cartRoutes.put(
   authMiddleware,
   checkRole(['admin', 'customer']),
   ValidationMiddleware({ type: 'body', schema: updateCartItemSchema }),
-  CartController.updateItem
+  CartController.updateItem,
 );
 
 //  Remove one item (admin or customer)
@@ -38,7 +38,7 @@ cartRoutes.delete(
   authMiddleware,
   checkRole(['admin', 'customer']),
   ValidationMiddleware({ type: 'body', schema: removeCartItemSchema }),
-  CartController.removeItem
+  CartController.removeItem,
 );
 
 // Clear entire cart (admin only)
@@ -46,7 +46,7 @@ cartRoutes.delete(
   '/carts/clear',
   authMiddleware,
   checkRole(['admin','customer']),
-  CartController.clearCart
+  CartController.clearCart,
 );
 
 export { cartRoutes };

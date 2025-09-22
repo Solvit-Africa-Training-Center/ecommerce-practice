@@ -15,14 +15,27 @@ module.exports = {
 
     const carts = [
       {
-        id: uuidv4(),
-        userId: 'acc284e1-c124-4c56-80c3-259d18768d0b', // Bob Customer
+        id: '94b3a667-defd-425a-8d94-639a9e86781a',
+        userId: 'acc284e1-c124-4c56-80c3-259d18768d0b', // Bob Customer for seller sellay
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        id: '94b3a667-defd-425a-8d94-639a9e86781b',
+        userId: 'acc284e1-c124-4c56-80c3-259d18768d0c', // lily customer for seller Rwanda
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        id: uuidv4(),
-        userId: '59b8b530-6d26-479d-b220-371445773cc2', // Sally Seller
+        id: '94b3a667-defd-425a-8d94-639a9e86781c',
+        userId: 'acc284e1-c124-4c56-80c3-259d18768d0b', // Bob Customer for seller sellay
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+          {
+        id: '94b3a667-defd-425a-8d94-639a9e86781d',
+        userId: 'acc284e1-c124-4c56-80c3-259d18768d0b', // Bob Customer for seller sellay
         createdAt: new Date(),
         updatedAt: new Date(),
       },

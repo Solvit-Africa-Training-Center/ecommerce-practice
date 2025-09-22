@@ -270,7 +270,7 @@ export class RatingService {
           data: null,
           status: 404,
           success: false,
-          message: "You haven't rated this product yet",
+          message: 'You haven\'t rated this product yet',
           res,
         });
         return;

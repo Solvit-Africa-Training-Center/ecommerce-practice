@@ -26,7 +26,7 @@ module.exports = {
           stock: 50,
           productCatId: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
           productSubCatId: '44f3d9fa-66c7-4708-93bd-14578574480f', // Smartphones
-          userId: '59b8b530-6d26-479d-b220-371445773cc2',
+          userId: '59b8b530-6d26-479d-b220-371445773cc3',
           variation: JSON.stringify({
             colors: ['Black', 'White', 'Purple'],
             storage: ['128GB', '256GB', '512GB'],
@@ -44,10 +44,10 @@ module.exports = {
           name: 'iPhone 15 Pro',
           description: "Apple's flagship smartphone with titanium design",
           price: 1199.99,
-          stock: 0,
+          stock: 5,
           productCatId: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
           productSubCatId: '44f3d9fa-66c7-4708-93bd-14578574480f', // Smartphones
-          userId: '59b8b530-6d26-479d-b220-371445773cc2',
+          userId: '59b8b530-6d26-479d-b220-371445773cc3',
           variation: JSON.stringify({
             colors: ['Natural Titanium', 'Blue Titanium', 'White Titanium'],
             storage: ['128GB', '256GB', '512GB', '1TB'],
@@ -68,7 +68,7 @@ module.exports = {
           stock: 15,
           productCatId: '0ddbea7e-6e69-4bd0-a1b1-7bf0275ebfbe', // Electronics
           productSubCatId: '37bd634e-df79-4eba-a830-26da92dcc9e6', // Laptops
-          userId: '59b8b530-6d26-479d-b220-371445773cc2',
+          userId: '59b8b530-6d26-479d-b220-371445773cc3',
           variation: JSON.stringify({
             colors: ['Space Gray', 'Silver'],
             memory: ['18GB', '36GB'],
@@ -90,7 +90,7 @@ module.exports = {
           stock: 100,
           productCatId: 'c840fa32-4331-423e-a849-c70e48700111', // Clothing
           productSubCatId: '187abcad-68d6-4221-8e64-c9ee33448917', // Men's Clothing
-          userId: '59b8b530-6d26-479d-b220-371445773cc2',
+          userId: '59b8b231-4f26-479d-b220-371445773cc2',
           variation: JSON.stringify({
             colors: ['White', 'Black', 'Navy', 'Gray'],
             sizes: ['S', 'M', 'L', 'XL', 'XXL'],
@@ -105,13 +105,13 @@ module.exports = {
         },
         {
           id: 'b2acdd3b-1807-4772-8a4c-82614ea283a7',
-          name: 'JavaScript: The Complete Guide',
+          name: 'JavaScript: The Complete jacket',
           description: 'Comprehensive guide to modern JavaScript programming',
           price: 49.99,
           stock: 75,
           productCatId: 'a4a61c4d-2b57-469f-9386-4c88c13bea24', // Books
           productSubCatId: '01100301-3a4c-4d97-9023-4f839bb991c9', // Technical
-          userId: '59b8b530-6d26-479d-b220-371445773cc2',
+          userId: '59b8b231-4f26-479d-b220-371445773cc2',
           variation: JSON.stringify({
             format: ['Paperback', 'Hardcover', 'E-book'],
             language: ['English'],

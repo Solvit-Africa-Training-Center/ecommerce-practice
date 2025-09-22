@@ -2,6 +2,7 @@ import { Sequelize, Model, DataTypes } from 'sequelize';
 import { Role } from './Roles';
 import { Profile } from './Profiles';
 import { Rating } from './ratings';
+import { Product } from './Products';
 
 interface UserAttribute {
   id: string;
@@ -47,6 +48,7 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     Role: typeof Role;
     Profile: typeof Profile;
     Rating: typeof Rating;
+    Product: typeof Product;
   }): void {
     User.belongsTo(models.Role, {
       foreignKey: 'roleId',
@@ -61,6 +63,11 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
     User.hasMany(Rating, {
       foreignKey: 'postedBy',
       as: 'ratings',
+    });
+
+    User.hasMany(models.Product, {
+      foreignKey: 'userId',
+      as: 'products',
     });
   }
 }

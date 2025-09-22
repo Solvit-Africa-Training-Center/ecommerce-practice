@@ -68,6 +68,7 @@ export class CartService {
       quantity: data.quantity,
       price: Number(product.price),
      totalprice,
+     
     });
 
     return cartItem;

@@ -8,6 +8,8 @@ import { ProductSubCategory, ProductSubCategoryModel } from './productSubCategor
 import { Rating, RatingModel } from './ratings';
 import { Cart, CartModel } from './cartModel';
 import { CartItem, CartItemModel } from './cartItemModel';
+import { Order,OrderModel } from './orderModel';
+import {OrderItem,OrderItemModel} from './orderItemModel';
 interface Modals {
   User: typeof User;
   Role: typeof Role;
@@ -18,6 +20,9 @@ interface Modals {
   Rating: typeof Rating;
   Cart: typeof Cart;
   CartItem: typeof CartItem;
+  Order:typeof Order;
+  OrderItem: typeof OrderItem;
+
 }
 export const AllModal = (sequelize: Sequelize): Modals => ({
   User: UserModal(sequelize),
@@ -29,4 +34,6 @@ export const AllModal = (sequelize: Sequelize): Modals => ({
   Rating: RatingModel(sequelize),
   Cart: CartModel(sequelize),
   CartItem: CartItemModel(sequelize),
+  Order:OrderModel(sequelize),
+  OrderItem:OrderItemModel(sequelize),
 });
