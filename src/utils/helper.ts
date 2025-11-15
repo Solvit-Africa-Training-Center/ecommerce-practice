@@ -5,6 +5,7 @@ import { redis } from './redis';
 import { v4 as uuidv4 } from 'uuid';
 import { errorLogger } from './logger';
 
+
 config();
 
 export const generateSlug = (title: string): string =>
@@ -70,3 +71,12 @@ export const destroyToken = async (token: string | undefined): Promise<void> => 
     throw error;
   }
 };
+
+export function signEmailToken(email: string) {
+  return jwt.sign({ email }, secretKey, { expiresIn: '12h' });
+}
+
+export function verifyEmailToken(token: string): { email: string } {
+  return jwt.verify(token, secretKey) as { email: string };
+}
+

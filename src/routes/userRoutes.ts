@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { ValidationMiddleware } from '../middlewares/validationMiddleware';
-import { getAllUsers, createUser, loginUser, logoutUser } from '../controllers/userController';
-import { AddUserSchema, LoginUserSchema } from '../schema/userSchema';
+import { getAllUsers, createUser, loginUser, logoutUser, forgotPassword, resetPassword } from '../controllers/userController';
+import { AddUserSchema, LoginUserSchema, ForgotPasswordSchema, ResetPasswordSchema } from '../schema/userSchema';
 import { authMiddleware, checkRole, rateLimiting } from '../middlewares/authMiddleware';
 
 const userRouter = Router();
@@ -22,5 +22,17 @@ userRouter.post(
 );
 
 userRouter.post('/logout', authMiddleware, logoutUser);
+
+userRouter.post(
+  '/forgot-password',
+  ValidationMiddleware({ type: 'body', schema: ForgotPasswordSchema }),
+  forgotPassword,
+);
+
+userRouter.post(
+  '/reset-password',
+  ValidationMiddleware({ type: 'body', schema: ResetPasswordSchema }),
+  resetPassword,
+);
 
 export { userRouter };
